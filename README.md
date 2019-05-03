@@ -1,1 +1,3 @@
-# netcracker-project
+## Модель данных
+
+![](/pic/data-model.png)
