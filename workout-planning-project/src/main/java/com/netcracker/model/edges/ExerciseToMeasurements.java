@@ -3,7 +3,7 @@ package com.netcracker.model.edges;
 import com.arangodb.springframework.annotation.Edge;
 import com.arangodb.springframework.annotation.From;
 import com.arangodb.springframework.annotation.To;
-import com.netcracker.model.documents.MeasuresOfExercise;
+import com.netcracker.model.documents.MeasurementsOfExercise;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
@@ -19,5 +19,5 @@ public class ExerciseToMeasures {
     private WorkoutToExercise sourceConnection;
 
     @To
-    private MeasuresOfExercise measures;
+    private MeasurementsOfExercise measures;
 }
