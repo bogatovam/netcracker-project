@@ -2,6 +2,8 @@ package com.netcracker.model.documents;
 
 import com.arangodb.springframework.annotation.Document;
 import com.arangodb.springframework.annotation.Field;
+import com.arangodb.springframework.annotation.Relations;
+import com.netcracker.model.edges.ExerciseToMeasurements;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
@@ -21,4 +23,7 @@ public class Exercise {
 
     private String name;
     private String description;
+
+    @Relations(edges = ExerciseToMeasurements.class, direction = Relations.Direction.OUTBOUND)
+    private List<MeasurementsOfExercise> measurements;
 }

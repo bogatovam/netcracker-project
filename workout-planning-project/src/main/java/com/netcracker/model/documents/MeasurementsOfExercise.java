@@ -7,15 +7,15 @@ import org.springframework.data.annotation.Id;
 
 import java.util.List;
 
-import static com.netcracker.model.CollectionsNames.MEASURES_OF_EXERCISE;
+import static com.netcracker.model.CollectionsNames.MEASUREMENTS_OF_EXERCISE;
 
 @Data
-@Document(MEASURES_OF_EXERCISE)
-public class MeasuresOfExercise {
+@Document(MEASUREMENTS_OF_EXERCISE)
+public class MeasurementsOfExercise {
 
     @Id
     private String id;
 
-    @Field("list-measures")
-    List<Measure> listSet;
+    @Field("list-measurements")
+    List<Measurement> listSet;
 }

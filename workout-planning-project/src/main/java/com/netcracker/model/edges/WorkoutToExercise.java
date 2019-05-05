@@ -21,6 +21,4 @@ public class WorkoutToExercise {
     @To
     private Exercise exercise;
 
-    @Relations(edges = ExerciseToMeasures.class, direction = Relations.Direction.OUTBOUND)
-    private MeasuresOfExercise measures;
 }

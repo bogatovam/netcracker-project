@@ -11,7 +11,7 @@ import static com.netcracker.model.CollectionsNames.EXERCISES_MEASUREMENT_IN_SCH
 
 @Data
 @Edge(EXERCISES_MEASUREMENT_IN_SCHEDULED_WORKOUT)
-public class ExsMeasurementInSWorkout {
+public class ScheduledWorkoutToExerciseMeasurement {
     @Id
     private String id;
 

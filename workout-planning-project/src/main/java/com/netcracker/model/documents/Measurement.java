@@ -8,7 +8,7 @@ import java.util.Map;
 import static com.netcracker.model.CollectionsNames.USER;
 
 @Data
-public class Measure {
+public class Measurement {
 
     @Id
     private String id;

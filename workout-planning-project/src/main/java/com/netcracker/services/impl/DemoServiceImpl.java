@@ -1,4 +1,6 @@
 package com.netcracker.services.impl;
 
-public class DemoServiceImpl {
+import com.netcracker.services.api.DemoService;
+
+public class DemoServiceImpl implements DemoService {
 }
