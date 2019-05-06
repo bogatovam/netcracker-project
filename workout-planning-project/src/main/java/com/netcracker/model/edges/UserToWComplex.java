@@ -4,20 +4,24 @@ import com.arangodb.springframework.annotation.From;
 import com.arangodb.springframework.annotation.To;
 import com.netcracker.model.documents.User;
 import com.netcracker.model.documents.WorkoutComplex;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.Id;
 
 import static com.netcracker.model.CollectionsNames.USER_TO_WORKOUT_COMPLEX;
 
 @Data
+@AllArgsConstructor
+@RequiredArgsConstructor
 @Edge(USER_TO_WORKOUT_COMPLEX)
 public class UserToWComplex {
     @Id
     private String id;
 
     @From
-    private User user;
+    private final User user;
 
     @To
-    private WorkoutComplex wcomplex;
+    private final WorkoutComplex wcomplex;
 }
