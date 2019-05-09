@@ -5,6 +5,8 @@ import com.arangodb.springframework.annotation.Field;
 import com.arangodb.springframework.annotation.Relations;
 import com.netcracker.model.edges.ExerciseToMeasurements;
 import com.netcracker.model.edges.ScheduledWorkoutToExerciseMeasurement;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
@@ -16,9 +18,11 @@ import static com.netcracker.model.CollectionsNames.SCHEDULED_WORKOUT;
 
 @Data
 @Document(SCHEDULED_WORKOUT)
+@ApiModel(value = "Workout that was scheduled for a certain date")
 public class ScheduledWorkout {
 
     @Id
+    @ApiModelProperty(hidden = true)
     private String id;
 
     @Field("date-workout")

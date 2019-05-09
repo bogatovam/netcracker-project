@@ -4,6 +4,8 @@ import com.arangodb.springframework.annotation.Document;
 import com.arangodb.springframework.annotation.Field;
 import com.arangodb.springframework.annotation.Relations;
 import com.netcracker.model.edges.UserToWComplex;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
@@ -13,9 +15,11 @@ import static com.netcracker.model.CollectionsNames.USER;
 
 @Data
 @Document(USER)
+@ApiModel(value = "Application user")
 public class User {
 
     @Id
+    @ApiModelProperty(hidden = true)
     private String id;
 
     private String login;

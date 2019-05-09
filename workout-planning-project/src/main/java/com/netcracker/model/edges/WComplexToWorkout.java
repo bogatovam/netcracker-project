@@ -4,6 +4,7 @@ import com.arangodb.springframework.annotation.From;
 import com.arangodb.springframework.annotation.To;
 import com.netcracker.model.documents.Workout;
 import com.netcracker.model.documents.WorkoutComplex;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
@@ -11,6 +12,7 @@ import static com.netcracker.model.CollectionsNames.WORKOUT_COMPLEX_TO_WORKOUT;
 
 @Data
 @Edge(WORKOUT_COMPLEX_TO_WORKOUT)
+@ApiModel(description = "A helper class that describes the relationship between workout and workout complex")
 public class WComplexToWorkout {
     @Id
     private String id;

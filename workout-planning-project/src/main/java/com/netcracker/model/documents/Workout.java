@@ -4,6 +4,8 @@ import com.arangodb.springframework.annotation.Document;
 import com.arangodb.springframework.annotation.Relations;
 import com.netcracker.model.edges.WorkoutToDate;
 import com.netcracker.model.edges.WorkoutToExercise;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
@@ -13,8 +15,10 @@ import static com.netcracker.model.CollectionsNames.WORKOUT;
 
 @Data
 @Document(WORKOUT)
+@ApiModel(value = "Workout")
 public class Workout {
     @Id
+    @ApiModelProperty(hidden = true)
     private String id;
 
     private String name;

@@ -48,6 +48,7 @@ public class DemoServiceImpl implements DemoService {
 
     @Override
     public Exercise getExercise(String exerciseId) {
-        return exerciseRepository.findById(exerciseId).get();
+        Optional<Exercise> exercise = exerciseRepository.findById(exerciseId);
+        return exercise.orElse(null);
     }
 }
