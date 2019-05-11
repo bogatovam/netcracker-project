@@ -36,7 +36,7 @@ public class ControllersPaths {
         public static final String CREATE_WORKOUT = "/workout/create";
 
         /*   Read   operations   */
-        public static final String GET_ALL_WORKOUTS = "/workout/all";
+        public static final String GET_WORKOUT_BY_ID = "/workout/{id}";
         public static final String GET_NAME_BY_ID = "/workout/{id}/name";
         public static final String GET_SOURCE_WORKOUT_COMPLEX_BY_ID = "/workout/{id}/complex";
         public static final String GET_EXERCISES_BY_ID = "/workout/{id}/exercises";
@@ -59,10 +59,10 @@ public class ControllersPaths {
         public static final String CREATE_SCHEDULED_WORKOUT = "/workout/{id}/plan";
 
         /*   Read   operations   */
-        public static final String GET_ALL_SCHEDULED_WORKOUTS = "/workout/{id}/scheduled/all";
+        public static final String GET_SCHEDULED_WORKOUT_BY_ID = "/workout/{id}";
+        public static final String GET_ALL_SCHEDULED_WORKOUTS = "/scheduled-workout/all";
         public static final String GET_SOURCE_WORKOUT_BY_ID = "/scheduled-workout/{id}/source-workout";
         public static final String GET_NAME_SOURCE_WORKOUT_BY_ID = "/scheduled-workout/{id}/source-workout/name";
-        public static final String GET_SOURCE_WORKOUT_COMPLEX_BY_ID = "/scheduled-workout/{id}/source-complex";
         public static final String GET_SCHEDULED_DATE_BY_ID = "/scheduled-workout/{id}/date";
         public static final String GET_STATUS_BY_ID = "/scheduled-workout/{id}/status";
         public static final String GET_ALL_CURRENT_EXERCISES_BY_ID = "/scheduled-workout/{id}/exercises";
@@ -87,17 +87,20 @@ public class ControllersPaths {
         public static final String CREATE_WORKOUT_COMPLEX = "/workout-complex/create";
 
         /*   Read   operations   */
+        public static final String GET_WORKOUT_COMPLEX_BY_ID = "/workout-complex/{id}";
         public static final String GET_ALL_WORKOUTS_COMPLEXES = "/workout-complex/all";
+        public static final String GET_ALL_NAMES_WORKOUTS_COMPLEXES = "/workout-complex/all/names";
         public static final String GET_NAME_BY_ID = "/workout-complex/{id}/name";
         public static final String GET_WORKOUTS_BY_ID = "/workout-complex/{id}/workouts";
         public static final String GET_NAMES_OF_WORKOUTS_BY_ID = "/workout-complex/{id}/workouts/names";
 
         /*   Update operations   */
         public static final String ADD_WORKOUT_BY_ID = "/workout-complex/{id}/workouts/add";
-        public static final String DEL_WORKOUT_BY_ID = "/workout-complex/{id}/workouts/del";
+        public static final String DEL_WORKOUT_BY_ID = "/workout-complex/{id}/workouts/{wid}/del";
+        public static final String SET_NAME_WORKOUT_BY_ID = "/workout-complex/{id}/workouts/{wid}/name";
         public static final String SET_NAME_BY_ID = "/workout-complex/{id}/name";
 
         /*   Delete operations   */
-        public static final String DELETE_WORKOUT_BY_ID = "/workout-complex/{id}/delete";
+        public static final String DELETE_WORKOUT_COMPLEX_BY_ID = "/workout-complex/{id}/delete";
     }
 }
