@@ -1,8 +1,5 @@
 package com.netcracker.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-
 public class ControllersPaths {
 
     /*   Paths to Exercise Controller   */
@@ -14,7 +11,6 @@ public class ControllersPaths {
         public static final String GET_ALL_EXERCISES = "/exercises/all";
         public static final String GET_ALL_NAMES_OF_EXERCISES = "/exercises/names";
         public static final String GET_EXERCISE_BY_ID = "/exercises/{id}";
-        public static final String GET_EXERCISE_BY_NAME = "/exercises/{name}";
         public static final String GET_NAME_BY_ID = "/exercises/{id}/name"; //??
         public static final String GET_DESCRIPTION_BY_ID = "/exercises/{id}/description";
         public static final String GET_MEASURES_BY_ID = "/exercises/{id}/measures";
@@ -23,7 +19,10 @@ public class ControllersPaths {
         public static final String GET_LAST_MEASUREMENT_BY_ID = "/exercises/{id}/measurements/last";
 
         /*   Update operations   */
-        public static final String ADD_MEASUREMENT_BY_ID = "/exercises/{id}/measurements/add"; //??
+        public static final String ADD_MEASUREMENTS_GROUP_BY_ID = "/exercises/{id}/measurements/add"; //??
+        public static final String ADD_MEASUREMENT_BY_ID = "/exercises/{id}/measurements/{mid}/add"; //??
+        public static final String DEL_MEASUREMENTS_GROUP_BY_ID = "/exercises/{id}/measurements/{mid}/del"; //??
+        public static final String DEL_MEASUREMENT_BY_ID = "/exercises/{id}/measurements/{mid}/{num}/del"; //??
         public static final String SET_NAME_BY_ID = "/exercises/{id}/name";
         public static final String SET_DESCRIPTION_BY_ID = "/exercises/{id}/description";
 
