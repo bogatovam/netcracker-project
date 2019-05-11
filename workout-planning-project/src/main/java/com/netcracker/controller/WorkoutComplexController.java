@@ -2,13 +2,13 @@ package com.netcracker.controller;
 
 import com.netcracker.model.documents.Workout;
 import com.netcracker.model.documents.WorkoutComplex;
-import com.netcracker.services.api.DemoService;
+import com.netcracker.services.api.DataDisplayService;
+import com.netcracker.services.api.PlanningService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.List;
 import java.util.Map;
 
@@ -17,26 +17,29 @@ import static com.netcracker.controller.ControllersPaths.WorkoutComplexControlle
 @RestController
 public class WorkoutComplexController {
     @Autowired
-    DemoService demoService;
+    DataDisplayService dataDisplayService;
+
+    @Autowired
+    PlanningService planningService;
 
     @PostMapping(CREATE_WORKOUT_COMPLEX)
     @ApiOperation(value = "Create workout complex")
     public WorkoutComplex createWorkoutComplex(
             @ApiParam(value = "")
             @RequestBody WorkoutComplex workoutComplex){
-        return demoService.createWorkoutComplex(workoutComplex);
+        return planningService.createWorkoutComplex(workoutComplex);
     }
 
     @GetMapping(GET_ALL_WORKOUTS_COMPLEXES)
     @ApiOperation(value = "")
     public List<WorkoutComplex> getAllWorkoutComplex(){
-        return demoService.getAllWorkoutComplex();
+        return dataDisplayService.getAllWorkoutComplex();
     }
 
     @GetMapping(GET_ALL_NAMES_WORKOUTS_COMPLEXES)
     @ApiOperation(value = "")
     public Map<String, String> getAllNamesWorkoutComplex(){
-        return demoService.getAllNamesWorkoutComplex();
+        return dataDisplayService.getWorkoutComplexesNames();
     }
 
     @GetMapping(GET_NAME_BY_ID)
@@ -44,7 +47,7 @@ public class WorkoutComplexController {
     public String getNameWorkoutComplex(
             @ApiParam(value = "")
             @PathVariable String id){
-        return demoService.getNameWorkoutComplex(id);
+        return dataDisplayService.getNameWorkoutComplex(id);
     }
 
     @GetMapping(GET_WORKOUTS_BY_ID)
@@ -52,7 +55,7 @@ public class WorkoutComplexController {
     public List<Workout> getWorkouts(
             @ApiParam(value = "")
             @PathVariable String id){
-        return demoService.getWorkouts(id);
+        return dataDisplayService.getWorkouts(id);
     }
 
     @GetMapping(GET_NAMES_OF_WORKOUTS_BY_ID)
@@ -60,7 +63,7 @@ public class WorkoutComplexController {
     public Map<String, String> getWorkoutsNames(
             @ApiParam(value = "")
             @PathVariable String id){
-        return demoService.getWorkoutsNames(id);
+        return dataDisplayService.getWorkoutsNames(id);
     }
 
     @PostMapping(ADD_WORKOUT_BY_ID)
@@ -70,7 +73,7 @@ public class WorkoutComplexController {
             @PathVariable String id,
             @ApiParam(value = "")
             @RequestBody Workout workout){
-        return demoService.addWorkout(id, workout);
+        return planningService.addWorkout(id, workout);
     }
 
     @GetMapping(DEL_WORKOUT_BY_ID)
@@ -80,7 +83,7 @@ public class WorkoutComplexController {
             @PathVariable String id,
             @ApiParam(value = "")
             @PathVariable String wid){
-        return demoService.delWorkout(id, wid);
+        return planningService.delWorkout(id, wid);
     }
 
     @PostMapping(SET_NAME_WORKOUT_BY_ID)
@@ -92,7 +95,7 @@ public class WorkoutComplexController {
             @PathVariable String wid,
             @ApiParam(value = "")
             @RequestBody String name){
-        return demoService.setNameWorkout(id, wid, name);
+        return planningService.setNameWorkout( wid, name);
     }
 
     @PostMapping(SET_NAME_BY_ID)
@@ -102,7 +105,7 @@ public class WorkoutComplexController {
             @PathVariable String id,
             @ApiParam(value = "")
             @RequestBody String name){
-        return demoService.setNameWorkoutComplex(id, name);
+        return planningService.setNameWorkoutComplex(id, name);
     }
 
     @GetMapping(DELETE_WORKOUT_COMPLEX_BY_ID)
@@ -110,7 +113,7 @@ public class WorkoutComplexController {
     public WorkoutComplex setNameWorkoutComplex(
             @ApiParam(value = "")
             @PathVariable String id){
-        return demoService.deleteWorkoutComplex(id);
+        return planningService.deleteWorkoutComplex(id);
     }
 
 

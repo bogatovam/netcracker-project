@@ -3,7 +3,8 @@ package com.netcracker.controller;
 import com.netcracker.model.documents.Exercise;
 import com.netcracker.model.documents.Measurement;
 import com.netcracker.model.documents.MeasurementsOfExercise;
-import com.netcracker.services.api.DemoService;
+import com.netcracker.services.api.DataDisplayService;
+import com.netcracker.services.api.PlanningService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,26 +19,29 @@ import static com.netcracker.controller.ControllersPaths.ExerciseController.*;
 @RestController
 public class ExerciseController {
     @Autowired
-    DemoService demoService;
+    DataDisplayService dataDisplayService;
+
+    @Autowired
+    PlanningService planningService;
 
     @PostMapping(CREATE_EXERCISE)
     @ApiOperation(value = "Create exercise")
     public Exercise createExercise(
             @ApiParam(value = "Exercise")
             @RequestBody Exercise exercise) {
-        return demoService.createExercise(exercise);
+        return planningService.createExercise(exercise);
     }
 
     @GetMapping(GET_ALL_EXERCISES)
     @ApiOperation(value = "Return all Exercise")
     public List<Exercise> getAllExercise() {
-        return demoService.getAllExercise();
+        return dataDisplayService.getAllExercise();
     }
 
     @GetMapping(GET_ALL_NAMES_OF_EXERCISES)
     @ApiOperation(value = "Return all exercises names")
     public Map<String, String> getAllNamesOfExercises() {
-        return demoService.getAllNamesOfExercises();
+        return dataDisplayService.getAllNamesOfExercises();
     }
 
     @GetMapping(GET_EXERCISE_BY_ID)
@@ -45,7 +49,7 @@ public class ExerciseController {
     public Exercise getExerciseByUd(
             @ApiParam(value = "Exercises id")
             @PathVariable String id) {
-        return demoService.getExercise(id);
+        return dataDisplayService.getExercise(id);
     }
 
 
@@ -54,7 +58,7 @@ public class ExerciseController {
     public String getNameOfExercise(
             @ApiParam(value = "Exercises id")
             @PathVariable String id) {
-        return demoService.getNameOfExercise(id);
+        return dataDisplayService.getNameOfExercise(id);
     }
 
     @GetMapping(GET_DESCRIPTION_BY_ID)
@@ -62,7 +66,7 @@ public class ExerciseController {
     public String getDescriptionOfExercise(
             @ApiParam(value = "Exercises id")
             @PathVariable String id) {
-        return demoService.getDescriptionOfExercise(id);
+        return dataDisplayService.getDescriptionOfExercise(id);
     }
 
     @GetMapping(GET_MEASURES_BY_ID)
@@ -70,7 +74,7 @@ public class ExerciseController {
     public List<String> getMeasuresOfExercise(
             @ApiParam(value = "Exercises id")
             @PathVariable String id) {
-        return demoService.getMeasuresOfExercise(id);
+        return dataDisplayService.getMeasuresOfExercise(id);
     }
 
     @GetMapping(GET_ALL_MEASUREMENT_BY_ID)
@@ -78,7 +82,7 @@ public class ExerciseController {
     public List<MeasurementsOfExercise> getMeasurementOfExercise(
             @ApiParam(value = "Exercises id")
             @PathVariable String id) {
-        return demoService.getMeasurementOfExercise(id);
+        return dataDisplayService.getMeasurementsOfExercise(id);
     }
 
     @GetMapping(GET_ALL_MEASUREMENT_WITH_DATE_BY_ID)
@@ -86,7 +90,7 @@ public class ExerciseController {
     public Map<Date, MeasurementsOfExercise> getMeasurementOfExerciseWithDate(
             @ApiParam(value = "Exercises id")
             @PathVariable String id) {
-        return demoService.getMeasurementOfExerciseWithDate(id);
+        return dataDisplayService.getMeasurementsOfExerciseWithDate(id);
     }
 
     @GetMapping(GET_LAST_MEASUREMENT_BY_ID)
@@ -94,7 +98,7 @@ public class ExerciseController {
     public MeasurementsOfExercise getLastMeasurementOfExercise(
             @ApiParam(value = "Exercises id")
             @PathVariable String id) {
-        return demoService.getLastMeasurementOfExercise(id);
+        return dataDisplayService.getLastMeasurementOfExercise(id);
     }
 
     @PostMapping(ADD_MEASUREMENTS_GROUP_BY_ID)
@@ -104,7 +108,7 @@ public class ExerciseController {
             @PathVariable String id,
             @ApiParam(value = "MeasurementsOfExercise")
             @RequestBody MeasurementsOfExercise measurement) {
-        return demoService.addMeasurementsOfExercise(id, measurement);
+        return planningService.addExerciseMeasurement(id, measurement);
     }
 
     @PostMapping(ADD_MEASUREMENT_BY_ID)
@@ -116,7 +120,7 @@ public class ExerciseController {
             @PathVariable String mid,
             @ApiParam(value = "Measurement")
             @RequestBody Measurement measurement) {
-        return demoService.addMeasurementOfExercise(id, mid, measurement);
+        return planningService.addMeasurementOfExercise(id, mid, measurement);
     }
 
     @GetMapping(DEL_MEASUREMENTS_GROUP_BY_ID)
@@ -126,7 +130,7 @@ public class ExerciseController {
             @PathVariable String id,
             @ApiParam(value = "MeasurementsOfExercise id")
             @PathVariable String mid) {
-        return demoService.delMeasurementsOfExercise(id, mid);
+        return planningService.delExerciseMeasurement(id, mid);
     }
 
     @GetMapping(DEL_MEASUREMENT_BY_ID)
@@ -138,7 +142,7 @@ public class ExerciseController {
             @PathVariable String mid,
             @ApiParam(value = "Measurements number")
             @PathVariable String num) {
-        return demoService.delMeasurementOfExercise(id, mid, num);
+        return planningService.delMeasurementOfExercise(id, mid, num);
     }
 
     @PostMapping(SET_NAME_BY_ID)
@@ -148,7 +152,7 @@ public class ExerciseController {
             @PathVariable String id,
             @ApiParam(value = "Exercises name")
             @RequestBody String name) {
-        return demoService.setExerciseName(id, name);
+        return planningService.setExerciseName(id, name);
     }
 
     @PostMapping(SET_DESCRIPTION_BY_ID)
@@ -158,7 +162,7 @@ public class ExerciseController {
             @PathVariable String id,
             @ApiParam(value = "Exercises description")
             @RequestBody String name) {
-        return demoService.setExerciseName(id, name);
+        return planningService.setExerciseName(id, name);
     }
 
     @GetMapping(DELETE_EXERCISE_BY_ID)
@@ -166,6 +170,6 @@ public class ExerciseController {
     public Exercise deleteExercise(
             @ApiParam(value = "Exercises id")
             @PathVariable String id) {
-        return demoService.deleteExercise(id);
+        return planningService.deleteExercise(id);
     }
 }
