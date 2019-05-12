@@ -19,10 +19,6 @@ public class ControllersPaths {
         public static final String GET_LAST_MEASUREMENT_BY_ID = "/exercises/{id}/measurements/last";
 
         /*   Update operations   */
-        public static final String ADD_MEASUREMENTS_GROUP_BY_ID = "/exercises/{id}/measurements/add"; //??
-        public static final String ADD_MEASUREMENT_BY_ID = "/exercises/{id}/measurements/{mid}/add"; //??
-        public static final String DEL_MEASUREMENTS_GROUP_BY_ID = "/exercises/{id}/measurements/{mid}/del"; //??
-        public static final String DEL_MEASUREMENT_BY_ID = "/exercises/{id}/measurements/{mid}/{num}/del"; //??
         public static final String SET_NAME_BY_ID = "/exercises/{id}/name";
         public static final String SET_DESCRIPTION_BY_ID = "/exercises/{id}/description";
 
@@ -75,7 +71,7 @@ public class ControllersPaths {
         public static final String SET_STATUS_BY_ID = "/scheduled-workout/{id}/status";
         public static final String ADD_EXERCISE_MEASUREMENT_BY_ID = "/scheduled-workout/{id}/exercise/{eid}/add";
         public static final String UPDATE_EXERCISE_MEASUREMENT_BY_ID = "/scheduled-workout/{id}/exercise/{eid}/measurement/{num}";
-        public static final String DEL_EXERCISE_MEASUREMENT_BY_ID = "/scheduled-workout/{id}/exercise/{eid}/del";
+        public static final String DEL_EXERCISE_MEASUREMENT_BY_ID = "/scheduled-workout/{id}/exercise/{eid}/del/{num}";
 
         /*   Delete operations   */
         public static final String DELETE_SCHEDULED_WORKOUT_BY_ID = "/workout/plan/{id}/delete/{swid}";

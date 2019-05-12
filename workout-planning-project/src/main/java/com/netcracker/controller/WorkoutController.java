@@ -91,17 +91,17 @@ public class WorkoutController {
 
     @PostMapping(ADD_LIST_OF_EXERCISES_BY_ID)
     @ApiOperation(value = "")
-    public Boolean addListExercises(
+    public Workout addListExercises(
             @ApiParam(value = "")
             @PathVariable String id,
             @ApiParam(value = "")
-            @RequestBody List<Exercise> exerciseList ){
-        return planningService.addListExercises(id, exerciseList);
+            @RequestBody List<String> exerciseIdList ){
+        return planningService.addListExercises(id, exerciseIdList);
     }
 
     @PostMapping(DEL_LIST_OF_EXERCISES_BY_ID)
     @ApiOperation(value = "")
-    public Boolean delListExercises(
+    public Workout delListExercises(
             @ApiParam(value = "")
             @PathVariable String id,
             @ApiParam(value = "")

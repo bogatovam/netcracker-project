@@ -29,27 +29,27 @@ public interface PlanningService {
     String setExerciseName(String exerciseId, String name);
 
     // Добавить упражнение в тренировку
-    Boolean addListExercises(String workoutId, List<Exercise> exerciseList);
+    Workout addListExercises(String workoutId, List<String> exerciseIdList);
 
     // Удалить упражнение из тренировки
-    Boolean delListExercises(String workoutId, List<String> exerciseIdList);
+    Workout delListExercises(String workoutId, List<String> exerciseIdList);
 
     // Добавить упражнение в запланированную тренировку
-    Boolean addExerciseToScheduledWorkout(String scheduledWorkoutId, Exercise exercise);
+    ScheduledWorkout addExerciseToScheduledWorkout(String scheduledWorkoutId, String exerciseId);
 
     // Измерить упражнение в запланированной тренировке
     MeasurementsOfExercise addExerciseMeasurement(String scheduledWorkoutId, String exerciseId, Measurement measurement);
 
     MeasurementsOfExercise updateExerciseMeasurement(String scheduledWorkoutId, String exerciseId, String numberMeasurement, Measurement measurement);
 
-    MeasurementsOfExercise delExerciseMeasurement(String scheduledWorkoutId, String exerciseId, Measurement measurement);
+    MeasurementsOfExercise delExerciseMeasurement(String scheduledWorkoutId, String exerciseId, String numberMeasurement);
 
-    Measurement addMeasurementOfExercise(String exerciseId, String measurementOfExerciseId, Measurement measurement);
+    // Measurement addMeasurementOfExercise(String exerciseId, String measurementOfExerciseId, Measurement measurement);
 
-    Measurement delMeasurementOfExercise(String exerciseId, String measurementOfExerciseId, String number);
+    // Measurement delMeasurementOfExercise(String exerciseId, String measurementOfExerciseId, String number);
 
     // Удалить упражнение из запланированной тренировки
-    Boolean deleteExerciseFromScheduledWorkout(String scheduledWorkoutId, Exercise exercise);
+    ScheduledWorkout deleteExerciseFromScheduledWorkout(String scheduledWorkoutId, String exerciseId);
 
     // Добавить тренировку в комплекс
     Workout addWorkout(String workoutComplexId, Workout workout);
@@ -67,16 +67,11 @@ public interface PlanningService {
     Workout setNameWorkout(String workoutId, String name);
 
     // Изменить дату запланированной тренировки
-    Map<String, String> setDateScheduledWorkout(String scheduledWorkoutId, Date date);
+    void setDateScheduledWorkout(String scheduledWorkoutId, Date date);
 
     // Изменить статус запланированной тренировки
-    Map<String, String> setStatusScheduledWorkout(String scheduledWorkoutId, String status);
+    void setStatusScheduledWorkout(String scheduledWorkoutId, String status);
 
     // Изменить имя тренировочного комплексаЫ
     WorkoutComplex setNameWorkoutComplex(String workoutComplexId, String name);
-
-    MeasurementsOfExercise addExerciseMeasurement(String id, MeasurementsOfExercise measurement);
-
-    MeasurementsOfExercise delExerciseMeasurement(String id, String mid);
-
 }

@@ -7,6 +7,9 @@ import com.netcracker.model.edges.WorkoutToExercise;
 import java.util.List;
 
 public interface ExerciseToMeasurementsRepository extends ArangoRepository<ExerciseToMeasurements, String> {
-    List<WorkoutToExercise> removeAllByExerciseId(String exercise);
-    List<WorkoutToExercise> removeById(String exercise);
+    List<ExerciseToMeasurements> removeById(String exercise);
+
+    List<ExerciseToMeasurements> removeAllByExerciseId(String exercise);
+
+    ExerciseToMeasurements findByExerciseIdAndMeasuresId(String exerciseId, String measuresId);
 }

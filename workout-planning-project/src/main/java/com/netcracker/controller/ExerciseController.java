@@ -41,7 +41,7 @@ public class ExerciseController {
     @GetMapping(GET_ALL_NAMES_OF_EXERCISES)
     @ApiOperation(value = "Return all exercises names")
     public Map<String, String> getAllNamesOfExercises() {
-        return dataDisplayService.getAllNamesOfExercises();
+        return dataDisplayService.getAllExercisesNames();
     }
 
     @GetMapping(GET_EXERCISE_BY_ID)
@@ -99,50 +99,6 @@ public class ExerciseController {
             @ApiParam(value = "Exercises id")
             @PathVariable String id) {
         return dataDisplayService.getLastMeasurementOfExercise(id);
-    }
-
-    @PostMapping(ADD_MEASUREMENTS_GROUP_BY_ID)
-    @ApiOperation(value = "Add MeasurementsOfExercise( group measurements) to exercise by id")
-    public MeasurementsOfExercise addMeasurementsOfExercise(
-            @ApiParam(value = "Exercises id")
-            @PathVariable String id,
-            @ApiParam(value = "MeasurementsOfExercise")
-            @RequestBody MeasurementsOfExercise measurement) {
-        return planningService.addExerciseMeasurement(id, measurement);
-    }
-
-    @PostMapping(ADD_MEASUREMENT_BY_ID)
-    @ApiOperation(value = "Add measurement to exercise by id")
-    public Measurement addMeasurementOfExercise(
-            @ApiParam(value = "Exercises id")
-            @PathVariable String id,
-            @ApiParam(value = "MeasurementsOfExercise id")
-            @PathVariable String mid,
-            @ApiParam(value = "Measurement")
-            @RequestBody Measurement measurement) {
-        return planningService.addMeasurementOfExercise(id, mid, measurement);
-    }
-
-    @GetMapping(DEL_MEASUREMENTS_GROUP_BY_ID)
-    @ApiOperation(value = "Del MeasurementsOfExercise( group measurements) from exercise by id")
-    public MeasurementsOfExercise delMeasurementsOfExercise(
-            @ApiParam(value = "Exercises id")
-            @PathVariable String id,
-            @ApiParam(value = "MeasurementsOfExercise id")
-            @PathVariable String mid) {
-        return planningService.delExerciseMeasurement(id, mid);
-    }
-
-    @GetMapping(DEL_MEASUREMENT_BY_ID)
-    @ApiOperation(value = "Del measurement from exercise by id")
-    public Measurement delMeasurementOfExercise(
-            @ApiParam(value = "Exercises id")
-            @PathVariable String id,
-            @ApiParam(value = "MeasurementsOfExercise id")
-            @PathVariable String mid,
-            @ApiParam(value = "Measurements number")
-            @PathVariable String num) {
-        return planningService.delMeasurementOfExercise(id, mid, num);
     }
 
     @PostMapping(SET_NAME_BY_ID)

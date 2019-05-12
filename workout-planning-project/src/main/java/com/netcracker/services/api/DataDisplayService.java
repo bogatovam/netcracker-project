@@ -47,7 +47,7 @@ public interface DataDisplayService {
     List<Exercise> getExercises(String workoutId);
 
     // Получить все имена упражнений тренировки
-    Map<String, String> getAllNamesOfExercises();
+    Map<String, String> getAllNamesOfExercises(String workoutId);
 
     // Получить все планы этой тренировки
     List<ScheduledWorkout> getScheduledWorkouts(String workoutId);

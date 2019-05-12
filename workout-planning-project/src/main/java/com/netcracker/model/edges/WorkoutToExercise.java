@@ -4,12 +4,14 @@ import com.arangodb.springframework.annotation.From;
 import com.arangodb.springframework.annotation.To;
 import com.netcracker.model.documents.*;
 import io.swagger.annotations.ApiModel;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
 import static com.netcracker.model.CollectionsNames.WORKOUT_TO_EXERCISE;
 
 @Data
+@Builder
 @Edge(WORKOUT_TO_EXERCISE)
 @ApiModel(description = "A helper class that describes the relationship between workout and exercise")
 public class WorkoutToExercise {

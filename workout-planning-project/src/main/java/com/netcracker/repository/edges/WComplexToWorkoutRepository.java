@@ -7,6 +7,13 @@ import com.netcracker.model.edges.WComplexToWorkout;
 import java.util.List;
 
 public interface WComplexToWorkoutRepository extends ArangoRepository<WComplexToWorkout, String> {
+
+    WComplexToWorkout findByWorkoutId(String workoutId);
+
     List<WComplexToWorkout> removeAllByWorkoutId(String Id);
-    List<WComplexToWorkout> removeAllByWcomplexId(String id);
+
+    List<WComplexToWorkout> removeAllByWorkoutComplexId(String id);
+
+    WComplexToWorkout removeByWorkoutIdAndWorkoutComplexId(String workoutComplexId, String workoutId);
+
 }

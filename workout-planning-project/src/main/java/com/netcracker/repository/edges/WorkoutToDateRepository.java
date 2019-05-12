@@ -7,5 +7,8 @@ import java.util.List;
 
 public interface WorkoutToDateRepository extends ArangoRepository<WorkoutToDate, String> {
     List<WorkoutToDate> removeAllByWorkoutId(String workout);
+
     List<WorkoutToDate> removeAllByScheduledWorkoutId(String workout);
+
+    WorkoutToDate findByScheduledWorkoutId(String scheduledWorkoutId);
 }

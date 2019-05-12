@@ -6,12 +6,14 @@ import com.arangodb.springframework.annotation.To;
 import com.netcracker.model.documents.Exercise;
 import com.netcracker.model.documents.MeasurementsOfExercise;
 import io.swagger.annotations.ApiModel;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
 import static com.netcracker.model.CollectionsNames.EXERCISE_TO_MEASUREMENTS;
 
 @Data
+@Builder
 @Edge(EXERCISE_TO_MEASUREMENTS)
 @ApiModel(description = "A helper class that describes the relationship between exercise and measures")
 public class ExerciseToMeasurements {

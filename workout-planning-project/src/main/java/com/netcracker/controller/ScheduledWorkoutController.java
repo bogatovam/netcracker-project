@@ -108,12 +108,12 @@ public class ScheduledWorkoutController {
 
     @PostMapping(SET_STATUS_BY_ID)
     @ApiOperation(value = "")
-    public Map<String, String> setStatus(
+    public void setStatus(
             @ApiParam(value = "")
             @PathVariable String id,
             @ApiParam(value = "")
             @RequestBody String status) {
-        return planningService.setStatusScheduledWorkout(id, status);
+        planningService.setStatusScheduledWorkout(id, status);
     }
 
     @PostMapping(ADD_EXERCISE_MEASUREMENT_BY_ID)
@@ -142,7 +142,7 @@ public class ScheduledWorkoutController {
         return planningService.updateExerciseMeasurement(id, eid, num, measurement);
     }
 
-    @PostMapping(DEL_EXERCISE_MEASUREMENT_BY_ID)
+    @GetMapping(DEL_EXERCISE_MEASUREMENT_BY_ID)
     @ApiOperation(value = "")
     public MeasurementsOfExercise delExerciseMeasurement(
             @ApiParam(value = "")
@@ -150,8 +150,8 @@ public class ScheduledWorkoutController {
             @ApiParam(value = "")
             @PathVariable String eid,
             @ApiParam(value = "")
-            @RequestBody Measurement measurement) {
-        return planningService.delExerciseMeasurement(id, eid, measurement);
+            @PathVariable String num) {
+        return planningService.delExerciseMeasurement(id, eid, num);
     }
 
     @GetMapping(DELETE_SCHEDULED_WORKOUT_BY_ID)
