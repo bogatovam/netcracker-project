@@ -34,6 +34,7 @@ public class ControllersPaths {
 
         /*   Create operations   */
         public static final String CREATE_WORKOUT = "/workout/create";
+        public static final String CREATE_WORKOUT_WITH_COMPLEX = "/workout/{wcid}/create";
 
         /*   Read   operations   */
         public static final String GET_WORKOUT_BY_ID = "/workout/{id}";
@@ -59,7 +60,7 @@ public class ControllersPaths {
         public static final String CREATE_SCHEDULED_WORKOUT = "/workout/{id}/plan";
 
         /*   Read   operations   */
-        public static final String GET_SCHEDULED_WORKOUT_BY_ID = "/workout/{id}";
+        public static final String GET_SCHEDULED_WORKOUT_BY_ID = "/scheduled-workout/{id}";
         public static final String GET_ALL_SCHEDULED_WORKOUTS = "/scheduled-workout/all";
         public static final String GET_SOURCE_WORKOUT_BY_ID = "/scheduled-workout/{id}/source-workout";
         public static final String GET_NAME_SOURCE_WORKOUT_BY_ID = "/scheduled-workout/{id}/source-workout/name";

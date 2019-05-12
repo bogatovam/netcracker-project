@@ -24,6 +24,15 @@ public class WorkoutController {
     @Autowired
     PlanningService planningService;
 
+    @PostMapping(CREATE_WORKOUT_WITH_COMPLEX)
+    @ApiOperation(value = "")
+    public Workout createExercise(
+            @ApiParam(value = "")
+            @PathVariable String wcid,
+            @ApiParam(value = "")
+            @RequestBody Workout workout) {
+        return planningService.createWorkout(wcid, workout);
+    }
     @PostMapping(CREATE_WORKOUT)
     @ApiOperation(value = "")
     public Workout createExercise(

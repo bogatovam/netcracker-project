@@ -16,6 +16,8 @@ import static com.netcracker.model.CollectionsNames.WORKOUT_COMPLEX;
 @Document(WORKOUT_COMPLEX)
 @ApiModel(value = "Workout Complex")
 public class WorkoutComplex {
+    public static final String DEFAULT_WORKOUT_COMPLEX_ID = "";
+
     @Id
     @ApiModelProperty(hidden = true)
     private String id;

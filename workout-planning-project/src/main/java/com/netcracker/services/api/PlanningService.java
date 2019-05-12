@@ -12,6 +12,8 @@ public interface PlanningService {
 
     Workout createWorkout(Workout workout);
 
+    Workout createWorkout(String workoutComplexId, Workout workout);
+
     ScheduledWorkout createScheduledWorkout(String id, ScheduledWorkout scheduledWorkout);
 
     WorkoutComplex createWorkoutComplex(WorkoutComplex workoutComplex);
@@ -76,4 +78,5 @@ public interface PlanningService {
     MeasurementsOfExercise addExerciseMeasurement(String id, MeasurementsOfExercise measurement);
 
     MeasurementsOfExercise delExerciseMeasurement(String id, String mid);
+
 }

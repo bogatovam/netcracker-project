@@ -17,6 +17,7 @@ import static com.netcracker.model.CollectionsNames.USER;
 @Document(USER)
 @ApiModel(value = "Application user")
 public class User {
+    public static final String DEFAULT_USER_ID = "";
 
     @Id
     @ApiModelProperty(hidden = true)
