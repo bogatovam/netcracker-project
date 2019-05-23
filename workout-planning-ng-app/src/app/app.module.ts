@@ -1,6 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {HttpClientModule} from '@angular/common/http';
+// import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 import {AppComponent} from './app.component';
 import {Router, RouterModule, Routes} from "@angular/router";
@@ -9,9 +9,11 @@ import {NavigationComponent} from './navigation/navigation.component';
 import {LoginComponent} from './authorization/login/login.component';
 import {SignupComponent} from './authorization/signup/signup.component';
 import { HomeComponent } from './home/home.component';
+import {HttpClient} from './authorization/http-client.service';
 
-import { httpInterceptorProviders } from './authorization/authorization-interceptor'
-
+import { HttpModule } from '@angular/http';
+import {HttpClientModule} from "@angular/common/http";
+import {platformBrowserDynamic} from "@angular/platform-browser-dynamic";
 
 const routes: Routes = [
   {
@@ -44,16 +46,23 @@ const routes: Routes = [
     UserComponent,
     SignupComponent,
     NavigationComponent,
-    HomeComponent
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
+    HttpModule,
     RouterModule.forRoot(routes)
   ],
-  providers: [httpInterceptorProviders],
+  providers: [{
+    provide: HttpClient,
+    useClass: HttpClient
+  }],
+  exports: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {
 }
+platformBrowserDynamic().bootstrapModule(AppModule);
+

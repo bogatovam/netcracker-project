@@ -1,4 +1,4 @@
-package com.netcracker.model.view;
+package com.netcracker.model.view.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

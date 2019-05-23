@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient} from '../authorization/http-client.service';
 import { Observable } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  private userUrl = 'http://localhost:8080/test/user';
+  private userUrl = 'https://localhost:8443/test';
 
   constructor(private http: HttpClient) { }
 
-  getUserBoard(): Observable<string> {
-    return this.http.get(this.userUrl, { responseType: 'text' });
+  getUserBoard(): Observable<any> {
+    return this.http.get(this.userUrl);
   }
 
 }

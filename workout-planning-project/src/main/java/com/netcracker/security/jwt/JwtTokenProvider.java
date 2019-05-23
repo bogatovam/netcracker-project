@@ -2,6 +2,8 @@ package com.netcracker.security.jwt;
 
 import com.netcracker.security.details.UserPrincipal;
 import io.jsonwebtoken.*;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 @Component
+@Data
+@RequiredArgsConstructor
 public class JwtTokenProvider {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
@@ -24,7 +28,7 @@ public class JwtTokenProvider {
 
     private String jwtSecret = "jwtGrokonezSecretKey";
 
-    private int jwtExpirationInMs = 86400;
+    private int jwtExpirationInMs = 864_000_000;
 
     public String generateToken(Authentication authentication) {
 
@@ -43,6 +47,7 @@ public class JwtTokenProvider {
 
     public boolean validateJwtToken(String authToken) {
         try {
+            logger.info("Hello "+ authToken);
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
             return true;
         } catch (SignatureException e) {

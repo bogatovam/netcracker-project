@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -40,7 +42,10 @@ public class SwaggerConfig {
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
 
-        source.registerCorsConfiguration("/v2/api-docs", config);
+        //source.registerCorsConfiguration("/v2/api-docs", config);
+        source.registerCorsConfiguration("/**", config);
+
         return new CorsFilter(source);
     }
+
 }

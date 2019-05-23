@@ -1,9 +1,11 @@
 package com.netcracker.security.config;
 
+import com.google.common.collect.ImmutableList;
 import com.netcracker.repository.documents.UserRepository;
 import com.netcracker.security.details.UserPrincipalDetailsService;
 import com.netcracker.security.jwt.JwtAuthenticationFilter;
 import com.netcracker.security.jwt.JwtAuthorizationFilter;
+import com.netcracker.security.jwt.JwtTokenProvider;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +20,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Data
 @AllArgsConstructor
@@ -37,17 +43,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 // remove csrf and state in session because in jwt we do not need them
                 .csrf().disable()
+                .cors()
+                .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 // add jwt filters (1. authentication, 2. authorization)
-                .addFilter(new JwtAuthenticationFilter(authenticationManager()))
-                .addFilter(new JwtAuthorizationFilter(authenticationManager(),  this.userRepository))
+                .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
+                //.addFilter(jwtAuthenticationFilter())
                 .authorizeRequests()
                 // configure access rules
-                .antMatchers(HttpMethod.POST, "/login").permitAll()
-                .antMatchers("/api/public/management/*").hasRole("MANAGER")
-                .antMatchers("/api/public/admin/*").hasRole("ADMIN")
-                .antMatchers("/users/**").permitAll()
+                .antMatchers("/authentication/**").permitAll()
                 .anyRequest().authenticated();
     }
 
@@ -61,12 +66,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    @Bean
+    public JwtAuthorizationFilter jwtAuthorizationFilter() {
+        return new JwtAuthorizationFilter();
+    }
+
 }

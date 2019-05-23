@@ -1,9 +1,13 @@
-package com.netcracker.model.view;
+package com.netcracker.model.view.response;
 
 import java.util.Collection;
 
+import lombok.Data;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 
+@Data
+@ToString
 public class JwtResponse {
     private String token;
     private String type = "Bearer";

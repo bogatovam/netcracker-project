@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient} from './authorization/http-client.service';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +10,6 @@ export class AppComponent {
   title = 'workout-planning-ng-app';
   greeting = {};
   constructor(private http: HttpClient) {
-    http.get('http://localhost:8080/users/test').subscribe(data => this.greeting = data);
+    //http.get('https://localhost:8443/test').subscribe(data => this.greeting = data);
   }
 }

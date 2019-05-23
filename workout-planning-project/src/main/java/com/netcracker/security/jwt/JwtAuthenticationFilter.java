@@ -1,15 +1,15 @@
 package com.netcracker.security.jwt;
 
-import com.netcracker.model.view.LoginViewModel;
-import com.netcracker.security.details.UserPrincipal;
+import com.netcracker.model.view.request.SignInRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.auth0.jwt.JWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
@@ -30,6 +29,8 @@ import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private AuthenticationManager authenticationManager;
+
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
     @Autowired
     private  JwtTokenProvider jwtTokenProvider;
@@ -42,11 +43,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+        logger.info("Read the Authorization header, where the JWT token should be");
 
         // Grab credentials and map them to login viewmodel
-        LoginViewModel credentials = null;
+        SignInRequest credentials = null;
         try {
-            credentials = new ObjectMapper().readValue(request.getInputStream(), LoginViewModel.class);
+            credentials = new ObjectMapper().readValue(request.getInputStream(), SignInRequest.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -67,6 +69,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         // Grab principal
         // UserPrincipal principal = (UserPrincipal) authResult.getPrincipal();
+        logger.info("Read the Authorization header, where the JWT token should be");
 
         // Create JWT Token
         String token = jwtTokenProvider.generateToken(authResult);

@@ -4,6 +4,7 @@ import com.netcracker.model.documents.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,6 +14,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Data
+@ToString
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class UserPrincipal implements UserDetails {
@@ -54,7 +56,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return !user.getState().equals(User.State.BANNED);
+        return user.getState()!= null && !user.getState().equals(User.State.BANNED);
     }
 
     @Override
@@ -64,6 +66,6 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return user.getState().equals(User.State.ACTIVE);
+        return  user.getState()!= null && user.getState().equals(User.State.ACTIVE);
     }
 }

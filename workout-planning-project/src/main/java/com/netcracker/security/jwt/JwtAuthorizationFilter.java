@@ -6,6 +6,7 @@ import com.netcracker.model.documents.User;
 import com.netcracker.repository.documents.UserRepository;
 import com.netcracker.security.details.UserPrincipal;
 import com.netcracker.security.details.UserPrincipalDetailsService;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -27,35 +29,32 @@ import java.io.IOException;
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
 @Data
-public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
+@RequiredArgsConstructor
+public class JwtAuthorizationFilter extends OncePerRequestFilter {
     @Autowired
     private JwtTokenProvider tokenProvider;
-
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private UserPrincipalDetailsService userPrincipalDetailsService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthorizationFilter.class);
-
-
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserRepository userRepository) {
-        super(authenticationManager);
-        this.userRepository = userRepository;
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         try {
             // Read the Authorization header, where the JWT token should be
+            logger.info("Read the Authorization header, where the JWT token should be");
             String header = request.getHeader(JwtTokenProvider.JwtProperties.HEADER_STRING);
             // If header does not contain BEARER or is null delegate to Spring impl and exit
+           // logger.info(request.getHeader("Access-Control-Request-Headers"));
+            logger.info("Header is " + header);
             if (header == null || !header.startsWith(JwtTokenProvider.JwtProperties.TOKEN_PREFIX)) {
-                System.out.println("1");
+                logger.info("Header doesnt contain " + JwtTokenProvider.JwtProperties.TOKEN_PREFIX
+                        + " or " + JwtTokenProvider.JwtProperties.HEADER_STRING);
                 chain.doFilter(request, response);
-                System.out.println("2");
-
                 return;
             }
 
@@ -70,21 +69,36 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     }
 
     private Authentication getUsernamePasswordAuthentication(HttpServletRequest request) {
-        String token = request.getHeader(JwtTokenProvider.JwtProperties.HEADER_STRING)
-                .replace(JwtTokenProvider.JwtProperties.TOKEN_PREFIX, "");
+        String authHeader = request.getHeader(JwtTokenProvider.JwtProperties.HEADER_STRING);
+        logger.info("Authentication header: " + authHeader);
 
-        if (token != null && tokenProvider.validateJwtToken(token)) {
-            // parse the token and validate it
-            String userName = tokenProvider.getUserNameFromJwtToken(token);
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String token = authHeader.replaceAll(JwtTokenProvider.JwtProperties.TOKEN_PREFIX, "");
 
-            // Search in the DB if we find the user by token subject (username)
-            // If so, then grab user details and create spring auth token using username, pass, authorities/roles
-            if (userName != null) {
-                UserPrincipal principal =(UserPrincipal)userPrincipalDetailsService.loadUserByUsername(userName);
-                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userName, null, principal.getAuthorities());
-                return auth;
+            // this is  marker for dubug
+            logger.info("Provider : " + tokenProvider);
+            logger.info("Repository : " + userPrincipalDetailsService);
+
+            logger.info("Token: " + token);
+
+            if (token != null && tokenProvider.validateJwtToken(token)) {
+                logger.info("Validation of this token is success!");
+
+                // parse the token and validate it
+                String userName = tokenProvider.getUserNameFromJwtToken(token);
+                logger.info("User name: " +userName);
+
+                // Search in the DB if we find the user by token subject (username)
+                // If so, then grab user details and create spring auth token using username, pass, authorities/roles
+                if (userName != null) {
+                    UserPrincipal principal = (UserPrincipal) userPrincipalDetailsService.loadUserByUsername(userName);
+                    logger.info("User principal: " + principal.toString());
+                    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userName, null, principal.getAuthorities());
+                    logger.info("User auth: " + auth);
+                    return auth;
+                }
+                return null;
             }
-            return null;
         }
         return null;
     }

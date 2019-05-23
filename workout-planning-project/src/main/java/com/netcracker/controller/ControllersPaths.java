@@ -1,7 +1,13 @@
 package com.netcracker.controller;
 
 public class ControllersPaths {
+    public static final String ORIGIN = "http://localhost:4200";
 
+    /*   Paths to Users Controller   */
+    public static class usersController {
+        public static final String USER_SIGN_IN = "/authentication/signin";
+        public static final String USER_SIGN_UP = "/authentication/signup";
+    }
     /*   Paths to Exercise Controller   */
     public static class ExerciseController {
         /*   Create operations   */
@@ -48,7 +54,6 @@ public class ControllersPaths {
         /*   Delete operations   */
         public static final String DELETE_WORKOUT_BY_ID = "/workout/{id}/delete";
     }
-
     /*   Paths to Scheduled Workout Controller   */
     public static class ScheduledWorkoutController {
 
@@ -76,7 +81,6 @@ public class ControllersPaths {
         /*   Delete operations   */
         public static final String DELETE_SCHEDULED_WORKOUT_BY_ID = "/workout/plan/{id}/delete/{swid}";
     }
-
     /*   Paths to Workout Complex Controller   */
     public static class WorkoutComplexController {
 
