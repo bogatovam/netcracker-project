@@ -81,7 +81,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
             logger.info("Token: " + token);
 
-            if (token != null && tokenProvider.validateJwtToken(token)) {
+            if (token != null ) {
                 logger.info("Validation of this token is success!");
 
                 // parse the token and validate it
@@ -93,7 +93,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 if (userName != null) {
                     UserPrincipal principal = (UserPrincipal) userPrincipalDetailsService.loadUserByUsername(userName);
                     logger.info("User principal: " + principal.toString());
-                    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userName, null, principal.getAuthorities());
+                    UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(principal.getUser().getId(), null, principal.getAuthorities());
                     logger.info("User auth: " + auth);
                     return auth;
                 }

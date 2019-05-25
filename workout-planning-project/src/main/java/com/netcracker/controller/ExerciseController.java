@@ -8,6 +8,7 @@ import com.netcracker.services.api.PlanningService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -28,7 +29,8 @@ public class ExerciseController {
     @ApiOperation(value = "Create exercise")
     public Exercise createExercise(
             @ApiParam(value = "Exercise")
-            @RequestBody Exercise exercise) {
+            @RequestBody Exercise exercise,
+            Authentication authentication) {
         return planningService.createExercise(exercise);
     }
 
@@ -81,24 +83,27 @@ public class ExerciseController {
     @ApiOperation(value = "Return measurements of exercise by id")
     public List<MeasurementsOfExercise> getMeasurementOfExercise(
             @ApiParam(value = "Exercises id")
-            @PathVariable String id) {
-        return dataDisplayService.getMeasurementsOfExercise(id);
+            @PathVariable String id,
+            Authentication authentication) {
+        return dataDisplayService.getMeasurementsOfExercise(id, authentication.getName());
     }
 
     @GetMapping(GET_ALL_MEASUREMENT_WITH_DATE_BY_ID)
     @ApiOperation(value = "Return measurements with date of exercise by id")
     public Map<Date, MeasurementsOfExercise> getMeasurementOfExerciseWithDate(
             @ApiParam(value = "Exercises id")
-            @PathVariable String id) {
-        return dataDisplayService.getMeasurementsOfExerciseWithDate(id);
+            @PathVariable String id,
+            Authentication authentication) {
+        return dataDisplayService.getMeasurementsOfExerciseWithDate(id, authentication.getName());
     }
 
     @GetMapping(GET_LAST_MEASUREMENT_BY_ID)
     @ApiOperation(value = "Return last measurement of exercise by id")
     public MeasurementsOfExercise getLastMeasurementOfExercise(
             @ApiParam(value = "Exercises id")
-            @PathVariable String id) {
-        return dataDisplayService.getLastMeasurementOfExercise(id);
+            @PathVariable String id,
+            Authentication authentication) {
+        return dataDisplayService.getLastMeasurementOfExercise(id,authentication.getName());
     }
 
     @PostMapping(SET_NAME_BY_ID)
@@ -107,7 +112,8 @@ public class ExerciseController {
             @ApiParam(value = "Exercises id")
             @PathVariable String id,
             @ApiParam(value = "Exercises name")
-            @RequestBody String name) {
+            @RequestBody String name,
+            Authentication authentication) {
         return planningService.setExerciseName(id, name);
     }
 
@@ -117,7 +123,8 @@ public class ExerciseController {
             @ApiParam(value = "Exercises id")
             @PathVariable String id,
             @ApiParam(value = "Exercises description")
-            @RequestBody String name) {
+            @RequestBody String name,
+            Authentication authentication) {
         return planningService.setExerciseName(id, name);
     }
 
@@ -125,7 +132,8 @@ public class ExerciseController {
     @ApiOperation(value = "Delete exercise by id")
     public Exercise deleteExercise(
             @ApiParam(value = "Exercises id")
-            @PathVariable String id) {
+            @PathVariable String id,
+            Authentication authentication) {
         return planningService.deleteExercise(id);
     }
 }

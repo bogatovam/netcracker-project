@@ -25,21 +25,22 @@ import java.util.ArrayList;
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
 @Data
-@AllArgsConstructor
-@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+    @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private  JwtTokenProvider jwtTokenProvider;
 
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
+    @Override
     @Autowired
-    private  JwtTokenProvider jwtTokenProvider;
+    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
+        super.setAuthenticationManager(authenticationManager);
+    }
     /* Trigger when we issue POST request to /login
         We also need to pass in {"username":"", "password":""} in the request body
      */
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
-    }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {

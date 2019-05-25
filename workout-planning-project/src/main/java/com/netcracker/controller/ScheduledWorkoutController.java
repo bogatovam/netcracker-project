@@ -1,11 +1,13 @@
 package com.netcracker.controller;
 
 import com.netcracker.model.documents.*;
+import com.netcracker.security.details.UserPrincipal;
 import com.netcracker.services.api.DataDisplayService;
 import com.netcracker.services.api.PlanningService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -28,7 +30,8 @@ public class ScheduledWorkoutController {
             @ApiParam(value = "")
             @PathVariable String id,
             @ApiParam(value = "")
-            @RequestBody ScheduledWorkout scheduledWorkout) {
+            @RequestBody ScheduledWorkout scheduledWorkout,
+             Authentication authentication) {
         return planningService.createScheduledWorkout(id, scheduledWorkout);
     }
 
@@ -36,54 +39,60 @@ public class ScheduledWorkoutController {
     @ApiOperation(value = "")
     public ScheduledWorkout getScheduledWorkout(
             @ApiParam(value = "")
-            @PathVariable String id) {
-        return dataDisplayService.getScheduledWorkout(id);
+            @PathVariable String id,
+            Authentication authentication) {
+        return dataDisplayService.getScheduledWorkout(id, authentication.getName());
     }
 
     @GetMapping(GET_SOURCE_WORKOUT_BY_ID)
     @ApiOperation(value = "")
     public Workout getSourceScheduledWorkout(
             @ApiParam(value = "")
-            @PathVariable String id) {
-        return dataDisplayService.getSourceWorkout(id);
+            @PathVariable String id,
+             Authentication authentication) {
+        return dataDisplayService.getSourceWorkout(id, authentication.getName());
     }
 
     @GetMapping(GET_ALL_SCHEDULED_WORKOUTS)
     @ApiOperation(value = "")
-    public List<ScheduledWorkout> getAllScheduledWorkouts() {
-        return dataDisplayService.getAllScheduledWorkouts();
+    public List<ScheduledWorkout> getAllScheduledWorkouts(Authentication authentication) {
+        return dataDisplayService.getAllScheduledWorkouts((String)authentication.getPrincipal());
     }
 
     @GetMapping(GET_SCHEDULED_DATE_BY_ID)
     @ApiOperation(value = "")
     public Date getDateScheduledWorkout(
             @ApiParam(value = "")
-            @PathVariable String id) {
-        return dataDisplayService.getDateScheduledWorkout(id);
+            @PathVariable String id,
+             Authentication authentication) {
+        return dataDisplayService.getDateScheduledWorkout(id, authentication.getName());
     }
 
     @GetMapping(GET_STATUS_BY_ID)
     @ApiOperation(value = "")
     public String getStatusScheduledWorkout(
             @ApiParam(value = "")
-            @PathVariable String id) {
-        return dataDisplayService.getStatusScheduledWorkout(id);
+            @PathVariable String id,
+             Authentication authentication) {
+        return dataDisplayService.getStatusScheduledWorkout(id, authentication.getName());
     }
 
     @GetMapping(GET_ALL_CURRENT_EXERCISES_BY_ID)
     @ApiOperation(value = "")
     public List<Exercise> getAllCurrentExercises(
             @ApiParam(value = "")
-            @PathVariable String id) {
-        return dataDisplayService.getAllCurrentExercises(id);
+            @PathVariable String id,
+             Authentication authentication) {
+        return dataDisplayService.getAllCurrentExercises(id, authentication.getName());
     }
 
     @GetMapping(GET_EXERCISES_MEASUREMENTS_BY_ID)
     @ApiOperation(value = "")
     public Map<Exercise, MeasurementsOfExercise> getExercisesMeasurements(
             @ApiParam(value = "")
-            @PathVariable String id) {
-        return dataDisplayService.getExercisesMeasurements(id);
+            @PathVariable String id,
+             Authentication authentication) {
+        return dataDisplayService.getExercisesMeasurements(id, authentication.getName());
     }
 
     @GetMapping(GET_EXERCISE_MEASUREMENT_BY_ID)
@@ -92,8 +101,9 @@ public class ScheduledWorkoutController {
             @ApiParam(value = "")
             @PathVariable String id,
             @ApiParam(value = "")
-            @PathVariable String eid) {
-        return dataDisplayService.getExercisesMeasurements(id);
+            @PathVariable String eid,
+             Authentication authentication) {
+        return dataDisplayService.getExercisesMeasurements(id, authentication.getName());
     }
 
     @GetMapping(GET_INFORMATION_BY_ID)
@@ -102,8 +112,9 @@ public class ScheduledWorkoutController {
             @ApiParam(value = "")
             @PathVariable String id,
             @ApiParam(value = "")
-            @PathVariable String eid) {
-        return dataDisplayService.getScheduledWorkoutInformation(id);
+            @PathVariable String eid,
+             Authentication authentication) {
+        return dataDisplayService.getScheduledWorkoutInformation(id, authentication.getName());
     }
 
     @PostMapping(SET_STATUS_BY_ID)
@@ -112,7 +123,8 @@ public class ScheduledWorkoutController {
             @ApiParam(value = "")
             @PathVariable String id,
             @ApiParam(value = "")
-            @RequestBody String status) {
+            @RequestBody String status,
+             Authentication authentication) {
         planningService.setStatusScheduledWorkout(id, status);
     }
 
@@ -124,7 +136,8 @@ public class ScheduledWorkoutController {
             @ApiParam(value = "")
             @PathVariable String eid,
             @ApiParam(value = "")
-            @RequestBody Measurement measurement) {
+            @RequestBody Measurement measurement,
+             Authentication authentication) {
         return planningService.addExerciseMeasurement(id, eid, measurement);
     }
 
@@ -138,7 +151,8 @@ public class ScheduledWorkoutController {
             @ApiParam(value = "")
             @PathVariable String num,
             @ApiParam(value = "")
-            @RequestBody Measurement measurement) {
+            @RequestBody Measurement measurement,
+             Authentication authentication) {
         return planningService.updateExerciseMeasurement(id, eid, num, measurement);
     }
 
@@ -150,7 +164,8 @@ public class ScheduledWorkoutController {
             @ApiParam(value = "")
             @PathVariable String eid,
             @ApiParam(value = "")
-            @PathVariable String num) {
+            @PathVariable String num,
+             Authentication authentication) {
         return planningService.delExerciseMeasurement(id, eid, num);
     }
 
@@ -160,7 +175,8 @@ public class ScheduledWorkoutController {
             @ApiParam(value = "")
             @PathVariable String id,
             @ApiParam(value = "")
-            @PathVariable String swid) {
+            @PathVariable String swid,
+             Authentication authentication) {
         return planningService.deleteScheduledWorkout(id, swid);
     }
 }

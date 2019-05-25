@@ -5,6 +5,7 @@ import com.netcracker.model.documents.*;
 import com.netcracker.model.edges.ExerciseToMeasurements;
 import com.netcracker.repository.documents.*;
 import com.netcracker.repository.edges.*;
+import com.netcracker.services.api.AuthenticationService;
 import com.netcracker.services.api.DataDisplayService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,8 @@ public class DataDisplayServiceImpl implements DataDisplayService {
     private final MeasurementsOfExerciseRepository measurementsOfExerciseRepository;
     private final WorkoutComplexRepository workoutComplexRepository;
 
+    private final AuthenticationService authenticationService;
+
     private final WComplexToWorkoutRepository wComplexToWorkoutRepository;
     private final WorkoutToExerciseRepository workoutToExerciseRepository;
     private final WorkoutToDateRepository workoutToDateRepository;
@@ -31,30 +34,29 @@ public class DataDisplayServiceImpl implements DataDisplayService {
     private final UserToWComplexRepository userToWComplexRepository;
     private final ScheduledWorkoutToExerciseMeasurementRepository sWToExMeasurementRepository;
 
+
     @Override
     public List<Exercise> getAllExercise() {
         return Lists.newArrayList(exerciseRepository.findAll());
     }
 
     @Override
-    public List<WorkoutComplex> getAllWorkoutComplex() {
-        // #TODO Change when spring security is added!
-        return Lists.newArrayList(workoutComplexRepository.findWorkoutComplexesByUserId(User.DEFAULT_USER_ID).asListRemaining());
+    public List<WorkoutComplex> getAllWorkoutComplex(String userId) {
+        return Lists.newArrayList(workoutComplexRepository.findWorkoutComplexesByUserId(userId).asListRemaining());
     }
 
     @Override
-    public List<ScheduledWorkout> getAllScheduledWorkouts() {
+    public List<ScheduledWorkout> getAllScheduledWorkouts(String userId) {
         List<ScheduledWorkout> result = new ArrayList<>();
 
-        // #TODO Change when spring security is added!
+        // #TODO Add method getFullId()
         List<WorkoutComplex> workoutComplexList =
-                workoutComplexRepository.findWorkoutComplexesByUserId(User.DEFAULT_USER_ID).asListRemaining();
+                workoutComplexRepository.findWorkoutComplexesByUserId("user/" + userId).asListRemaining();
 
-        for (WorkoutComplex workoutComplex : workoutComplexList) {
-            for (Workout workout : workoutComplex.getWorkouts()) {
-                result.addAll(workout.getScheduledWorkouts());
-            }
-        }
+        workoutComplexList.forEach((workoutComplex) ->
+                workoutComplex.getWorkouts().forEach((workout) ->
+                        result.addAll(workout.getScheduledWorkouts())
+                ));
         return result;
     }
 
@@ -65,69 +67,70 @@ public class DataDisplayServiceImpl implements DataDisplayService {
     }
 
     @Override
-    public Workout getWorkoutById(String workoutId) {
+    public Workout getWorkoutById(String workoutId, String userId) {
         // #TODO Change when spring security is added!
-        return workoutRepository.findById(workoutId)
+        Workout workout = workoutRepository.findById(workoutId)
                 .orElseThrow(() -> new NoSuchElementException("Workout id " + workoutId + " has bad value"));
+        if (!authenticationService.checkAccessRightsToWorkout(workoutId, userId))
+            return null;
+        return workout;
     }
 
     @Override
-    public WorkoutComplex getWorkoutComplexById(String workoutComplexId) {
-        // #TODO Change when spring security is added!
-        return workoutComplexRepository.findById(workoutComplexId)
+    public WorkoutComplex getWorkoutComplexById(String workoutComplexId, String userId) {
+        WorkoutComplex workoutComplex = workoutComplexRepository.findById(workoutComplexId)
                 .orElseThrow(() -> new NoSuchElementException("Workout Complex id " + workoutComplexId + " has bad value"));
+        if (!authenticationService.checkAccessRightsToWorkoutComplex(workoutComplexId, userId))
+            return null;
+        return workoutComplex;
     }
 
     @Override
-    public ScheduledWorkout getScheduledWorkout(String scheduledWorkoutId) {
-        // #TODO Change when spring security is added!
-        return scheduledWorkoutRepository.findById(scheduledWorkoutId)
+    public ScheduledWorkout getScheduledWorkout(String scheduledWorkoutId, String userId) {
+        ScheduledWorkout scheduledWorkout = scheduledWorkoutRepository.findById(scheduledWorkoutId)
                 .orElseThrow(() -> new NoSuchElementException("Scheduled Workout id " + scheduledWorkoutId + " has bad value"));
+        if (!authenticationService.checkAccessRightsToScheduledWorkout(scheduledWorkoutId, userId))
+            return null;
+        return scheduledWorkout;
     }
 
     @Override
     public Map<String, String> getAllExercisesNames() {
         Map<String, String> result = new HashMap<String, String>();
-        for (Exercise exercise : getAllExercise()) {
-            result.put(exercise.getId(), exercise.getName());
-        }
+        getAllExercise().forEach((exercise) -> result.put(exercise.getId(), exercise.getName()));
         return result;
     }
 
     @Override
-    public Map<String, String> getWorkoutComplexesNames() {
+    public Map<String, String> getWorkoutComplexesNames(String userId) {
         Map<String, String> result = new HashMap<String, String>();
-        for (WorkoutComplex workoutComplex : getAllWorkoutComplex()) {
-            result.put(workoutComplex.getId(), workoutComplex.getName());
-        }
+        getAllWorkoutComplex(userId).forEach((workoutComplex) ->
+                result.put(workoutComplex.getId(), workoutComplex.getName()));
         return result;
     }
 
     @Override
-    public Map<String, String> getWorkoutsNames(String workoutComplexId) {
-        Map<String, String> result = new HashMap<String, String>();
-        for (Workout workout : getWorkouts(workoutComplexId)) {
-            result.put(workout.getId(), workout.getName());
-        }
-        return result;
-    }
+    public Map<String, String> getWorkoutsNames(String workoutComplexId, String userId) {
 
-
-    @Override
-    public Map<String, String> getWorkoutsExercisesNames(String workoutId) {
         Map<String, String> result = new HashMap<String, String>();
-        for (Exercise exercise : getExercises(workoutId)) {
-            result.put(exercise.getId(), exercise.getName());
-        }
+        getWorkouts(workoutComplexId, userId).forEach(
+                (workout -> result.put(workout.getId(), workout.getName())));
         return result;
     }
 
     @Override
-    public Map<String, String> getScheduledWorkoutsExercisesNames(String scheduledWorkoutId) {
+    public Map<String, String> getWorkoutsExercisesNames(String workoutId, String userId) {
         Map<String, String> result = new HashMap<String, String>();
-        for (Exercise exercise : getAllCurrentExercises(scheduledWorkoutId)) {
-            result.put(exercise.getId(), exercise.getName());
-        }
+        getExercises(workoutId, userId).forEach(
+                exercise -> result.put(exercise.getId(), exercise.getName()));
+        return result;
+    }
+
+    @Override
+    public Map<String, String> getScheduledWorkoutsExercisesNames(String scheduledWorkoutId, String userId) {
+        Map<String, String> result = new HashMap<String, String>();
+        getAllCurrentExercises(scheduledWorkoutId, userId).forEach(
+                exercise -> result.put(exercise.getId(), exercise.getName()));
         return result;
     }
 
@@ -147,14 +150,20 @@ public class DataDisplayServiceImpl implements DataDisplayService {
     }
 
     @Override
-    public List<MeasurementsOfExercise> getMeasurementsOfExercise(String exerciseId) {
-        return getExercise(exerciseId).getMeasurements();
+    public List<MeasurementsOfExercise> getMeasurementsOfExercise(String exerciseId, String userId) {
+        List<MeasurementsOfExercise> result = new ArrayList<>();
+        getAllScheduledWorkouts(userId).forEach((scheduledWorkout -> {
+            scheduledWorkout.getExerciseToMeasurements().stream()
+                    .filter((exerciseToMeasurements -> exerciseToMeasurements.getExercise().getId().equals(exerciseId)))
+                    .forEach((exerciseToMeasurements -> result.add(exerciseToMeasurements.getMeasures())));
+        }));
+        return result;
     }
 
     @Override
-    public Map<Date, MeasurementsOfExercise> getMeasurementsOfExerciseWithDate(String exerciseId) {
+    public Map<Date, MeasurementsOfExercise> getMeasurementsOfExerciseWithDate(String exerciseId, String userId) {
         Map<Date, MeasurementsOfExercise> result = new HashMap<>();
-        List<MeasurementsOfExercise> measurementsOfExerciseList = getMeasurementsOfExercise(exerciseId);
+        List<MeasurementsOfExercise> measurementsOfExerciseList = getMeasurementsOfExercise(exerciseId, userId);
         for (MeasurementsOfExercise measurements : measurementsOfExerciseList) {
             ExerciseToMeasurements exerciseToMeasurements =
                     exerciseToMeasurementsRepository.findByExerciseIdAndMeasuresId(exerciseId, measurements.getId());
@@ -167,10 +176,10 @@ public class DataDisplayServiceImpl implements DataDisplayService {
     }
 
     @Override
-    public MeasurementsOfExercise getLastMeasurementOfExercise(String exerciseId) {
+    public MeasurementsOfExercise getLastMeasurementOfExercise(String exerciseId, String userId) {
         MeasurementsOfExercise result = null;
         Date min = null;
-        List<MeasurementsOfExercise> measurementsOfExerciseList = getMeasurementsOfExercise(exerciseId);
+        List<MeasurementsOfExercise> measurementsOfExerciseList = getMeasurementsOfExercise(exerciseId, userId);
 
         for (MeasurementsOfExercise measurements : measurementsOfExerciseList) {
             ExerciseToMeasurements exerciseToMeasurements =
@@ -186,66 +195,77 @@ public class DataDisplayServiceImpl implements DataDisplayService {
     }
 
     @Override
-    public String getWorkoutName(String workoutId) {
-        return getWorkoutById(workoutId).getName();
+    public String getWorkoutName(String workoutId, String userId) {
+        return getWorkoutById(workoutId, userId).getName();
     }
 
     @Override
-    public List<Exercise> getExercises(String workoutId) {
-        return getWorkoutById(workoutId).getExercises();
+    public List<Exercise> getExercises(String workoutId, String userId) {
+        Workout workout = getWorkoutById(workoutId, userId);
+        return workout == null ? null : workout.getExercises();
     }
 
     @Override
-    public Map<String, String> getAllNamesOfExercises(String workoutId) {
+    public Map<String, String> getAllNamesOfExercises(String workoutId, String userId) {
         Map<String, String> result = new HashMap<String, String>();
-        for (Exercise exercise : getExercises(workoutId)) {
-            result.put(exercise.getId(), exercise.getName());
-        }
+        getExercises(workoutId, userId).forEach(exercise -> result.put(exercise.getId(), exercise.getName()));
         return result;
     }
 
     @Override
-    public List<ScheduledWorkout> getScheduledWorkouts(String workoutId) {
-        return getWorkoutById(workoutId).getScheduledWorkouts();
+    public List<ScheduledWorkout> getScheduledWorkouts(String workoutId, String userId) {
+        Workout workout = getWorkoutById(workoutId, userId);
+        return workout == null ? null : workout.getScheduledWorkouts();
     }
 
     @Override
-    public List<ScheduledWorkout> getScheduledWorkoutsByStatus(String workoutId, String status) {
+    public List<ScheduledWorkout> getScheduledWorkoutsByStatus(String workoutId, String status, String userId) {
         List<ScheduledWorkout> result = new ArrayList<>();
-        for (ScheduledWorkout scheduledWorkout : getWorkoutById(workoutId).getScheduledWorkouts()) {
-            ScheduledWorkout.Status s = (status.equals("DONE")) ? ScheduledWorkout.Status.DONE : ScheduledWorkout.Status.SCHEDULED;
-            if (scheduledWorkout.getStatus().equals(s)) {
-                result.add(scheduledWorkout);
-            }
-        }
+        Workout workout = getWorkoutById(workoutId, userId);
+        if (workout != null)
+            workout.getScheduledWorkouts().forEach(scheduledWorkout -> {
+                ScheduledWorkout.Status s = (status.equals("DONE")) ? ScheduledWorkout.Status.DONE : ScheduledWorkout.Status.SCHEDULED;
+                if (scheduledWorkout.getStatus().equals(s)) {
+                    result.add(scheduledWorkout);
+                }
+            });
         return result;
     }
 
     @Override
-    public Workout getSourceWorkout(String scheduledWorkoutId) {
-        return workoutToDateRepository.findByScheduledWorkoutId(scheduledWorkoutId).getWorkout();
+    public Workout getSourceWorkout(String scheduledWorkoutId, String userId) {
+        return workoutToDateRepository.findByScheduledWorkoutId(scheduledWorkoutId).get().getWorkout();
     }
 
     @Override
-    public WorkoutComplex getSourceWorkoutComplex(String workoutId) {
-        return wComplexToWorkoutRepository.findByWorkoutId(workoutId).getWorkoutComplex();
+    public WorkoutComplex getSourceWorkoutComplex(String workoutId, String userId) {
+        authenticationService.checkAccessRightsToWorkout(workoutId, userId);
+        return wComplexToWorkoutRepository.findByWorkoutId(workoutId)
+                .orElseThrow(() -> {
+                    return new IllegalArgumentException("Invalid scheduledWorkoutId:" + workoutId);
+                })
+                .getWorkoutComplex();
     }
 
     @Override
-    public Date getDateScheduledWorkout(String scheduledWorkoutId) {
-        return getScheduledWorkout(scheduledWorkoutId).getDateWorkout();
+    public Date getDateScheduledWorkout(String scheduledWorkoutId, String userId) {
+        if(!authenticationService.checkAccessRightsToScheduledWorkout(scheduledWorkoutId, userId))
+            return null;
+        return getScheduledWorkout(scheduledWorkoutId, userId).getDateWorkout();
     }
 
     @Override
-    public String getStatusScheduledWorkout(String scheduledWorkoutId) {
-        return getScheduledWorkout(scheduledWorkoutId).getStatus()
+    public String getStatusScheduledWorkout(String scheduledWorkoutId, String userId) {
+        if(!authenticationService.checkAccessRightsToScheduledWorkout(scheduledWorkoutId, userId))
+            return null;
+        return getScheduledWorkout(scheduledWorkoutId, userId).getStatus()
                 .equals(ScheduledWorkout.Status.DONE) ? "DONE" : "SCHEDULED";
     }
 
     @Override
-    public Map<String, String> getScheduledWorkoutInformation(String id) {
+    public Map<String, String> getScheduledWorkoutInformation(String id, String userId) {
         Map<String, String> result = new HashMap<String, String>();
-        ScheduledWorkout scheduledWorkout =  getScheduledWorkout(id);
+        ScheduledWorkout scheduledWorkout = getScheduledWorkout(id, userId);
         result.put("AerobicWorkload", scheduledWorkout.getAerobicWorkload().toString());
         result.put("PowerWorkload", scheduledWorkout.getPowerWorkload().toString());
         result.put("Calories", scheduledWorkout.getCalories().toString());
@@ -254,32 +274,41 @@ public class DataDisplayServiceImpl implements DataDisplayService {
     }
 
     @Override
-    public List<Exercise> getAllCurrentExercises(String scheduledWorkoutId) {
+    public List<Exercise> getAllCurrentExercises(String scheduledWorkoutId, String userId) {
+        if(!authenticationService.checkAccessRightsToScheduledWorkout(scheduledWorkoutId, userId))
+            return null;
         List<Exercise> exerciseList = new ArrayList<>();
         for (ExerciseToMeasurements exerciseToMeasurements :
-                getScheduledWorkout(scheduledWorkoutId).getExerciseToMeasurements()) {
+                getScheduledWorkout(scheduledWorkoutId, userId).getExerciseToMeasurements()) {
             exerciseList.add(exerciseToMeasurements.getExercise());
         }
         return exerciseList;
     }
 
     @Override
-    public Map<Exercise, MeasurementsOfExercise> getExercisesMeasurements(String scheduledWorkoutId) {
+    public Map<Exercise, MeasurementsOfExercise> getExercisesMeasurements(String scheduledWorkoutId, String userId) {
+        if(!authenticationService.checkAccessRightsToScheduledWorkout(scheduledWorkoutId, userId))
+            return null;
         Map<Exercise, MeasurementsOfExercise> result = new HashMap<>();
         for (ExerciseToMeasurements exerciseToMeasurements :
-                getScheduledWorkout(scheduledWorkoutId).getExerciseToMeasurements()) {
+                getScheduledWorkout(scheduledWorkoutId, userId).getExerciseToMeasurements()) {
             result.put(exerciseToMeasurements.getExercise(), exerciseToMeasurements.getMeasures());
         }
         return result;
     }
 
     @Override
-    public String getNameWorkoutComplex(String workoutComplexId) {
-        return getWorkoutComplexById(workoutComplexId).getName();
+    public String getNameWorkoutComplex(String workoutComplexId, String userId) {
+        if(!authenticationService.checkAccessRightsToWorkoutComplex(workoutComplexId, userId))
+            return null;
+        return getWorkoutComplexById(workoutComplexId, userId).getName();
     }
 
     @Override
-    public List<Workout> getWorkouts(String workoutComplexId) {
-        return getWorkoutComplexById(workoutComplexId).getWorkouts();
+    public List<Workout> getWorkouts(String workoutComplexId, String userId) {
+        if(!authenticationService.checkAccessRightsToWorkoutComplex(workoutComplexId, userId))
+            return null;
+        return getWorkoutComplexById(workoutComplexId, userId).getWorkouts();
     }
+
 }

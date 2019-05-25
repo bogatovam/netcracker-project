@@ -32,20 +32,4 @@ public class SwaggerConfig {
         return new ApiInfoBuilder().title("Spring Boot REST API")
                 .build();
     }
-    @Bean
-    public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.addAllowedOrigin("*");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-
-        //source.registerCorsConfiguration("/v2/api-docs", config);
-        source.registerCorsConfiguration("/**", config);
-
-        return new CorsFilter(source);
-    }
-
 }

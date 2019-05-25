@@ -7,6 +7,7 @@ import com.netcracker.services.api.PlanningService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,38 +33,41 @@ public class WorkoutComplexController {
 
     @GetMapping(GET_ALL_WORKOUTS_COMPLEXES)
     @ApiOperation(value = "")
-    public List<WorkoutComplex> getAllWorkoutComplex(){
-        return dataDisplayService.getAllWorkoutComplex();
+    public List<WorkoutComplex> getAllWorkoutComplex( Authentication authentication){
+        return dataDisplayService.getAllWorkoutComplex(authentication.getName());
     }
 
     @GetMapping(GET_ALL_NAMES_WORKOUTS_COMPLEXES)
     @ApiOperation(value = "")
-    public Map<String, String> getAllNamesWorkoutComplex(){
-        return dataDisplayService.getWorkoutComplexesNames();
+    public Map<String, String> getAllNamesWorkoutComplex( Authentication authentication){
+        return dataDisplayService.getWorkoutComplexesNames(authentication.getName());
     }
 
     @GetMapping(GET_NAME_BY_ID)
     @ApiOperation(value = "")
     public String getNameWorkoutComplex(
             @ApiParam(value = "")
-            @PathVariable String id){
-        return dataDisplayService.getNameWorkoutComplex(id);
+            @PathVariable String id,
+            Authentication authentication){
+        return dataDisplayService.getNameWorkoutComplex(id, authentication.getName());
     }
 
     @GetMapping(GET_WORKOUTS_BY_ID)
     @ApiOperation(value = "")
     public List<Workout> getWorkouts(
             @ApiParam(value = "")
-            @PathVariable String id){
-        return dataDisplayService.getWorkouts(id);
+            @PathVariable String id,
+            Authentication authentication){
+        return dataDisplayService.getWorkouts(id,authentication.getName());
     }
 
     @GetMapping(GET_NAMES_OF_WORKOUTS_BY_ID)
     @ApiOperation(value = "")
     public Map<String, String> getWorkoutsNames(
             @ApiParam(value = "")
-            @PathVariable String id){
-        return dataDisplayService.getWorkoutsNames(id);
+            @PathVariable String id,
+            Authentication authentication){
+        return dataDisplayService.getWorkoutsNames(id,authentication.getName());
     }
 
     @PostMapping(ADD_WORKOUT_BY_ID)
@@ -72,7 +76,8 @@ public class WorkoutComplexController {
             @ApiParam(value = "")
             @PathVariable String id,
             @ApiParam(value = "")
-            @RequestBody Workout workout){
+            @RequestBody Workout workout,
+            Authentication authentication){
         return planningService.addWorkout(id, workout);
     }
 
@@ -82,7 +87,8 @@ public class WorkoutComplexController {
             @ApiParam(value = "")
             @PathVariable String id,
             @ApiParam(value = "")
-            @PathVariable String wid){
+            @PathVariable String wid,
+            Authentication authentication){
         return planningService.delWorkout(id, wid);
     }
 
@@ -94,7 +100,8 @@ public class WorkoutComplexController {
             @ApiParam(value = "")
             @PathVariable String wid,
             @ApiParam(value = "")
-            @RequestBody String name){
+            @RequestBody String name,
+            Authentication authentication){
         return planningService.setNameWorkout( wid, name);
     }
 
@@ -104,7 +111,8 @@ public class WorkoutComplexController {
             @ApiParam(value = "")
             @PathVariable String id,
             @ApiParam(value = "")
-            @RequestBody String name){
+            @RequestBody String name,
+            Authentication authentication){
         return planningService.setNameWorkoutComplex(id, name);
     }
 
@@ -112,7 +120,8 @@ public class WorkoutComplexController {
     @ApiOperation(value = "")
     public WorkoutComplex setNameWorkoutComplex(
             @ApiParam(value = "")
-            @PathVariable String id){
+            @PathVariable String id,
+            Authentication authentication){
         return planningService.deleteWorkoutComplex(id);
     }
 

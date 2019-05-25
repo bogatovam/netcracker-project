@@ -11,5 +11,7 @@ public interface ExerciseToMeasurementsRepository extends ArangoRepository<Exerc
 
     List<ExerciseToMeasurements> removeAllByExerciseId(String exercise);
 
+    List<ExerciseToMeasurements> findByExerciseId(String exercise);
+
     ExerciseToMeasurements findByExerciseIdAndMeasuresId(String exerciseId, String measuresId);
 }
