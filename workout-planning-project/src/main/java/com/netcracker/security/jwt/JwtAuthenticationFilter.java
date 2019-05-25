@@ -1,9 +1,8 @@
 package com.netcracker.security.jwt;
 
 import com.netcracker.model.view.request.SignInRequest;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
-
 @Data
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     @Autowired
@@ -38,13 +35,14 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public void setAuthenticationManager(AuthenticationManager authenticationManager) {
         super.setAuthenticationManager(authenticationManager);
     }
+
     /* Trigger when we issue POST request to /login
         We also need to pass in {"username":"", "password":""} in the request body
      */
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        logger.info("Read the Authorization header, where the JWT token should be");
+        logger.info("Triggered attemptAuthentication");
 
         // Grab credentials and map them to login viewmodel
         SignInRequest credentials = null;
@@ -69,8 +67,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         // Grab principal
-        // UserPrincipal principal = (UserPrincipal) authResult.getPrincipal();
-        logger.info("Read the Authorization header, where the JWT token should be");
+        logger.info("Triggered successfulAuthentication");
 
         // Create JWT Token
         String token = jwtTokenProvider.generateToken(authResult);

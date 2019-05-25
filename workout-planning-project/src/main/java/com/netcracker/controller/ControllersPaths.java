@@ -14,12 +14,12 @@ public class ControllersPaths {
         public static final String CREATE_EXERCISE = "/exercises/create";
 
         /*   Read   operations   */
-        public static final String GET_ALL_EXERCISES = "/exercises/all";
-        public static final String GET_ALL_NAMES_OF_EXERCISES = "/exercises/names";
-        public static final String GET_EXERCISE_BY_ID = "/exercises/{id}";
-        public static final String GET_NAME_BY_ID = "/exercises/{id}/name"; //??
-        public static final String GET_DESCRIPTION_BY_ID = "/exercises/{id}/description";
-        public static final String GET_MEASURES_BY_ID = "/exercises/{id}/measures";
+        public static final String GET_ALL_EXERCISES = "/free/exercises/all";
+        public static final String GET_ALL_NAMES_OF_EXERCISES = "/free/exercises/names";
+        public static final String GET_EXERCISE_BY_ID = "/free/exercises/{id}";
+        public static final String GET_NAME_BY_ID = "/free/exercises/{id}/name"; //??
+        public static final String GET_DESCRIPTION_BY_ID = "/free/exercises/{id}/description";
+        public static final String GET_MEASURES_BY_ID = "/free/exercises/{id}/measures";
         public static final String GET_ALL_MEASUREMENT_BY_ID = "/exercises/{id}/measurements/all";
         public static final String GET_ALL_MEASUREMENT_WITH_DATE_BY_ID = "/exercises/{id}/measurements/with-date";
         public static final String GET_LAST_MEASUREMENT_BY_ID = "/exercises/{id}/measurements/last";
