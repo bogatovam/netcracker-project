@@ -35,7 +35,7 @@ public class WorkoutController {
             @ApiParam(value = "")
             @RequestBody Workout workout,
              Authentication authentication) {
-        return planningService.createWorkout(wcid, workout);
+        return planningService.createWorkout(wcid, workout, authentication.getName());
     }
     @PostMapping(CREATE_WORKOUT)
     @ApiOperation(value = "")
@@ -43,7 +43,7 @@ public class WorkoutController {
             @ApiParam(value = "")
             @RequestBody Workout workout,
              Authentication authentication) {
-        return planningService.createWorkout(workout);
+        return planningService.createWorkout(workout, authentication.getName());
     }
 
     @GetMapping(GET_WORKOUT_BY_ID)
@@ -112,7 +112,7 @@ public class WorkoutController {
             @ApiParam(value = "")
             @RequestBody List<String> exerciseIdList,
              Authentication authentication){
-        return planningService.addListExercises(id, exerciseIdList);
+        return planningService.addListExercises(id, exerciseIdList, authentication.getName());
     }
 
     @PostMapping(DEL_LIST_OF_EXERCISES_BY_ID)
@@ -123,7 +123,7 @@ public class WorkoutController {
             @ApiParam(value = "")
             @RequestBody List<String> exerciseIdList,
              Authentication authentication){
-        return planningService.delListExercises(id, exerciseIdList);
+        return planningService.delListExercises(id, exerciseIdList, authentication.getName());
     }
 
     @PostMapping(SET_NAME_BY_ID)
@@ -134,7 +134,7 @@ public class WorkoutController {
             @ApiParam(value = "")
             @RequestBody String name,
              Authentication authentication){
-        return planningService.setNameWorkout(id, name);
+        return planningService.setNameWorkout(id, name, authentication.getName());
     }
 
     @GetMapping(DELETE_WORKOUT_BY_ID)
@@ -143,7 +143,7 @@ public class WorkoutController {
             @ApiParam(value = "")
             @PathVariable String id,
              Authentication authentication){
-        return planningService.deleteWorkout(id);
+        return planningService.deleteWorkout(id, authentication.getName());
     }
 
 }

@@ -32,7 +32,7 @@ public class ScheduledWorkoutController {
             @ApiParam(value = "")
             @RequestBody ScheduledWorkout scheduledWorkout,
              Authentication authentication) {
-        return planningService.createScheduledWorkout(id, scheduledWorkout);
+        return planningService.createScheduledWorkout(id, scheduledWorkout, authentication.getName());
     }
 
     @GetMapping(GET_SCHEDULED_WORKOUT_BY_ID)
@@ -125,7 +125,7 @@ public class ScheduledWorkoutController {
             @ApiParam(value = "")
             @RequestBody String status,
              Authentication authentication) {
-        planningService.setStatusScheduledWorkout(id, status);
+        planningService.setStatusScheduledWorkout(id, status, authentication.getName());
     }
 
     @PostMapping(ADD_EXERCISE_MEASUREMENT_BY_ID)
@@ -138,7 +138,7 @@ public class ScheduledWorkoutController {
             @ApiParam(value = "")
             @RequestBody Measurement measurement,
              Authentication authentication) {
-        return planningService.addExerciseMeasurement(id, eid, measurement);
+        return planningService.addExerciseMeasurement(id, eid, measurement, authentication.getName());
     }
 
     @PostMapping(UPDATE_EXERCISE_MEASUREMENT_BY_ID)
@@ -153,7 +153,7 @@ public class ScheduledWorkoutController {
             @ApiParam(value = "")
             @RequestBody Measurement measurement,
              Authentication authentication) {
-        return planningService.updateExerciseMeasurement(id, eid, num, measurement);
+        return planningService.updateExerciseMeasurement(id, eid, num, measurement, authentication.getName());
     }
 
     @GetMapping(DEL_EXERCISE_MEASUREMENT_BY_ID)
@@ -166,7 +166,7 @@ public class ScheduledWorkoutController {
             @ApiParam(value = "")
             @PathVariable String num,
              Authentication authentication) {
-        return planningService.delExerciseMeasurement(id, eid, num);
+        return planningService.delExerciseMeasurement(id, eid, num, authentication.getName());
     }
 
     @GetMapping(DELETE_SCHEDULED_WORKOUT_BY_ID)
@@ -177,6 +177,6 @@ public class ScheduledWorkoutController {
             @ApiParam(value = "")
             @PathVariable String swid,
              Authentication authentication) {
-        return planningService.deleteScheduledWorkout(id, swid);
+        return planningService.deleteScheduledWorkout(id, swid, authentication.getName());
     }
 }

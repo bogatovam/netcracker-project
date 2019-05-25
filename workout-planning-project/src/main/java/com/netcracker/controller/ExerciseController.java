@@ -31,7 +31,7 @@ public class ExerciseController {
             @ApiParam(value = "Exercise")
             @RequestBody Exercise exercise,
             Authentication authentication) {
-        return planningService.createExercise(exercise);
+        return planningService.createExercise(exercise, authentication.getName());
     }
 
     @GetMapping(GET_ALL_EXERCISES)
@@ -41,7 +41,7 @@ public class ExerciseController {
     }
 
     @GetMapping(GET_ALL_NAMES_OF_EXERCISES)
-    @ApiOperation(value = "Return all exercises names")
+    @ApiOperation(value = "Return all exercises names, authentication.getName()")
     public Map<String, String> getAllNamesOfExercises() {
         return dataDisplayService.getAllExercisesNames();
     }
@@ -114,7 +114,7 @@ public class ExerciseController {
             @ApiParam(value = "Exercises name")
             @RequestBody String name,
             Authentication authentication) {
-        return planningService.setExerciseName(id, name);
+        return planningService.setExerciseName(id, name, authentication.getName());
     }
 
     @PostMapping(SET_DESCRIPTION_BY_ID)
@@ -125,7 +125,7 @@ public class ExerciseController {
             @ApiParam(value = "Exercises description")
             @RequestBody String name,
             Authentication authentication) {
-        return planningService.setExerciseName(id, name);
+        return planningService.setExerciseName(id, name, authentication.getName());
     }
 
     @GetMapping(DELETE_EXERCISE_BY_ID)
@@ -134,6 +134,6 @@ public class ExerciseController {
             @ApiParam(value = "Exercises id")
             @PathVariable String id,
             Authentication authentication) {
-        return planningService.deleteExercise(id);
+        return planningService.deleteExercise(id, authentication.getName());
     }
 }

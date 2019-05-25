@@ -27,8 +27,9 @@ public class WorkoutComplexController {
     @ApiOperation(value = "Create workout complex")
     public WorkoutComplex createWorkoutComplex(
             @ApiParam(value = "")
-            @RequestBody WorkoutComplex workoutComplex){
-        return planningService.createWorkoutComplex(workoutComplex);
+            @RequestBody WorkoutComplex workoutComplex,
+            Authentication authentication){
+        return planningService.createWorkoutComplex(workoutComplex, authentication.getName());
     }
 
     @GetMapping(GET_ALL_WORKOUTS_COMPLEXES)
@@ -78,7 +79,7 @@ public class WorkoutComplexController {
             @ApiParam(value = "")
             @RequestBody Workout workout,
             Authentication authentication){
-        return planningService.addWorkout(id, workout);
+        return planningService.addWorkout(id, workout, authentication.getName());
     }
 
     @GetMapping(DEL_WORKOUT_BY_ID)
@@ -89,7 +90,7 @@ public class WorkoutComplexController {
             @ApiParam(value = "")
             @PathVariable String wid,
             Authentication authentication){
-        return planningService.delWorkout(id, wid);
+        return planningService.delWorkout(id, wid, authentication.getName());
     }
 
     @PostMapping(SET_NAME_WORKOUT_BY_ID)
@@ -102,7 +103,7 @@ public class WorkoutComplexController {
             @ApiParam(value = "")
             @RequestBody String name,
             Authentication authentication){
-        return planningService.setNameWorkout( wid, name);
+        return planningService.setNameWorkout( wid, name, authentication.getName());
     }
 
     @PostMapping(SET_NAME_BY_ID)
@@ -113,7 +114,7 @@ public class WorkoutComplexController {
             @ApiParam(value = "")
             @RequestBody String name,
             Authentication authentication){
-        return planningService.setNameWorkoutComplex(id, name);
+        return planningService.setNameWorkoutComplex(id, name, authentication.getName());
     }
 
     @GetMapping(DELETE_WORKOUT_COMPLEX_BY_ID)
@@ -122,7 +123,7 @@ public class WorkoutComplexController {
             @ApiParam(value = "")
             @PathVariable String id,
             Authentication authentication){
-        return planningService.deleteWorkoutComplex(id);
+        return planningService.deleteWorkoutComplex(id, authentication.getName());
     }
 
 
