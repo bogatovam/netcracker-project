@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { AuthorizationService } from '../authorization.service';
-import { SignUpInfo } from '../../model/signup';
+import { SignUpInfo } from '../../shared/model/signup';
 
 @Component({
   selector: 'app-signup',

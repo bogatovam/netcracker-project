@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {Response} from "@angular/http";
-import { JwtResponse } from '../model/JwtResponse';
-import { AuthorizationLoginInfo } from '../model/login';
-import { SignUpInfo } from '../model/signup';
+import { JwtResponse } from '../shared/model/JwtResponse';
+import { AuthorizationLoginInfo } from '../shared/model/login';
+import { SignUpInfo } from '../shared/model/signup';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })

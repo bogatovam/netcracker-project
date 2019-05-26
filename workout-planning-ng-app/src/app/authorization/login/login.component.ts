@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 
 import { AuthorizationService } from '../authorization.service';
 import { TokenStorageService } from '../token-storage.service';
-import { AuthorizationLoginInfo } from '../../model/login';
-import {JwtResponse} from "../../model/JwtResponse";
+import { AuthorizationLoginInfo } from '../../shared/model/login';
+import {JwtResponse} from "../../shared/model/JwtResponse";
 
 @Component({
   selector: 'app-login',
@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
   isLoginFailed = false;
   errorMessage = '';
   roles: string[] = [];
+  imagePath: string = "../../logo.jpg";
   private loginInfo: AuthorizationLoginInfo;
 
   constructor(private authService: AuthorizationService, private tokenStorage: TokenStorageService) { }

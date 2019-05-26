@@ -1,35 +1,49 @@
-<div *ngIf="isLoggedIn; else loggedOut">
-  Logged in as {{roles}}.
-</div>
+<div class="container login-container">
+  <div class="row">
+    <div class="col-md-5">
+      <div class="login-logo">
+        <img src="../../../assets/images/logo.jpg" alt=""/>
+      </div>
 
-<ng-template #loggedOut>
-  <div class="row col-sm-6" style="max-width:350px;">
-    <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
-      <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" class="form-control" id="username" name="username" [(ngModel)]="form.username" #username="ngModel"
-               required />
-        <div *ngIf="f.submitted && username.invalid">
-          <div *ngIf="username.errors.required">Username is required</div>
+      <form name="form" class="login-form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
+
+        <div class="form-group">
+          <input id="username" name="username" type="text" class="form-control"
+                 placeholder="Логин" [(ngModel)]="form.username" #username="ngModel" required/>
+
+          <div *ngIf="f.submitted && username.invalid">
+            <div class="alert alert-danger danger" *ngIf="username.errors.required">Введите логин</div>
+          </div>
+
         </div>
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" class="form-control" name="password" [(ngModel)]="form.password" #password="ngModel"
-               required />
-        <div *ngIf="f.submitted && password.invalid">
-          <div *ngIf="password.errors.required">Password is required</div>
+
+        <div class="form-group">
+          <input id="password" name="password" class="form-control"
+                 placeholder="Пароль" type="password" [(ngModel)]="form.password" #password="ngModel" required/>
+
+          <div *ngIf="f.submitted && password.invalid">
+            <div class="alert alert-danger danger" *ngIf="password.errors.required">Введите пароль</div>
+          </div>
+
         </div>
-      </div>
-      <div class="form-group">
-        <button class="btn btn-primary">Login</button>
-        <div *ngIf="f.submitted && isLoginFailed" class="alert alert-danger">
-          Login failed: {{errorMessage}}
+
+        <div class="form-group">
+          <button class="button-submit">Войти</button>
+
+          <div *ngIf="f.submitted && isLoginFailed" class="alert alert-danger danger">
+            Ошибка: {{errorMessage}}
+          </div>
         </div>
-      </div>
-    </form>
-    <hr />
-    <p>Don't have an account?</p>
-    <a href="signup" class="btn btn-success">Sign Up</a>
+
+        <div class="horizontal-separator">
+          <p>или</p>
+        </div>
+
+        <div class="form-group">
+          <button class="button-signup">Зарегистрировастья</button>
+        </div>
+
+      </form>
+    </div>
   </div>
-</ng-template>
+</div>

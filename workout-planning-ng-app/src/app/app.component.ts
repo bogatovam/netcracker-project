@@ -1,15 +1,28 @@
-import { Component } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {Component, OnInit} from '@angular/core';
+import { TokenStorageService } from './authorization/token-storage.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  title = 'workout-planning-ng-app';
-  greeting = {};
-  constructor(private http: HttpClient) {
-    //http.get('https://localhost:8443/test').subscribe(data => this.greeting = data);
+export class AppComponent implements OnInit {
+  private roles: string[];
+  private authority: string;
+
+  constructor(private tokenStorage: TokenStorageService) { }
+
+  ngOnInit() {
+    if (this.tokenStorage.getToken()) {
+      this.roles = this.tokenStorage.getAuthorities();
+      this.roles.every(role => {
+        if (role === 'ROLE_ADMIN') {
+          this.authority = 'admin';
+          return false;
+        }
+        this.authority = 'user';
+        return true;
+      });
+    }
   }
 }
