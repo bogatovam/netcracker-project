@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
-import { AuthorizationService } from '../authorization.service';
-import { SignUpInfo } from '../../shared/model/signup';
+import {AuthorizationService} from '../authorization.service';
+import {SignUpInfo} from '../../shared/model/signup';
 
 @Component({
   selector: 'app-signup',
@@ -15,9 +15,11 @@ export class SignupComponent implements OnInit {
   isSignUpFailed = false;
   errorMessage = '';
 
-  constructor(private authService: AuthorizationService) { }
+  constructor(private authService: AuthorizationService) {
+  }
 
-  ngOnInit() { }
+  ngOnInit() {
+  }
 
   onSubmit() {
     console.log(this.form);
@@ -26,7 +28,13 @@ export class SignupComponent implements OnInit {
       this.form.name,
       this.form.username,
       this.form.email,
-      this.form.password);
+      this.form.password,
+      this.form.gender,
+      this.form.age,
+      this.form.weight,
+      this.form.growth,
+      this.form.goal
+    );
 
     this.authService.signUp(this.signupInfo).subscribe(
       data => {

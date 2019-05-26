@@ -1,5 +1,6 @@
 .login-container {
   margin-left: 28%;
+  margin-right: 28%;
 }
 
 .login-logo {
@@ -12,26 +13,22 @@
   position: absolute;
   width: 28%;
   background: #00063d;
-  border-radius: 2.3rem;
+  border-radius: 25px;
   padding: 0.5%;
 }
 
 .login-form {
-  margin-top: 22.3%;
-  alignment: center;
+  width: 35vw;
+  margin-top: 22%;
   padding: 20% 9% 3%;
   background: #00063d;
   box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
 }
 
-.login-form h3 {
-  text-align: center;
-  margin-bottom: 12%;
-  color: #fff;
-}
-
 .button-submit {
-  margin-top: 5%;
+  margin-top: 3%;
+  margin-bottom: 5%;
+
   font-weight: 600;
   width: 100%;
   color: #fff;
@@ -47,6 +44,7 @@
 }
 
 .button-signup {
+  margin-top: 12%;
   font-weight: 600;
   width: 100%;
   color: #00063d;
@@ -60,9 +58,6 @@
   height: 1px;
   width: 100%;
   background-color: honeydew;
-  margin-top: 6%;
-  margin-bottom: 8%;
   color: honeydew;
   text-align: center;
-
 }

@@ -12,6 +12,8 @@ import { httpInterceptorProviders } from './authorization/authorization-intercep
 import {RouterModule, Routes} from "@angular/router";
 import {SignupComponent} from "./authorization/signup/signup.component";
 import {NavigationComponent} from "./navigation/navigation.component";
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+
 const routes: Routes = [
   {
     path: 'home',
@@ -26,7 +28,7 @@ const routes: Routes = [
     component: LoginComponent
   },
   {
-    path: 'signup',
+    path: 'auth/signup',
     component: SignupComponent
   },
   {
@@ -49,7 +51,8 @@ const routes: Routes = [
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    NgbModule
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]

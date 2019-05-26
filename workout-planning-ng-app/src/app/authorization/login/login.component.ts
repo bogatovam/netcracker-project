@@ -4,6 +4,7 @@ import { AuthorizationService } from '../authorization.service';
 import { TokenStorageService } from '../token-storage.service';
 import { AuthorizationLoginInfo } from '../../shared/model/login';
 import {JwtResponse} from "../../shared/model/JwtResponse";
+import {Router, RouterModule, Routes} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,8 @@ export class LoginComponent implements OnInit {
   imagePath: string = "../../logo.jpg";
   private loginInfo: AuthorizationLoginInfo;
 
-  constructor(private authService: AuthorizationService, private tokenStorage: TokenStorageService) { }
+  constructor(private authService: AuthorizationService, private tokenStorage: TokenStorageService,
+              private router : Router) { }
 
   ngOnInit() {
     if (this.tokenStorage.getToken()) {
@@ -56,5 +58,9 @@ export class LoginComponent implements OnInit {
 
   reloadPage() {
     window.location.reload();
+  }
+
+  redirect() {
+    this.router.navigateByUrl("auth/signup");
   }
 }
