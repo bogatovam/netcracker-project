@@ -50,8 +50,8 @@
             <div class="col-6">
 
               <div class="row">
-                <div class="form-check">
-                  <input class="form-check-input check-gender" type="radio" name="gridRadios" id="genderF"
+                <div class="form-check check-gender">
+                  <input class="form-check-input " type="radio" name="gridRadios" id="genderF"
                          value="option1"
                          [(ngModel)]="form.gender" checked>
                   <label class="simple-label" for="genderF">
@@ -59,8 +59,8 @@
                   </label>
                 </div>
 
-                <div class="form-check">
-                  <input class="form-check-input check-gender" type="radio" name="gridRadios" id="genderM"
+                <div class="form-check check-gender">
+                  <input class="form-check-input " type="radio" name="gridRadios" id="genderM"
                          value="option2"
                          [(ngModel)]="form.gender">
                   <label class="simple-label" for="genderM">
@@ -73,27 +73,27 @@
                 <div class="input-group">
                   <input class="form-control" placeholder="Дата рождения"
                          name="bd" [(ngModel)]="form.date" ngbDatepicker #d="ngbDatepicker">
-                  <div class="input-group-append">
+                  <div class="input-group-append date-picker-button">
                     <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"></button>
                   </div>
                 </div>
               </div>
 
               <div class="row">
-                <div class="form-group col-5">
-                  <input id="wight" name="wight" class="form-control"
-                         placeholder="60" type="number" [(ngModel)]="form.wight" #password="ngModel" required/>
+                <div class="form-group col-5 number-field" >
                   <label class="simple-label" for="wight">Ваш вес</label>
+                  <input id="wight" name="wight" class="form-control "
+                         placeholder="60" type="number" [(ngModel)]="form.wight" #password="ngModel" required/>
                 </div>
-                <div class="form-group col-5">
+                <div class="form-group col-5 number-field">
+                  <label class="simple-label" for="growth">Ваш рост</label>
                   <input id="growth" name="growth" class="form-control"
                          placeholder=170 value="170" type="number" [(ngModel)]="form.growth" #password="ngModel"
                          required/>
-                  <label class="simple-label" for="growth">Ваш рост</label>
                 </div>
               </div>
 
-              <div class="form-group ">
+              <div class="form-group  list-field">
                 <label class="simple-label" for="goal">Цель тренировок</label>
                 <select id="goal" class="form-control">
                   <option>Сбросить вес</option>

@@ -1,6 +1,5 @@
 .signup-container {
-  margin-left: 28%;
-  margin-right: 28%;
+  margin-left: 20%;
 }
 
 .signup-logo {
@@ -18,7 +17,7 @@
 }
 
 .signup-form {
-  width: 50vw;
+  width: 60vw;
   margin-top: 22%;
   padding: 20% 9% 3%;
   background: #00063d;
@@ -44,10 +43,20 @@
 }
 
 .check-gender{
-  margin-left: 6vw;
-  margin-right: 6vw;
+  margin-left: 2vw;
+  margin-top: 1vw;
+  margin-bottom: 1vw;
 }
 .simple-label{
+  margin-right: 10%;
   color: honeydew;
   text-align: center;
+}
+
+.date-picker-button {
+  background-color: #c5303a;
+}
+.list-field{
+  margin-top: 1vw;
+  margin-bottom: 1vw;
 }
