@@ -13,6 +13,7 @@ import {RouterModule, Routes} from "@angular/router";
 import {SignupComponent} from "./authorization/signup/signup.component";
 import {NavigationComponent} from "./navigation/navigation.component";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import { WorkoutComponent } from './workout/workout.component';
 
 const routes: Routes = [
   {
@@ -45,7 +46,8 @@ const routes: Routes = [
     UserComponent,
     HomeComponent,
     SignupComponent,
-    NavigationComponent
+    NavigationComponent,
+    WorkoutComponent
   ],
   imports: [
     BrowserModule,

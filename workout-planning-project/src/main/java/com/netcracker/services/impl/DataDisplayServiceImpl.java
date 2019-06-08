@@ -42,7 +42,7 @@ public class DataDisplayServiceImpl implements DataDisplayService {
 
     @Override
     public List<WorkoutComplex> getAllWorkoutComplex(String userId) {
-        return Lists.newArrayList(workoutComplexRepository.findWorkoutComplexesByUserId(userId).asListRemaining());
+        return Lists.newArrayList(workoutComplexRepository.findWorkoutComplexesByUserId("user/" +     userId).asListRemaining());
     }
 
     @Override

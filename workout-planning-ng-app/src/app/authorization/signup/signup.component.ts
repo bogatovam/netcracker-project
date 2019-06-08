@@ -2,6 +2,9 @@ import {Component, OnInit} from '@angular/core';
 
 import {AuthorizationService} from '../authorization.service';
 import {SignUpInfo} from '../../shared/model/signup';
+import {Router} from "@angular/router";
+import {LoginComponent} from "../login/login.component";
+import {TokenStorageService} from "../token-storage.service";
 
 @Component({
   selector: 'app-signup',
@@ -11,11 +14,9 @@ import {SignUpInfo} from '../../shared/model/signup';
 export class SignupComponent implements OnInit {
   form: any = {};
   signupInfo: SignUpInfo;
-  isSignedUp = false;
-  isSignUpFailed = false;
   errorMessage = '';
 
-  constructor(private authService: AuthorizationService) {
+  constructor(private authService: AuthorizationService, private tokenStorage: TokenStorageService, private router : Router) {
   }
 
   ngOnInit() {
@@ -39,14 +40,17 @@ export class SignupComponent implements OnInit {
     this.authService.signUp(this.signupInfo).subscribe(
       data => {
         console.log(data);
-        this.isSignedUp = true;
-        this.isSignUpFailed = false;
+        this.authService.isSignedUp = true;
+        this.authService.isSignUpFailed = false;
       },
       error => {
         console.log(error);
         this.errorMessage = error.error.message;
-        this.isSignUpFailed = true;
+        this.authService.isSignUpFailed = true;
       }
     );
+  }
+  redirectToUrl(url: string){
+    this.router.navigateByUrl(url);
   }
 }

@@ -1,3 +1,108 @@
-<h4>Content from Server</h4>
-{{board}}
-{{errorMessage}}
+<div *ngIf="!this.authService.isLoggedIn; else userPage">
+  {{this.router.navigateByUrl("auth/login")}}
+</div>
+<ng-template #userPage>
+  <div class="container">
+
+    <!-- Workout menu -->
+    <div class="row" style="margin-top:12px;">
+      <div class="col-md-8">
+        <input type="text"
+               [(ngModel)]="searchText"
+               class="form-control"
+               style="width: 100%;"
+               placeholder="Search notes...">
+      </div>
+      <div class="col-md-4">
+        <button type="button"
+                (click)="createWorkoutComplex()"
+                class="btn create-wcomplex-button">
+          <i class="fa fa-plus"></i> Создать комплекс
+        </button>
+        <button type="button"
+                (click)="createWorkout(selectedWorkoutComplex.id)"
+                [disabled]="selectedWorkoutComplex == null"
+                class="btn create-w-button">
+          <i class="fa fa-plus"></i> Создать тренировку
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Workout content -->
+    <div class="row" style="margin-top: 28px;">
+      <!-- WorkoutComplex Menu -->
+      <div class="col-md-3">
+        <br>
+        <br>
+        <div class="list-group list-group-flush">
+          <a (click)="selectAllWorkouts()" class="list-group-item list-group-item-action ">
+            <i class="fa fa-book"></i>
+            Все тренировки
+          </a>
+          <!-- Notebook List -->
+          <a *ngFor="let workoutComplex of workoutComplexes"
+             class="list-group-item list-group-item-action"
+             (dblclick)="setEditable(true)"
+             (mouseleave)="setEditable(false)"
+             (click)="selectWorkoutComplex(workoutComplex)">
+
+            <div *ngIf="editableFlag; else notEditable">
+              <i class="fa fa-book"></i>&nbsp;
+              <input [(ngModel)]="workoutComplex.name" (change)="updateWorkoutComplex(workoutComplex)"
+                     type="text" class="input-label" style="width: 80%"/>
+              <a (click)="deleteWorkoutComplex(workoutComplex)" class="pull-right text-danger">
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
+              </a>
+            </div>
+
+            <ng-template #notEditable>
+              <i class="fa fa-book"></i>&nbsp;
+              <label style="width: 80%">{{workoutComplex.name}}</label>
+              <a (click)="deleteWorkoutComplex(workoutComplex)" class="pull-right text-danger">
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
+              </a>
+            </ng-template>
+          </a>
+        </div>
+      </div>
+
+      <!-- Workouts Panel -->
+      <div *ngIf="selectedWorkout == null" class="col-md-3">
+        <div class="row">
+          <div class="col-md-12">
+            <!-- Message if there are no workouts -->
+            <h3 *ngIf="selectedWorkoutComplex != null">{{selectedWorkoutComplex.name}}</h3>
+            <h3 *ngIf="selectedWorkoutComplex == null">Все тренировки </h3>
+            <p *ngIf="this.workouts.length === 0">В этом тренировочном комплексе нет тренировок :(</p>
+          </div>
+        </div>
+        <div class="row">
+          <!-- Workouts list -->
+          <app-workout *ngFor="let w of workouts"
+                       [workout]="w"
+                       (workoutUpdated)="updateWorkout($event)"
+                       (workoutDeleted)="deleteWorkout($event)"
+          (click)="selectWorkout(w)">
+          </app-workout>
+        </div>
+      </div>
+
+      <div *ngIf="selectedWorkout != null" class="col-md-1">
+        <div class="row back">
+          <i class="fa fa-backward"></i>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="row">
+          <div class="col-md-12">
+            <!-- Message if there are no workouts -->
+            <h3 *ngIf="selectedWorkout != null">{{selectedWorkout.name}}</h3>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</ng-template>

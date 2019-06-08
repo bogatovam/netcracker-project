@@ -1,5 +1,6 @@
 .signup-container {
-  margin-left: 20%;
+  margin-left: 28%;
+  margin-right: 28%;
 }
 
 .signup-logo {
@@ -17,7 +18,7 @@
 }
 
 .signup-form {
-  width: 60vw;
+  width: 35vw;
   margin-top: 22%;
   padding: 20% 9% 3%;
   background: #00063d;

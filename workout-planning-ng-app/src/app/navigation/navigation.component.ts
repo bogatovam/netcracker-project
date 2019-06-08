@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {TokenStorageService} from "../authorization/token-storage.service";
+import {AuthorizationService} from "../authorization/authorization.service";
 
 @Component({
   selector: 'app-navigation',
@@ -8,7 +9,7 @@ import {TokenStorageService} from "../authorization/token-storage.service";
 })
 export class NavigationComponent implements OnInit {
 
-  constructor(private token: TokenStorageService) { }
+  constructor(private token: TokenStorageService, private authService: AuthorizationService) { }
 
   ngOnInit() {
   }

@@ -9,30 +9,24 @@ import {Router, RouterModule, Routes} from "@angular/router";
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
   form: any = {};
-  isLoggedIn = false;
-  isLoginFailed = false;
   errorMessage = '';
   roles: string[] = [];
-  imagePath: string = "../../logo.jpg";
+
   private loginInfo: AuthorizationLoginInfo;
 
   constructor(private authService: AuthorizationService, private tokenStorage: TokenStorageService,
               private router : Router) { }
 
   ngOnInit() {
-    if (this.tokenStorage.getToken()) {
-      this.isLoggedIn = true;
-      this.roles = this.tokenStorage.getAuthorities();
-    }
+
   }
 
   onSubmit() {
     console.log(this.form);
-
     this.loginInfo = new AuthorizationLoginInfo(
       this.form.username,
       this.form.password);
@@ -43,15 +37,14 @@ export class LoginComponent implements OnInit {
         this.tokenStorage.saveUsername(data.username);
         this.tokenStorage.saveAuthorities(data.authorities);
 
-        this.isLoginFailed = false;
-        this.isLoggedIn = true;
+        this.authService.isLoginFailed = false;
         this.roles = this.tokenStorage.getAuthorities();
         this.reloadPage();
       },
       error => {
         console.log(error);
         this.errorMessage = error.error.message;
-        this.isLoginFailed = true;
+        this.authService.isLoginFailed = true;
       }
     );
   }
@@ -62,5 +55,9 @@ export class LoginComponent implements OnInit {
 
   redirect() {
     this.router.navigateByUrl("auth/signup");
+  }
+
+  redirectToUrl(url: string){
+    this.router.navigateByUrl(url);
   }
 }

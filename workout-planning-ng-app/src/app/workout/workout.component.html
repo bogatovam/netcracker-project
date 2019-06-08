@@ -1,0 +1,21 @@
+<div class="card bg-warning" style="border:4px solid white;" >
+  <div class="card-body" style="padding: 8px; margin-top: 8px;">
+    <div>
+      <!-- title -->
+      <input type="text"
+             [(ngModel)]="workout.name"
+             (change)="updateWorkout()"
+             class="input-label-lg"
+             maxlength="18" style="width: 80%"
+      />
+      <a (click)="deleteWorkout()" class="pull-right text-danger">
+        <i class="fa fa-trash-o"></i>
+      </a>
+    </div>
+    <!-- text -->
+    <p *ngFor="let exercise of exercises">
+      {{exercise.name}}
+    </p>
+    <strong class="text-info" style="font-size: small">date:'dd-MM-yyy HH:mm'</strong>
+  </div>
+</div>

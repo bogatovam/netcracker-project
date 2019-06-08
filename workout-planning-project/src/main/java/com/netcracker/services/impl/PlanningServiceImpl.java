@@ -393,8 +393,6 @@ public class PlanningServiceImpl implements PlanningService {
     public Workout addWorkout(String workoutComplexId, Workout workout, String userId) {
         if (!authenticationService.checkAccessRightsToWorkoutComplex(workoutComplexId, userId)) return null;
 
-        if (!authenticationService.checkAccessRightsToWorkout(workout.getId(), userId)) return null;
-
         WorkoutComplex workoutComplex = workoutComplexRepository.findById(workoutComplexId)
                 .orElseThrow(() -> new NoSuchElementException("Workout complex id:" + workoutComplexId + " has bad value"));
 

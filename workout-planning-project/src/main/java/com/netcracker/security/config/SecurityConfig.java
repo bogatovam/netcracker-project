@@ -51,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // configure access rules
                 .antMatchers("/authentication/**").permitAll()
                 .antMatchers("/free/**").permitAll()
+                .antMatchers("/v2/api-docs/**").permitAll()
                 .anyRequest().authenticated();
     }
 

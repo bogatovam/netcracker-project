@@ -41,7 +41,7 @@ public class ExerciseController {
     }
 
     @GetMapping(GET_ALL_NAMES_OF_EXERCISES)
-    @ApiOperation(value = "Return all exercises names, authentication.getName()")
+    @ApiOperation(value = "Return all exercises names")
     public Map<String, String> getAllNamesOfExercises() {
         return dataDisplayService.getAllExercisesNames();
     }
@@ -106,7 +106,7 @@ public class ExerciseController {
         return dataDisplayService.getLastMeasurementOfExercise(id,authentication.getName());
     }
 
-    @PostMapping(SET_NAME_BY_ID)
+    @PutMapping(SET_NAME_BY_ID)
     @ApiOperation(value = "Set name to exercise by id")
     public String setExerciseName(
             @ApiParam(value = "Exercises id")
@@ -117,7 +117,7 @@ public class ExerciseController {
         return planningService.setExerciseName(id, name, authentication.getName());
     }
 
-    @PostMapping(SET_DESCRIPTION_BY_ID)
+    @PutMapping(SET_DESCRIPTION_BY_ID)
     @ApiOperation(value = "Set description to exercise by id")
     public String setDescriptionName(
             @ApiParam(value = "Exercises id")
@@ -128,7 +128,7 @@ public class ExerciseController {
         return planningService.setExerciseName(id, name, authentication.getName());
     }
 
-    @GetMapping(DELETE_EXERCISE_BY_ID)
+    @DeleteMapping(DELETE_EXERCISE_BY_ID)
     @ApiOperation(value = "Delete exercise by id")
     public Exercise deleteExercise(
             @ApiParam(value = "Exercises id")
