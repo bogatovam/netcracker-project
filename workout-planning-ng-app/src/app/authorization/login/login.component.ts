@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthorizationService } from '../authorization.service';
 import { TokenStorageService } from '../token-storage.service';
 import { AuthorizationLoginInfo } from '../../shared/model/login';
-import {JwtResponse} from "../../shared/model/JwtResponse";
+import {JwtResponse} from "../../shared/model/jwt-response";
 import {Router, RouterModule, Routes} from "@angular/router";
 
 @Component({
@@ -57,7 +57,4 @@ export class LoginComponent implements OnInit {
     this.router.navigateByUrl("auth/signup");
   }
 
-  redirectToUrl(url: string){
-    this.router.navigateByUrl(url);
-  }
 }

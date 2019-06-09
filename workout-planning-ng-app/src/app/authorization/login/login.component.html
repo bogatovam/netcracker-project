@@ -1,5 +1,5 @@
 <div *ngIf="this.authService.isLoggedIn; else loginForm">
-  {{this.redirectToUrl("user")}}
+  {{this.router.navigateByUrl("workout-complex")}}
 </div>
 <ng-template #loginForm>
   <div class="container login-container">

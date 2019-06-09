@@ -1,16 +1,14 @@
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
+import {Observable} from "rxjs";
 import {WorkoutComplex} from "./model/workout-complex";
 import {Workout} from "./model/workout";
-import {stringify} from "querystring";
 import {Exercise} from "./model/exercise";
-
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class ApiService {
 
   private GET_ALL_WORKOUT = 'https://localhost:8443/workout-complex/{id}/workouts';
   private GET_ALL_WORKOUT_COMPLEXES = 'https://localhost:8443/workout-complex/all';

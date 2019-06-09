@@ -1,0 +1,8 @@
+<div *ngIf="!this.authService.isLoggedIn; else directory">
+  {{this.router.navigateByUrl("authentication/signin")}}
+</div>
+<ng-template #directory>
+  <p>
+    Here will be directory of exercises
+  </p>
+</ng-template>

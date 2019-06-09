@@ -1,0 +1,16 @@
+<div class="card workout-card">
+  <div class="card-body">
+    <div>
+      <i class="fa fa-book"></i>&nbsp;
+      <label class="title">{{workout.name}}</label>
+      <a (click)="deleteWorkout()" class="pull-right text-danger">
+        <i class="fa fa-trash-o"></i>
+      </a>
+      <!-- title -->
+    </div>
+    <!-- text -->
+    <p *ngFor="let exercise of exercises">
+      {{exercise.name}}
+    </p>
+  </div>
+</div>

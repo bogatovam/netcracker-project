@@ -1,0 +1,14 @@
+.workout-card {
+  background-color: white;
+  color: #00063d;
+  border-radius: 20px;
+  border-color: #00063d;
+  border-width: 3px;
+  width: 200px;
+  height: content-box;
+  max-height: max-content;
+  margin: 3px;
+}
+.title {
+  width: 80%;
+}

@@ -16,7 +16,8 @@ export class SignupComponent implements OnInit {
   signupInfo: SignUpInfo;
   errorMessage = '';
 
-  constructor(private authService: AuthorizationService, private tokenStorage: TokenStorageService, private router : Router) {
+  constructor(private authService: AuthorizationService, private tokenStorage: TokenStorageService,
+              private router : Router) {
   }
 
   ngOnInit() {
@@ -49,8 +50,5 @@ export class SignupComponent implements OnInit {
         this.authService.isSignUpFailed = true;
       }
     );
-  }
-  redirectToUrl(url: string){
-    this.router.navigateByUrl(url);
   }
 }

@@ -5,31 +5,32 @@ import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './authorization/login/login.component';
-import { UserComponent } from './user/user.component';
-import { HomeComponent } from './home/home.component';
 
 import { httpInterceptorProviders } from './authorization/authorization-interceptor';
 import {RouterModule, Routes} from "@angular/router";
 import {SignupComponent} from "./authorization/signup/signup.component";
 import {NavigationComponent} from "./navigation/navigation.component";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
-import { WorkoutComponent } from './workout/workout.component';
+import { WorkoutComponent } from './workout-complex/workout/workout.component';
+import { DirectoryComponent } from './directory/directory.component';
+import { WorkoutComplexComponent } from './workout-complex/workout-complex.component';
+import { ExerciseComponent } from './directory/exercise/exercise.component';
 
 const routes: Routes = [
   {
     path: 'home',
-    component: HomeComponent
+    component: DirectoryComponent
   },
   {
-    path: 'user',
-    component: UserComponent
+    path: 'workout-complex',
+    component: WorkoutComplexComponent
   },
   {
-    path: 'auth/login',
+    path: 'authentication/signin',
     component: LoginComponent
   },
   {
-    path: 'auth/signup',
+    path: 'authentication/signup',
     component: SignupComponent
   },
   {
@@ -43,11 +44,12 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     LoginComponent,
-    UserComponent,
-    HomeComponent,
     SignupComponent,
     NavigationComponent,
-    WorkoutComponent
+    WorkoutComponent,
+    DirectoryComponent,
+    WorkoutComplexComponent,
+    ExerciseComponent
   ],
   imports: [
     BrowserModule,

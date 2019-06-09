@@ -1,35 +1,33 @@
-import {Component, OnInit} from '@angular/core';
-import {UserService} from '../shared/user.service';
+import { Component, OnInit } from '@angular/core';
 import {WorkoutComplex} from "../shared/model/workout-complex";
 import {Workout} from "../shared/model/workout";
-import {TokenStorageService} from "../authorization/token-storage.service";
+import {ApiService} from "../shared/api.service";
 import {Router} from "@angular/router";
 import {AuthorizationService} from "../authorization/authorization.service";
 
 @Component({
-  selector: 'app-user',
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css']
+  selector: 'app-workout-complex',
+  templateUrl: './workout-complex.component.html',
+  styleUrls: ['./workout-complex.component.css']
 })
-export class UserComponent implements OnInit {
+export class WorkoutComplexComponent implements OnInit {
   editableFlag = false;
   workoutComplexes: WorkoutComplex[] = [];
   workouts: Workout[] = [];
   selectedWorkoutComplex: WorkoutComplex;
   selectedWorkout: Workout;
-  searchText: string;
   errorMessage: string;
 
-  constructor(private userService: UserService, private tokenStorage: TokenStorageService,
-              private router : Router,  private authService: AuthorizationService) {
+  constructor(private apiService: ApiService, private authService: AuthorizationService,
+              private router: Router) {
   }
 
-  setEditable(flag: boolean){
+  setEditable(flag: boolean) {
     this.editableFlag = flag;
   }
 
   getAllWorkoutComplex() {
-    this.userService.getAllWorkoutComplex().subscribe(
+    this.apiService.getAllWorkoutComplex().subscribe(
       result => {
         console.log(result);
         this.workoutComplexes = result;
@@ -41,7 +39,7 @@ export class UserComponent implements OnInit {
   }
 
   getAllWorkout() {
-    this.userService.getAllWorkout().subscribe(
+    this.apiService.getAllWorkout().subscribe(
       result => {
         console.log(result);
         this.workouts = result;
@@ -53,7 +51,7 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit() {
-   // this.getAllWorkout();
+    // this.getAllWorkout();
     this.getAllWorkoutComplex();
   }
 
@@ -66,9 +64,11 @@ export class UserComponent implements OnInit {
     this.selectedWorkoutComplex = workoutComplex;
     this.workouts = workoutComplex.workouts;
   }
+
   selectWorkout(workout: Workout) {
     this.selectedWorkout = workout;
   }
+
   updateWorkoutComplex(workoutComplex: WorkoutComplex) {
     console.log("update!");
   }
@@ -85,11 +85,11 @@ export class UserComponent implements OnInit {
 
   }
 
-    updateWorkout($event) {
+  updateWorkout($event) {
 
-    }
+  }
 
-    deleteWorkout($event) {
+  deleteWorkout($event) {
 
-    }
+  }
 }

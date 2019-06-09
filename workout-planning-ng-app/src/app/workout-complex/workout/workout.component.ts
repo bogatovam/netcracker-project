@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Workout} from "../shared/model/workout";
-import {UserService} from "../shared/user.service";
-import {Exercise} from "../shared/model/exercise";
+import {Workout} from "../../shared/model/workout";
+import {ApiService} from "../../shared/api.service";
+import {Exercise} from "../../shared/model/exercise";
 
 @Component({
   selector: 'app-workout',
@@ -11,13 +11,12 @@ import {Exercise} from "../shared/model/exercise";
 export class WorkoutComponent implements OnInit {
 
   private exercises: Exercise[];
-  selectedWorkout: Workout;
 
   @Input() workout: Workout;
   @Output() workoutUpdated: EventEmitter<Workout> = new EventEmitter<Workout>();
   @Output() workoutDeleted: EventEmitter<Workout> = new EventEmitter<Workout>();
 
-  constructor(private userService: UserService) {
+  constructor(private apiService: ApiService) {
   }
 
   ngOnInit() {
@@ -33,7 +32,7 @@ export class WorkoutComponent implements OnInit {
   }
 
   getNamesOfExercises() {
-    this.userService.getExercises(this.workout.id).subscribe(
+    this.apiService.getExercises(this.workout.id).subscribe(
       result => {
         console.log(result);
         this.exercises = result;

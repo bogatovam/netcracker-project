@@ -1,17 +1,15 @@
 <div *ngIf="!this.authService.isLoggedIn; else userPage">
-  {{this.router.navigateByUrl("auth/login")}}
+  {{this.router.navigateByUrl("authentication/signin")}}
 </div>
 <ng-template #userPage>
   <div class="container">
 
     <!-- Workout menu -->
-    <div class="row" style="margin-top:12px;">
-      <div class="col-md-8">
+    <div class="row workout-menu ">
+      <div class="col-md-8 search-panel">
         <input type="text"
-               [(ngModel)]="searchText"
                class="form-control"
-               style="width: 100%;"
-               placeholder="Search notes...">
+               placeholder="Search workouts...">
       </div>
       <div class="col-md-4">
         <button type="button"
@@ -26,11 +24,10 @@
           <i class="fa fa-plus"></i> Создать тренировку
         </button>
       </div>
-
     </div>
 
     <!-- Workout content -->
-    <div class="row" style="margin-top: 28px;">
+    <div class="row workout-panel">
       <!-- WorkoutComplex Menu -->
       <div class="col-md-3">
         <br>
@@ -50,7 +47,7 @@
             <div *ngIf="editableFlag; else notEditable">
               <i class="fa fa-book"></i>&nbsp;
               <input [(ngModel)]="workoutComplex.name" (change)="updateWorkoutComplex(workoutComplex)"
-                     type="text" class="input-label" style="width: 80%"/>
+                     type="text" class="input-label title" />
               <a (click)="deleteWorkoutComplex(workoutComplex)" class="pull-right text-danger">
                 <i class="fa fa-trash-o" aria-hidden="true"></i>
               </a>
@@ -58,7 +55,7 @@
 
             <ng-template #notEditable>
               <i class="fa fa-book"></i>&nbsp;
-              <label style="width: 80%">{{workoutComplex.name}}</label>
+              <label  >{{workoutComplex.name}}</label>
               <a (click)="deleteWorkoutComplex(workoutComplex)" class="pull-right text-danger">
                 <i class="fa fa-trash-o" aria-hidden="true"></i>
               </a>
@@ -68,7 +65,7 @@
       </div>
 
       <!-- Workouts Panel -->
-      <div *ngIf="selectedWorkout == null" class="col-md-3">
+      <div  >
         <div class="row">
           <div class="col-md-12">
             <!-- Message if there are no workouts -->
@@ -77,23 +74,20 @@
             <p *ngIf="this.workouts.length === 0">В этом тренировочном комплексе нет тренировок :(</p>
           </div>
         </div>
-        <div class="row">
+        <div *ngIf="selectedWorkout == null" class="col-md-3">
           <!-- Workouts list -->
           <app-workout *ngFor="let w of workouts"
                        [workout]="w"
                        (workoutUpdated)="updateWorkout($event)"
                        (workoutDeleted)="deleteWorkout($event)"
-          (click)="selectWorkout(w)">
+                       (click)="selectWorkout(w)">
           </app-workout>
         </div>
-      </div>
-
-      <div *ngIf="selectedWorkout != null" class="col-md-1">
-        <div class="row back">
-          <i class="fa fa-backward"></i>
+        <div *ngIf="selectedWorkout != null" class="col-1 back"
+             (click)="selectedWorkout = null">
+          <i class="fa fa-chevron-left white-icon" ></i>
         </div>
       </div>
-
       <div class="col-md-3">
         <div class="row">
           <div class="col-md-12">
