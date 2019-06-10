@@ -21,6 +21,7 @@
 }
 
 .back {
+  border-radius: 10px;
   background-color: #00063d;
   height: 100vh;
 }
@@ -37,6 +38,8 @@
 }
 .white-icon{
   color: white;
+  margin-top: 10px;
+  margin-right: 20px;
 }
 .title {
   width: 80%;

@@ -51,18 +51,19 @@ export class WorkoutComplexComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.getAllWorkout();
     this.getAllWorkoutComplex();
   }
 
   selectAllWorkouts() {
     this.selectedWorkoutComplex = null;
+    this.selectedWorkout = null;
     this.workouts = [];
   }
 
   selectWorkoutComplex(workoutComplex: WorkoutComplex) {
     this.selectedWorkoutComplex = workoutComplex;
     this.workouts = workoutComplex.workouts;
+    this.selectedWorkout = null;
   }
 
   selectWorkout(workout: Workout) {
@@ -70,7 +71,6 @@ export class WorkoutComplexComponent implements OnInit {
   }
 
   updateWorkoutComplex(workoutComplex: WorkoutComplex) {
-    console.log("update!");
   }
 
   deleteWorkoutComplex(workoutComplex: WorkoutComplex) {

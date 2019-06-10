@@ -1,16 +1,20 @@
 <div class="card workout-card">
   <div class="card-body">
-    <div>
-      <i class="fa fa-book"></i>&nbsp;
-      <label class="title">{{workout.name}}</label>
+    <div class="row">
+      <a>
+        <i class="fa fa-book"></i>
+      </a>
+
+      <h5 class="title">{{workout.name}}</h5>
+
       <a (click)="deleteWorkout()" class="pull-right text-danger">
         <i class="fa fa-trash-o"></i>
       </a>
-      <!-- title -->
     </div>
-    <!-- text -->
-    <p *ngFor="let exercise of exercises">
-      {{exercise.name}}
+    <h6>Упражнения</h6>
+    <p *ngFor="let exercise of exercises; let i=index">
+      {{(i + 1)}}. {{exercise.name}}
     </p>
   </div>
 </div>
+

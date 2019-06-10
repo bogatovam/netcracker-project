@@ -20,7 +20,7 @@ export class WorkoutComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getNamesOfExercises();
+    this.exercises = this.workout.exercises;
   }
 
   updateWorkout() {
@@ -29,17 +29,5 @@ export class WorkoutComponent implements OnInit {
 
   deleteWorkout() {
     this.workoutDeleted.emit(this.workout);
-  }
-
-  getNamesOfExercises() {
-    this.apiService.getExercises(this.workout.id).subscribe(
-      result => {
-        console.log(result);
-        this.exercises = result;
-      },
-      error1 => {
-        console.log(error1);
-      }
-    );
   }
 }

@@ -10,7 +10,7 @@ import {Exercise} from "./model/exercise";
 })
 export class ApiService {
 
-  private GET_ALL_WORKOUT = 'https://localhost:8443/workout-complex/{id}/workouts';
+  private GET_ALL_WORKOUT = 'https://localhost:8443/workout/all';
   private GET_ALL_WORKOUT_COMPLEXES = 'https://localhost:8443/workout-complex/all';
 
   private BASE_URL = 'https://localhost:8443/';

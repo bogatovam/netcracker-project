@@ -37,7 +37,6 @@
             <i class="fa fa-book"></i>
             Все тренировки
           </a>
-          <!-- Notebook List -->
           <a *ngFor="let workoutComplex of workoutComplexes"
              class="list-group-item list-group-item-action"
              (dblclick)="setEditable(true)"
@@ -47,7 +46,7 @@
             <div *ngIf="editableFlag; else notEditable">
               <i class="fa fa-book"></i>&nbsp;
               <input [(ngModel)]="workoutComplex.name" (change)="updateWorkoutComplex(workoutComplex)"
-                     type="text" class="input-label title" />
+                     type="text" class="input-label title"/>
               <a (click)="deleteWorkoutComplex(workoutComplex)" class="pull-right text-danger">
                 <i class="fa fa-trash-o" aria-hidden="true"></i>
               </a>
@@ -55,7 +54,7 @@
 
             <ng-template #notEditable>
               <i class="fa fa-book"></i>&nbsp;
-              <label  >{{workoutComplex.name}}</label>
+              <label>{{workoutComplex.name}}</label>
               <a (click)="deleteWorkoutComplex(workoutComplex)" class="pull-right text-danger">
                 <i class="fa fa-trash-o" aria-hidden="true"></i>
               </a>
@@ -65,7 +64,7 @@
       </div>
 
       <!-- Workouts Panel -->
-      <div  >
+      <div>
         <div class="row">
           <div class="col-md-12">
             <!-- Message if there are no workouts -->
@@ -74,7 +73,7 @@
             <p *ngIf="this.workouts.length === 0">В этом тренировочном комплексе нет тренировок :(</p>
           </div>
         </div>
-        <div *ngIf="selectedWorkout == null" class="col-md-3">
+        <div class="col-md-3">
           <!-- Workouts list -->
           <app-workout *ngFor="let w of workouts"
                        [workout]="w"
@@ -83,16 +82,35 @@
                        (click)="selectWorkout(w)">
           </app-workout>
         </div>
-        <div *ngIf="selectedWorkout != null" class="col-1 back"
-             (click)="selectedWorkout = null">
-          <i class="fa fa-chevron-left white-icon" ></i>
-        </div>
       </div>
-      <div class="col-md-3">
+      <!-- <div *ngIf="selectedWorkout != null" class="col-1 back"
+           (click)="selectedWorkout = null">
+        <i class="fa fa-chevron-left white-icon"></i>
+      </div> -->
+      <div *ngIf="selectedWorkout != null" class="col-md-5">
         <div class="row">
           <div class="col-md-12">
-            <!-- Message if there are no workouts -->
-            <h3 *ngIf="selectedWorkout != null">{{selectedWorkout.name}}</h3>
+            <h3>->{{selectedWorkout.name}}</h3>
+            <div class="row">
+              <button type="button"
+                      (click)="updateWorkout(selectedWorkout)"
+                      class="btn create-wcomplex-button">
+                <i class="fa fa-pencil"></i> Редактировать
+              </button>
+              <button type="button"
+                      (click)="deleteWorkout(selectedWorkoutComplex)"
+                      class="btn create-w-button">
+                <i class="fa fa-trash-o"></i> Удалить
+              </button>
+            </div>
+            <h4>Упражнения</h4>
+            <div id="accordion">
+              <div *ngFor="let e of selectedWorkout.exercises">
+                <app-exercise
+                  [exercise]="e">
+                </app-exercise>
+              </div>
+            </div>
           </div>
         </div>
       </div>

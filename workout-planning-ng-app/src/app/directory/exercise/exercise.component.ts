@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Workout} from "../../shared/model/workout";
+import {Exercise} from "../../shared/model/exercise";
 
 @Component({
   selector: 'app-exercise',
@@ -6,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./exercise.component.css']
 })
 export class ExerciseComponent implements OnInit {
-
+  @Input() exercise: Exercise;
   constructor() { }
 
   ngOnInit() {
