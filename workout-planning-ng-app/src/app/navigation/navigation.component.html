@@ -9,7 +9,7 @@
       <a class="nav-link my-link" routerLink="/home">Главная</a>
     </li>
     <li *ngIf = !this.authService.isLoggedIn class="nav-item">
-      <a class="nav-link my-link" routerLink="auth/login">Войти</a>
+      <a class="nav-link my-link" routerLink="authentication/signin">Войти</a>
     </li>
     <li *ngIf = this.authService.isLoggedIn class="nav-item">
       <a class="nav-link my-link" routerLink="" (click)="logout()">Выйти</a>
