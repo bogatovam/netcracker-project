@@ -1,6 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Workout} from "../../shared/model/workout";
-import {Exercise} from "../../shared/model/exercise";
+import {Component, Input, OnInit, Output} from '@angular/core';
+import {Exercise} from '../../shared/model/exercise';
 
 @Component({
   selector: 'app-exercise',
@@ -9,9 +8,8 @@ import {Exercise} from "../../shared/model/exercise";
 })
 export class ExerciseComponent implements OnInit {
   @Input() exercise: Exercise;
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
 }

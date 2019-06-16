@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {WorkoutComplex} from "../shared/model/workout-complex";
-import {Workout} from "../shared/model/workout";
-import {ApiService} from "../shared/api.service";
-import {Router} from "@angular/router";
-import {AuthorizationService} from "../authorization/authorization.service";
+import {WorkoutComplex} from '../shared/model/workout-complex';
+import {Workout} from '../shared/model/workout';
+import {ApiService} from '../shared/api.service';
+import {Router} from '@angular/router';
+import {AuthorizationService} from '../authorization/authorization.service';
 
 @Component({
   selector: 'app-workout-complex',
@@ -22,11 +22,15 @@ export class WorkoutComplexComponent implements OnInit {
               private router: Router) {
   }
 
-  setEditable(flag: boolean) {
+  ngOnInit() {
+    this.setAllWorkoutComplex();
+  }
+
+  setEditable(flag: boolean): void  {
     this.editableFlag = flag;
   }
 
-  getAllWorkoutComplex() {
+  setAllWorkoutComplex() {
     this.apiService.getAllWorkoutComplex().subscribe(
       result => {
         console.log(result);
@@ -38,7 +42,7 @@ export class WorkoutComplexComponent implements OnInit {
     );
   }
 
-  getAllWorkout() {
+  setAllWorkout() {
     this.apiService.getAllWorkout().subscribe(
       result => {
         console.log(result);
@@ -50,46 +54,42 @@ export class WorkoutComplexComponent implements OnInit {
     );
   }
 
-  ngOnInit() {
-    this.getAllWorkoutComplex();
-  }
-
-  selectAllWorkouts() {
+  selectAllWorkouts(): void {
     this.selectedWorkoutComplex = null;
     this.selectedWorkout = null;
     this.workouts = [];
   }
 
-  selectWorkoutComplex(workoutComplex: WorkoutComplex) {
+  selectWorkoutComplex(workoutComplex: WorkoutComplex): void  {
     this.selectedWorkoutComplex = workoutComplex;
     this.workouts = workoutComplex.workouts;
     this.selectedWorkout = null;
   }
 
-  selectWorkout(workout: Workout) {
+  selectWorkout(workout: Workout): void  {
     this.selectedWorkout = workout;
   }
 
-  updateWorkoutComplex(workoutComplex: WorkoutComplex) {
+  updateWorkoutComplex(workoutComplex: WorkoutComplex): void {
   }
 
-  deleteWorkoutComplex(workoutComplex: WorkoutComplex) {
-
-  }
-
-  createWorkoutComplex() {
+  deleteWorkoutComplex(workoutComplex: WorkoutComplex): void {
 
   }
 
-  createWorkout(id: string) {
+  createWorkoutComplex(): void {
 
   }
 
-  updateWorkout($event) {
+  createWorkout(id: string): void {
 
   }
 
-  deleteWorkout($event) {
+  updateWorkout($event): void {
+
+  }
+
+  deleteWorkout($event): void {
 
   }
 }

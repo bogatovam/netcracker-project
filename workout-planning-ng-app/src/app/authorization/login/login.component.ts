@@ -3,8 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthorizationService } from '../authorization.service';
 import { TokenStorageService } from '../token-storage.service';
 import { AuthorizationLoginInfo } from '../../shared/model/login';
-import {JwtResponse} from "../../shared/model/jwt-response";
-import {Router, RouterModule, Routes} from "@angular/router";
+import {Router, RouterModule, Routes} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -19,13 +18,11 @@ export class LoginComponent implements OnInit {
   private loginInfo: AuthorizationLoginInfo;
 
   constructor(private authService: AuthorizationService, private tokenStorage: TokenStorageService,
-              private router : Router) { }
+              private router: Router) {}
 
-  ngOnInit() {
+  ngOnInit(){}
 
-  }
-
-  onSubmit() {
+  onSubmit(): void {
     console.log(this.form);
     this.loginInfo = new AuthorizationLoginInfo(
       this.form.username,
@@ -49,12 +46,11 @@ export class LoginComponent implements OnInit {
     );
   }
 
-  reloadPage() {
+  reloadPage(): void {
     window.location.reload();
   }
 
-  redirect() {
-    this.router.navigateByUrl("auth/signup");
+  redirect(): void {
+    this.router.navigateByUrl('authentication/signup');
   }
-
 }

@@ -2,9 +2,8 @@ import {Component, OnInit} from '@angular/core';
 
 import {AuthorizationService} from '../authorization.service';
 import {SignUpInfo} from '../../shared/model/signup';
-import {Router} from "@angular/router";
-import {LoginComponent} from "../login/login.component";
-import {TokenStorageService} from "../token-storage.service";
+import {Router} from '@angular/router';
+import {TokenStorageService} from '../token-storage.service';
 
 @Component({
   selector: 'app-signup',
@@ -17,13 +16,11 @@ export class SignupComponent implements OnInit {
   errorMessage = '';
 
   constructor(private authService: AuthorizationService, private tokenStorage: TokenStorageService,
-              private router : Router) {
-  }
+              private router: Router) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
-  onSubmit() {
+  onSubmit(): void {
     console.log(this.form);
 
     this.signupInfo = new SignUpInfo(

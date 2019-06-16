@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {Response} from "@angular/http";
 import { JwtResponse } from '../shared/model/jwt-response';
 import { AuthorizationLoginInfo } from '../shared/model/login';
 import { SignUpInfo } from '../shared/model/signup';
-import {TokenStorageService} from "./token-storage.service";
+import {TokenStorageService} from './token-storage.service';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -23,7 +22,6 @@ export class AuthorizationService {
 
   private _isLoggedIn = this.tokenStorage.getToken() !== null;
   private _isLoginFailed = false;
-
 
   get isSignedUp(): boolean {
     return this._isSignedUp;

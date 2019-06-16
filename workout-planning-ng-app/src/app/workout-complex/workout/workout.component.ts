@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Workout} from "../../shared/model/workout";
-import {ApiService} from "../../shared/api.service";
-import {Exercise} from "../../shared/model/exercise";
+import {Workout} from '../../shared/model/workout';
+import {ApiService} from '../../shared/api.service';
+import {Exercise} from '../../shared/model/exercise';
 
 @Component({
   selector: 'app-workout',
@@ -23,11 +23,11 @@ export class WorkoutComponent implements OnInit {
     this.exercises = this.workout.exercises;
   }
 
-  updateWorkout() {
+  updateWorkout(): void  {
     this.workoutUpdated.emit(this.workout);
   }
 
-  deleteWorkout() {
+  deleteWorkout(): void  {
     this.workoutDeleted.emit(this.workout);
   }
 }
