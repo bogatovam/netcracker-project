@@ -6,13 +6,6 @@ import {ApiService} from '../shared/api.service';
 import {AuthorizationService} from '../authorization/authorization.service';
 import {Exercise} from '../shared/model/exercise';
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
-
 @Component({
   selector: 'app-directory',
   templateUrl: './directory.component.html',
@@ -32,6 +25,7 @@ export class DirectoryComponent implements OnInit {
 
   displayedStyle = 'card';
 
+  // need muscleLoad receive from server
   muscleLoad: string[] = ['hips', 'biceps', 'abs', 'chest', 'shoulders', 'back'];
   groupedBy: string = null;
 

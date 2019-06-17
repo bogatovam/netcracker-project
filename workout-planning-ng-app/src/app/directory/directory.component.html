@@ -10,10 +10,12 @@
 <div *ngIf="displayedStyle=='card' then cards else table"></div>
 
 <ng-template #cards>
-  <div class="card " *ngFor="let group of muscleLoad"
-       (click)="applyGroupFilter(group)">
-    <div class="card-body">
-      <img src="../../../assets/images/{{group}}.jpg" alt=""/>
+  <div class="row">
+    <div class="card group-card" *ngFor="let group of muscleLoad"
+         (click)="applyGroupFilter(group)">
+      <div class="card-body">
+        <img src="../../../assets/images/{{group}}.jpg" alt=""/>
+      </div>
     </div>
   </div>
 </ng-template>
@@ -32,7 +34,7 @@
       <mat-table class="exercise-table" #table [dataSource]="dataSource" matSort>
 
         <ng-container matColumnDef="name">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> Name</mat-header-cell>
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Название упражнения</mat-header-cell>
           <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
         </ng-container>
 

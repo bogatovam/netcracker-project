@@ -38,5 +38,9 @@
 }
 
 .description {
- overflow: hidden;
+  overflow: hidden;
+}
+
+.group-card {
+  margin: 7px;
 }
