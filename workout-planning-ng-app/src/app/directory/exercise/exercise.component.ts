@@ -8,8 +8,8 @@ import {Exercise} from '../../shared/model/exercise';
 })
 export class ExerciseComponent implements OnInit {
   @Input() exercise: Exercise;
+
   constructor() {}
 
   ngOnInit() {}
-
 }

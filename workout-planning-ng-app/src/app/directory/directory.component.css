@@ -36,3 +36,7 @@
 .icons {
   margin-bottom: 10px;
 }
+
+.description {
+ overflow: hidden;
+}

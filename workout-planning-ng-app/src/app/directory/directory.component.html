@@ -22,7 +22,7 @@
   <div class="container">
     <div class="tab-header">
       <mat-form-field class="filter-field">
-        <input ngModel pattern="[a-zA-Z ]*" matInput
+        <input pattern="[a-zA-Z ]*" matInput
                (keyup)="applyFilter($event.target.value)" placeholder="Filter">
       </mat-form-field>
     </div>
@@ -45,29 +45,8 @@
     </div>
 
     <ng-template #tpl let-element>
-      <div class="mat-row detail-row" [@detailExpand] style="overflow: hidden">
-        <mat-tab-group>
-          <mat-tab label="Техника выполнения">
-            <ng-template class="tab-group" matTabContent>
-              {{element.description.technique}}
-            </ng-template>
-          </mat-tab>
-          <mat-tab label="Особенности">
-            <ng-template matTabContent>
-              {{element.description.features}}
-            </ng-template>
-          </mat-tab>
-          <mat-tab label="Нагрузка на мышцы">
-            <ng-template matTabContent>
-              {{element.infForRecommendation.muscleLoad}}
-            </ng-template>
-          </mat-tab>
-          <mat-tab label="Параметры">
-            <ng-template matTabContent>
-              {{element.measureList}}
-            </ng-template>
-          </mat-tab>
-        </mat-tab-group>
+      <div class="mat-row detail-row exercise" [@detailExpand]>
+        <app-exercise [exercise]="element"></app-exercise>
       </div>
     </ng-template>
   </div>

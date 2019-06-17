@@ -117,7 +117,6 @@ export class DirectoryComponent implements OnInit {
     return [];
   }
 
-
   applyFilter(filterValue: string): void {
     this.dataSource.filterPredicate =
       (data: Exercise, filter: string) => {
@@ -125,7 +124,7 @@ export class DirectoryComponent implements OnInit {
           (this.groupedBy !== null &&
             data.infForRecommendation.muscleLoad.get(this.groupedBy) > 0.4 &&
             data.name.indexOf(filter) !== -1);
-      };
+    };
     filterValue = filterValue.trim();
     filterValue = filterValue.toLowerCase();
     if (filterValue !== '') {
@@ -135,12 +134,13 @@ export class DirectoryComponent implements OnInit {
 
   applyGroupFilter(filterValue: string): void {
     this.groupedBy = filterValue;
+
     this.dataSource.filterPredicate =
       (data: Exercise, filter: string) => {
         return data.infForRecommendation.muscleLoad.get(filter) > 0.4;
       };
-    this.dataSource.filter = filterValue;
 
+    this.dataSource.filter = filterValue;
     this.displayedStyle = 'table';
   }
 
@@ -154,5 +154,4 @@ export class DirectoryComponent implements OnInit {
     this.groupedBy = null;
     this.dataSource.filter = '';
   }
-
 }

@@ -1,16 +1,22 @@
-<div class="card">
-  <div class="card-header" id="headingOne">
-    <h5 class="mb-0">
-      <button class="btn " data-toggle="collapse" data-target="#collapseOne"
-              aria-expanded="true" aria-controls="collapseOne">
-        {{exercise.name}}
-      </button>
-    </h5>
-  </div>
-
-  <div id="collapseOne" class="collapse hide" aria-labelledby="headingOne" data-parent="#accordion">
-    <div class="card-body">
-      {{exercise.description}}
-    </div>
-  </div>
-</div>
+<mat-tab-group>
+  <mat-tab label="Техника выполнения">
+    <ng-template class="tab-group" matTabContent>
+      {{exercise.description.technique}}
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="Особенности">
+    <ng-template matTabContent>
+      {{exercise.description.features}}
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="Нагрузка на мышцы">
+    <ng-template matTabContent>
+      {{exercise.infForRecommendation.muscleLoad}}
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="Параметры">
+    <ng-template matTabContent>
+      {{exercise.measureList}}
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>
