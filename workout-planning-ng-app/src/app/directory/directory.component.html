@@ -21,7 +21,7 @@
 <ng-template #table>
   <div class="container">
     <div class="tab-header">
-      <mat-form-field>
+      <mat-form-field class="filter-field">
         <input ngModel pattern="[a-zA-Z ]*" matInput
                (keyup)="applyFilter($event.target.value)" placeholder="Filter">
       </mat-form-field>
@@ -29,7 +29,7 @@
 
     <div class=" mat-elevation-z8">
 
-      <mat-table #table [dataSource]="dataSource" matSort>
+      <mat-table class="exercise-table" #table [dataSource]="dataSource" matSort>
 
         <ng-container matColumnDef="name">
           <mat-header-cell *matHeaderCellDef mat-sort-header> Name</mat-header-cell>

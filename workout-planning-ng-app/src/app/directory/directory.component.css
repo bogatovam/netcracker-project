@@ -3,12 +3,12 @@
   padding: 8px 24px 0;
 }
 
-.mat-form-field {
+.filter-field {
   font-size: 14px;
   width: 100%;
 }
 
-.mat-table {
+.exercise-table {
   overflow: auto;
   max-height: 500px;
 }
@@ -28,10 +28,11 @@
 .element-row.expanded {
   border-bottom-color: transparent;
 }
-.tab-group{
+
+.tab-group {
   background-color: #00063d;
 }
 
-.icons{
+.icons {
   margin-bottom: 10px;
 }
