@@ -24,12 +24,6 @@ public class UserPrincipal implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        // Extract list of permissions (name)
-        this.user.getPermissionList().forEach(p -> {
-            GrantedAuthority authority = new SimpleGrantedAuthority(p);
-            authorities.add(authority);
-        });
-
         // Extract list of roles (ROLE_name)
         this.user.getRoleList().forEach(r -> {
             GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + r);
@@ -56,6 +50,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
+        System.out.println(user);
         return user.getState()!= null && !user.getState().equals(User.State.BANNED);
     }
 

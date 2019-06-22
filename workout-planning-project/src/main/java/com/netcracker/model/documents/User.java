@@ -38,8 +38,7 @@ public class User {
     @Field("full-name")
     private String fullName;
 
-    private String roles = "";
-    private String permissions = "";
+    private String roles;
     private State state;
 
     private String gender;
@@ -56,13 +55,6 @@ public class User {
     public List<String> getRoleList(){
         if(this.roles.length() > 0){
             return Arrays.asList(this.roles.split(","));
-        }
-        return new ArrayList<>();
-    }
-
-    public List<String> getPermissionList(){
-        if(this.permissions.length() > 0){
-            return Arrays.asList(this.permissions.split(","));
         }
         return new ArrayList<>();
     }

@@ -1,4 +1,4 @@
 export class AuthorizationLoginInfo {
-  constructor(login: string, password: string) {
+  constructor( private login: string, private password: string) {
   }
 }

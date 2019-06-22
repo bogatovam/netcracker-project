@@ -14,8 +14,8 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class AuthorizationService {
-  private loginUrl = 'https://localhost:8443/authentication/signin';
-  private signupUrl = 'https://localhost:8443/authentication/signup';
+  private loginUrl = 'http://localhost:8080/authentication/signin';
+  private signupUrl = 'http://localhost:8080/authentication/signup';
 
   private _isSignedUp = false;
   private _isSignUpFailed = false;

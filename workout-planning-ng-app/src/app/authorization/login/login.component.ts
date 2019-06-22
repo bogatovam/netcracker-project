@@ -23,10 +23,10 @@ export class LoginComponent implements OnInit {
   ngOnInit(){}
 
   onSubmit(): void {
-    console.log(this.form);
     this.loginInfo = new AuthorizationLoginInfo(
       this.form.username,
       this.form.password);
+    console.log(this.loginInfo);
 
     this.authService.attemptAuth(this.loginInfo).subscribe(
       data => {
