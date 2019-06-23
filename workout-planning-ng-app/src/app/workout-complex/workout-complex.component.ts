@@ -1,9 +1,91 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {WorkoutComplex} from '../shared/model/workout-complex';
 import {Workout} from '../shared/model/workout';
 import {ApiService} from '../shared/api.service';
 import {Router} from '@angular/router';
 import {AuthorizationService} from '../authorization/authorization.service';
+
+const workoutComplexes: WorkoutComplex[] = [{
+  id: "1",
+  name: "workout complex 1",
+  description: "dscr1",
+  workouts: [
+    {
+      id: "workout1",
+      name: "name1",
+      description: "Описание Описание Описание Описание Описание Описание Описание",
+      exercises: [
+
+        {
+          id: 'id1',
+          name: 'name',
+          description: {technique: 'description1', features: ''},
+          measureList: ['measure'],
+          infForRecommendation: {
+            complexity: 0.55,
+            muscleLoad: new Map([
+              ['hips', 0.3],
+              ['biceps', 0.3],
+              ['abs', 0.3],
+              ['chest', 0.5],
+              ['shoulders', 0.3],
+              ['back', 0.3]
+            ]),
+          }
+        },
+        {
+          id: 'id2',
+          name: 'name2',
+          description: {technique: 'description2', features: ''},
+          measureList: [''],
+          infForRecommendation: {
+            complexity: 0.55,
+            muscleLoad: new Map([
+              ['hips', 0.3],
+              ['biceps', 0.5],
+              ['abs', 0.3],
+              ['chest', 0.3],
+              ['shoulders', 0.3],
+              ['back', 0.3]
+            ]),
+          }
+        },
+        {
+          id: 'id3',
+          name: 'name3',
+          description: {technique: 'description3', features: ''},
+          measureList: [''],
+          infForRecommendation: {
+            complexity: 0.35,
+            muscleLoad: new Map([
+              ['hips', 0.5],
+              ['biceps', 0.3],
+              ['abs', 0.3],
+              ['chest', 0.3],
+              ['shoulders', 0.3],
+              ['back', 0.3]
+            ]),
+          }
+        }
+      ]
+    },{
+      id: "workout2",
+      name: "name2",
+      description: "",
+      exercises: []
+    },{
+      id: "workout1",
+      name: "name3",
+      description: "",
+      exercises: []
+    },{
+      id: "workout1",
+      name: "name4",
+      description: "",
+      exercises: []
+    }
+  ]
+}];
 
 @Component({
   selector: 'app-workout-complex',
@@ -12,10 +94,10 @@ import {AuthorizationService} from '../authorization/authorization.service';
 })
 export class WorkoutComplexComponent implements OnInit {
   editableFlag = false;
-  workoutComplexes: WorkoutComplex[] = [];
+  workoutComplexes: WorkoutComplex[] = workoutComplexes;
   workouts: Workout[] = [];
   selectedWorkoutComplex: WorkoutComplex;
-  selectedWorkout: Workout;
+  selectedWorkout: Workout = null;
   errorMessage: string;
 
   constructor(private apiService: ApiService, private authService: AuthorizationService,
@@ -23,10 +105,10 @@ export class WorkoutComplexComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.setAllWorkoutComplex();
+    //this.setAllWorkoutComplex();
   }
 
-  setEditable(flag: boolean): void  {
+  setEditable(flag: boolean): void {
     this.editableFlag = flag;
   }
 
@@ -60,13 +142,13 @@ export class WorkoutComplexComponent implements OnInit {
     this.workouts = [];
   }
 
-  selectWorkoutComplex(workoutComplex: WorkoutComplex): void  {
+  selectWorkoutComplex(workoutComplex: WorkoutComplex): void {
     this.selectedWorkoutComplex = workoutComplex;
     this.workouts = workoutComplex.workouts;
     this.selectedWorkout = null;
   }
 
-  selectWorkout(workout: Workout): void  {
+  selectWorkout(workout: Workout): void {
     this.selectedWorkout = workout;
   }
 
@@ -91,5 +173,13 @@ export class WorkoutComplexComponent implements OnInit {
 
   deleteWorkout($event): void {
 
+  }
+
+  getMuscleLoad(w: Workout) {
+    return [];
+  }
+
+  getComplexity(w: Workout) {
+    return [];
   }
 }

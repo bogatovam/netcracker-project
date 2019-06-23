@@ -1,15 +1,76 @@
-.workout-card {
+.workout-description {
   background-color: white;
   color: #00063d;
-  border-radius: 20px;
+  border-radius: 20px 20px 0 0;
   border-color: #00063d;
   border-width: 3px;
-  width: 200px;
+  padding: 5px;
+}
+
+.header-tab {
+  width: inherit;
   height: content-box;
-  max-height: max-content;
-  margin: 3px;
+  background-color: #00063d;
+  color: white;
+  border-radius: 0 0 20px 20px;
+
+  font-weight: bold;
+  margin-bottom: 3vh;
 }
-.title {
-  width: 80%;
-  margin-left: 2px;
+
+.workout-content {
 }
+
+/*.create-wcomplex-button {*/
+/*  height: 5vh;*/
+/*  margin: 3px;*/
+/*  font-weight: 600;*/
+/*  width: 100%;*/
+/*  color: #fff;*/
+/*  background-color: #c5303a;*/
+/*  border-radius: 5px;*/
+/*  border: none;*/
+/*  padding: 2%;*/
+/*}*/
+
+/*.create-workout-button {*/
+/*  height: 5vh;*/
+/*  margin: 3px;*/
+/*  font-weight: 600;*/
+/*  width: 100%;*/
+/*  color: #fff;*/
+/*  background-color: #00063d;*/
+/*  border-radius: 5px;*/
+/*  border: none;*/
+/*  padding: 2%;*/
+/*}*/
+
+/*.workout-content-header {*/
+/*  align-self: center;*/
+/*}*/
+
+/*.workout-content-menu {*/
+/*  margin-left: auto;*/
+/*  margin-right: auto;*/
+/*  margin-bottom: 10px;*/
+/*}*/
+
+/*.mat-footer-row, mat-header-row, mat-row {*/
+/*  min-height: 6vh;*/
+/*}*/
+
+/*.simple-tab {*/
+
+/*}*/
+
+/*.exercise-table {*/
+/*  max-width: 25vw;*/
+/*  overflow: auto;*/
+/*  max-height: 45vh;*/
+
+/*  box-shadow: none;*/
+/*}*/
+
+/*.mat-column-complexity {*/
+/*  flex: 0 0 50px;*/
+/*}*/

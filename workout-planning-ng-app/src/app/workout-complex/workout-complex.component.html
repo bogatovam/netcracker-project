@@ -1,120 +1,114 @@
 <div *ngIf="!this.authService.isLoggedIn; else userPage">
   {{this.router.navigateByUrl("authentication/signin")}}
 </div>
+
 <ng-template #userPage>
   <div class="container">
-
-    <!-- Workout menu -->
-    <div class="row workout-menu ">
-      <div class="col-md-8 search-panel">
-        <input type="text"
-               class="form-control"
-               placeholder="Search workouts...">
+    <!-- Info Panel -->
+    <div class="info-tab">
+      <div *ngIf="selectedWorkout === null" class="row workout-menu">
+        <div class="col-md-8 align-self-center">
+          <input type="text" class="form-control" placeholder="Search workouts...">
+        </div>
+        <div class="col-md-4">
+          <button type="button" (click)="createWorkoutComplex()" class="dark-button">
+            <i class="fa fa-plus"></i> Создать комплекс
+          </button>
+          <button type="button" (click)="createWorkout(selectedWorkoutComplex.id)"
+                  [disabled]="selectedWorkoutComplex == null"
+                  class="dark-button">
+            <i class="fa fa-plus"></i> Создать тренировку
+          </button>
+        </div>
       </div>
-      <div class="col-md-4">
-        <button type="button"
-                (click)="createWorkoutComplex()"
-                class="btn create-wcomplex-button">
-          <i class="fa fa-plus"></i> Создать комплекс
-        </button>
-        <button type="button"
-                (click)="createWorkout(selectedWorkoutComplex.id)"
-                [disabled]="selectedWorkoutComplex == null"
-                class="btn create-w-button">
-          <i class="fa fa-plus"></i> Создать тренировку
-        </button>
+
+      <div *ngIf="selectedWorkout !== null" class="row workout-menu">
+        <div class="col-md-8">
+          <div class="row align-self-center">
+            <i class="fa fa fa-angle-left fa-2x m-4" (click)="selectWorkoutComplex(selectedWorkoutComplex)"></i>
+            <h3 class="align-self-center">{{selectedWorkout.name}}</h3>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <button type="button" (click)="updateWorkout(selectedWorkout)" class="dark-button">
+            <i class="fa fa-pencil"></i> Редактировать
+          </button>
+          <button type="button" (click)="deleteWorkout(selectedWorkout)" class="dark-button">
+            <i class="fa fa-trash-o"></i> Удалить
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- Workout content -->
     <div class="row workout-panel">
       <!-- WorkoutComplex Menu -->
-      <div class="col-md-3">
-        <br>
-        <br>
+      <div *ngIf="selectedWorkout === null" class="col-md-3 workout-complex-list">
         <div class="list-group list-group-flush">
           <a (click)="selectAllWorkouts()" class="list-group-item list-group-item-action ">
-            <i class="fa fa-book"></i>
-            Все тренировки
-          </a>
-          <a *ngFor="let workoutComplex of workoutComplexes"
-             class="list-group-item list-group-item-action"
-             (dblclick)="setEditable(true)"
-             (mouseleave)="setEditable(false)"
-             (click)="selectWorkoutComplex(workoutComplex)">
-
-            <div *ngIf="editableFlag; else notEditable">
-              <i class="fa fa-book"></i>&nbsp;
-              <input [(ngModel)]="workoutComplex.name" (change)="updateWorkoutComplex(workoutComplex)"
-                     type="text" class="input-label title"/>
-              <a (click)="deleteWorkoutComplex(workoutComplex)" class="pull-right text-danger">
-                <i class="fa fa-trash-o" aria-hidden="true"></i>
-              </a>
+            <div class="row workout-complex-list-element">
+              <i class="fa fa-book m-1"></i>
+              <label>Все тренировки</label>
             </div>
+          </a>
 
-            <ng-template #notEditable>
-              <i class="fa fa-book"></i>&nbsp;
+          <a *ngFor="let workoutComplex of workoutComplexes"
+             (click)="selectWorkoutComplex(workoutComplex)" class="list-group-item list-group-item-action">
+            <div class="row workout-complex-list-element">
+              <i class="fa fa-book m-1"></i>
               <label>{{workoutComplex.name}}</label>
-              <a (click)="deleteWorkoutComplex(workoutComplex)" class="pull-right text-danger">
-                <i class="fa fa-trash-o" aria-hidden="true"></i>
-              </a>
-            </ng-template>
+              <i class="fa fa-trash-o text-danger m-1" (click)="deleteWorkoutComplex(workoutComplex)"></i>
+            </div>
           </a>
         </div>
       </div>
 
-      <!-- Workouts Panel -->
-      <div>
+      <!-- Workouts panel -->
+      <div *ngIf="selectedWorkout === null" class="col-md-9">
         <div class="row">
+          <!-- Workouts Complex Header -->
           <div class="col-md-12">
-            <!-- Message if there are no workouts -->
             <h3 *ngIf="selectedWorkoutComplex != null">{{selectedWorkoutComplex.name}}</h3>
+            <p *ngIf="selectedWorkoutComplex != null">{{selectedWorkoutComplex.description}}</p>
+
+            <!-- Message if there are no workouts -->
             <h3 *ngIf="selectedWorkoutComplex == null">Все тренировки </h3>
             <p *ngIf="this.workouts.length === 0">В этом тренировочном комплексе нет тренировок :(</p>
           </div>
-        </div>
-        <div class="col-md-3">
-          <!-- Workouts list -->
-          <app-workout *ngFor="let w of workouts"
-                       [workout]="w"
-                       (workoutUpdated)="updateWorkout($event)"
-                       (workoutDeleted)="deleteWorkout($event)"
-                       (click)="selectWorkout(w)">
-          </app-workout>
-        </div>
-      </div>
-      <!-- <div *ngIf="selectedWorkout != null" class="col-1 back"
-           (click)="selectedWorkout = null">
-        <i class="fa fa-chevron-left white-icon"></i>
-      </div> -->
-      <div *ngIf="selectedWorkout != null" class="col-md-5">
-        <div class="row">
-          <div class="col-md-12">
-            <h3>->{{selectedWorkout.name}}</h3>
-            <div class="row">
-              <button type="button"
-                      (click)="updateWorkout(selectedWorkout)"
-                      class="btn create-wcomplex-button">
-                <i class="fa fa-pencil"></i> Редактировать
-              </button>
-              <button type="button"
-                      (click)="deleteWorkout(selectedWorkoutComplex)"
-                      class="btn create-w-button">
-                <i class="fa fa-trash-o"></i> Удалить
-              </button>
-            </div>
-            <h4>Упражнения</h4>
-            <div id="accordion">
-              <div *ngFor="let e of selectedWorkout.exercises">
-                <app-exercise
-                  [exercise]="e">
-                </app-exercise>
+
+          <!-- Cards with Workouts -->
+          <div class="row workout-content">
+            <div *ngFor="let w of workouts">
+              <div class="card workout-card" (click)="selectWorkout(w)">
+                <div class="row workout-card-tab">
+                  <a>
+                    <i class="fa fa-book m-1"></i>
+                  </a>
+
+                  <h5 class="workout-card-title">{{w.name}}</h5>
+
+                  <a (click)="deleteWorkout(w)" class="pull-right text-danger">
+                    <i class="fa fa-trash-o"></i>
+                  </a>
+                </div>
+                <div class="card-body">
+                  <div>
+                    <p *ngFor="let group of getMuscleLoad(w);"> {{group}} </p>
+                    <p>Сложность: {{getComplexity(w)}}</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
+      <!-- Workouts panel with detail -->
+      <div *ngIf="selectedWorkout !== null" class="col-md-12" >
+        <app-workout
+          [workout]="selectedWorkout"
+          [workoutComplexes]="workoutComplexes">
+        </app-workout>
+      </div>
     </div>
   </div>
 </ng-template>
