@@ -1,12 +1,14 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {MatPaginator, MatTableDataSource, MatSort} from '@angular/material';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {Router} from '@angular/router';
 import {ApiService} from '../shared/api.service';
 import {AuthorizationService} from '../authorization/authorization.service';
 import {Exercise} from '../shared/model/exercise';
+import {SelectionModel} from "@angular/cdk/collections";
+import {Workout} from "../shared/model/workout";
 
-const exercises: Exercise[] = [
+const EXercises: Exercise[] = [
   {
     id: 'id1',
     name: 'name',
@@ -208,10 +210,18 @@ const exercises: Exercise[] = [
   ],
 })
 export class DirectoryComponent implements OnInit {
-  displayedColumns: string[] = ['name', 'complexity'];
-  dataSource = new MatTableDataSource<Exercise>(exercises);
+  @Input() editable: boolean = false;
+  @Input() fullVersion: boolean = true;
+  @Input() exercises: Exercise[] = null;
 
-  displayedStyle = 'card';
+  displayedColumns: string[] = ['name', 'complexity'];
+  dataSource = new MatTableDataSource<Exercise>(EXercises);
+
+  @Input() displayedStyle = 'card';
+
+  @Input() initialSelection = [];
+  allowMultiSelect = true;
+  selection = new SelectionModel<Exercise>(this.allowMultiSelect, this.initialSelection);
 
   // need muscleLoad receive from server
   muscleLoad: string[] = ['hips', 'biceps', 'abs', 'chest', 'shoulders', 'back'];
@@ -219,6 +229,8 @@ export class DirectoryComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+
+  @Output() selectedExercise: EventEmitter<Exercise> = new EventEmitter<Exercise>();
 
   constructor(private router: Router, private authService: AuthorizationService,
               private apiService: ApiService) {
@@ -229,6 +241,11 @@ export class DirectoryComponent implements OnInit {
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.initialSelection.forEach(s => {
+      this.selection.select(this.dataSource.data.find((v, i, n)=>{return v.name===s.name}));
+    });
+
+    if (this.editable) this.displayedColumns.unshift("select");
   }
 
   loadExercises(): Exercise[] {
@@ -272,6 +289,19 @@ export class DirectoryComponent implements OnInit {
     this.displayedStyle = 'table';
   }
 
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected == numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected() ?
+      this.selection.clear() :
+      this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+
   switchToCard(): void {
     this.displayedStyle = 'card';
     this.groupedBy = null
@@ -281,5 +311,10 @@ export class DirectoryComponent implements OnInit {
     this.displayedStyle = 'table';
     this.groupedBy = null;
     this.dataSource.filter = '';
+  }
+
+  selectExercise(e:Exercise): void{
+    console.log(e);
+    this.selectedExercise.emit(e);
   }
 }

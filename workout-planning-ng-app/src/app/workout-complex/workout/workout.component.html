@@ -2,15 +2,33 @@
   <div class="card-body inf">
     <div class="row justify-content-md-center">
       <div class="col-md-7">
-        <p>{{workout.description}}</p>
-        <p *ngFor="let group of getMuscleLoad(workout);"> {{group}} </p>
-        <h6>Сложность:</h6> {{getComplexity(workout)}}
+        <h6>Описание:</h6>
+        <p *ngIf="!isEditable">{{workout.description}}</p>
+        <div *ngIf="isEditable">
+          <input
+            type="text"
+            placeholder="{{workout.description}}">
+        </div>
+
+        <div *ngIf="!isEditable">
+          <h6>Основные мышцы:</h6>
+          <p *ngFor="let group of getMuscleLoad(workout);"> {{group}} </p>
+
+          <h6>Сложность:</h6>
+          <p>{{getComplexity(workout)}}</p>
+        </div>
       </div>
       <div class="col-5 align-self-center">
-        <div class="form-group  list-field">
+        <div *ngIf="isEditable" class="form-group list-field">
           <h6>Тренировочный комплекс:</h6>
-          <select id="wcomplex" class="form-control">
-            <option *ngFor="let w of workoutComplexes">{{w.name}}</option>
+          <select class="form-control">
+            <option *ngFor="let w of workoutComplexes" [defaultSelected]="sourceWorkoutComplex">{{w.name}}</option>
+          </select>
+        </div>
+        <div *ngIf="!isEditable" class="form-group  disabled list-field">
+          <h6>Тренировочный комплекс:</h6>
+          <select [disabled]="true" class="form-control">
+            <option *ngFor="let w of workoutComplexes " [defaultSelected]="sourceWorkoutComplex">{{w.name}}</option>
           </select>
         </div>
       </div>
@@ -22,33 +40,58 @@
   <div class="col-md-12 workout-content">
     <div class="header-tab">
       <div class="row justify-content-md-center">
-        <p>Список упражнений</p>
+        <p class="m-2">Список упражнений</p>
+        <p class="m-2" *ngIf="isEditable">Справочник упражнений</p>
       </div>
     </div>
-    <div>
-      <div class="exercise-table mat-elevation-z8">
+    <div class="row two-tables">
+      <div [ngClass]="{'col-md-12':!isEditable,'col-6 editable-exercise-table':isEditable}">
+        <div [ngClass]="{'exercise-table mat-elevation-z8':!isEditable,
+      'mat-elevation-z8':isEditable}">
 
-        <mat-table class="exercise-table" #table [dataSource]="dataSource">
+          <mat-table class="exercise-table" #table [dataSource]="dataSource"
+                     cdkDropList
+                     [cdkDropListData]="dataSource"
+                     [cdkDropListDisabled]="!isEditable"
+                     (cdkDropListDropped)="drop($event)">
 
-          <ng-container matColumnDef="name">
-            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
-          </ng-container>
+            <ng-container matColumnDef="name">
+              <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+            </ng-container>
 
-          <ng-container matColumnDef="complexity">
-            <mat-cell *matCellDef="let element"
-                      [ngStyle]="{
+            <ng-container matColumnDef="complexity">
+              <mat-cell *matCellDef="let element"
+                        [ngStyle]="{
                       'backgroundColor': 'rgba(' + (500 * element.infForRecommendation.complexity ) + ',' +
                         + (500 * (1 - element.infForRecommendation.complexity) ) + ',' +
                         ' 0,' +
                          '0.7)'
                       }">
-              {{element.infForRecommendation.complexity}}
-            </mat-cell>
-          </ng-container>
+                {{element.infForRecommendation.complexity}}
+              </mat-cell>
+            </ng-container>
 
-          <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectExercise(row)">
-          </mat-row>
-        </mat-table>
+            <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectExercise(row)"
+                     cdkDrag
+                     [cdkDragData]="row"
+                     class="element-row" [cdkDetailRow]="row"
+                     [cdkDetailRowTpl]="tpl"
+            >
+            </mat-row>
+          </mat-table>
+
+          <ng-template #tpl let-element>
+            <div class="mat-row detail-row" [@detailExpand]>
+              <app-exercise [exercise]="element"></app-exercise>
+            </div>
+          </ng-template>
+
+        </div>
+      </div>
+      <div *ngIf="isEditable" class="col-6 pull-right">
+        <app-directory [editable]="true" [fullVersion]="false" [displayedStyle]="'table'"
+        [initialSelection]="workout.exercises"
+        (selectedExercise)="addExercise($event)"></app-directory>
       </div>
     </div>
   </div>

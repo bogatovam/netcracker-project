@@ -1,4 +1,4 @@
-<div class="header-panel row justify-content-md-center">
+<div *ngIf="fullVersion" class="header-panel row justify-content-md-center">
   <div class="header" (click)="switchToTable()">
     <h1>Справочник упражнений</h1>
   </div>
@@ -17,7 +17,6 @@
 <div [hidden]="displayedStyle !== 'card' ">
   <div class="container">
     <div class="group-card-panel">
-
       <h6>Выберите группу мышц, чтобы посомтреть упражнения</h6>
       <div class="group-cards">
         <div class="row justify-content-md-center">
@@ -34,8 +33,8 @@
 </div>
 
 <div [hidden]="displayedStyle !== 'table'">
-  <div class="container">
-    <div class="group-card-panel  ">
+  <div class="">
+    <div class="group-card-panel">
       <div class="tab-header">
         <mat-form-field class="filter-field">
           <input pattern="[a-zA-Z ]*" matInput
@@ -46,7 +45,20 @@
       <div class=" mat-elevation-z8">
 
         <mat-table class="exercise-table" #table [dataSource]="dataSource" matSort>
-
+          <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-checkbox (change)="$event ? masterToggle() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()">
+              </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <mat-checkbox (click)="selectExercise(row)"
+                            (change)="$event ? selection.toggle(row) : null"
+                            [checked]="selection.isSelected(row)">
+              </mat-checkbox>
+            </td>
+          </ng-container>
           <ng-container matColumnDef="name">
             <mat-header-cell *matHeaderCellDef mat-sort-header> Название упражнения</mat-header-cell>
             <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>

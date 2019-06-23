@@ -55,6 +55,10 @@
   flex: 0 0 50px;
 }
 
+.mat-footer-row, mat-header-row, mat-row {
+  min-height: 6vh;
+}
+
 .header-panel {
   margin-top: 20px;
   margin-right: auto;

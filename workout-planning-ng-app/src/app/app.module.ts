@@ -6,6 +6,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AppComponent} from './app.component';
 import {LoginComponent} from './authorization/login/login.component';
 
+import {DragDropModule} from '@angular/cdk/drag-drop'
 import {httpInterceptorProviders} from './authorization/authorization-interceptor';
 import {RouterModule, Routes} from '@angular/router';
 import {SignupComponent} from './authorization/signup/signup.component';
@@ -53,7 +54,7 @@ import {
   MatToolbarModule,
   MatTooltipModule,
   MatTreeModule,
-} from '@angular/material';
+  } from '@angular/material';
 import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {CdkDetailRowDirective} from './directory/cdk-detail-row.directive';
@@ -83,6 +84,7 @@ const routes: Routes = [
 ];
 
 const modules = [
+  DragDropModule,
   CdkTableModule,
   CdkTreeModule,
   MatAutocompleteModule,

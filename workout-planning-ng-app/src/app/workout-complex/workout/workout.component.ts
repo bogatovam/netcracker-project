@@ -3,27 +3,39 @@ import {Workout} from '../../shared/model/workout';
 import {ApiService} from '../../shared/api.service';
 import {Exercise} from '../../shared/model/exercise';
 import {WorkoutComplex} from "../../shared/model/workout-complex";
-import {MatPaginator, MatSort, MatTableDataSource} from "@angular/material";
+import {MatPaginator, MatSort, MatTable, MatTableDataSource} from "@angular/material";
+import {animate, state, style, transition, trigger} from "@angular/animations";
+import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
 
 @Component({
   selector: 'app-workout',
   templateUrl: './workout.component.html',
-  styleUrls: ['./workout.component.css']
+  styleUrls: ['./workout.component.css'],
+  animations: [
+    trigger('detailExpand', [
+      state('void', style({height: '0px', minHeight: '0', visibility: 'hidden'})),
+      state('*', style({height: '*', visibility: 'visible'})),
+      transition('void <=> *', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ]
 })
 export class WorkoutComponent implements OnInit {
   displayedColumns: string[] = ['name', 'complexity'];
   selectedExercise: Exercise = null;
   @Input() workoutComplexes: WorkoutComplex[];
+  @Input() sourceWorkoutComplex: WorkoutComplex  ;
   @Input() workout: Workout;
 
   @Output() workoutUpdated: EventEmitter<Workout> = new EventEmitter<Workout>();
   @Output() workoutDeleted: EventEmitter<Workout> = new EventEmitter<Workout>();
   @Output() unselectedWorkout: EventEmitter<WorkoutComplex> = new EventEmitter<WorkoutComplex>();
 
+  @Input() isEditable: boolean = false;
 
   dataSource = new MatTableDataSource<Exercise>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatTable) table: MatTable<Exercise>;
 
   constructor(private apiService: ApiService) {
   }
@@ -49,6 +61,20 @@ export class WorkoutComponent implements OnInit {
   }
 
   getComplexity(w: any) {
-    return[];
+    return [];
+  }
+
+  setEditable(flag: boolean): void {
+    this.isEditable = flag;
+  }
+
+  drop(event: CdkDragDrop<MatTableDataSource<Exercise>, any>) {
+    const prevIndex = this.dataSource.data.findIndex((d) => d === event.item.data);
+    moveItemInArray(this.dataSource.data, prevIndex, event.currentIndex);
+    this.table.renderRows();
+  }
+  addExercise(e:Exercise): void{
+    this.dataSource.data.unshift(e);
+    this.table.renderRows();
   }
 }

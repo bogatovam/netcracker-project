@@ -100,6 +100,8 @@ export class WorkoutComplexComponent implements OnInit {
   selectedWorkout: Workout = null;
   errorMessage: string;
 
+  isEditable:boolean=false;
+
   constructor(private apiService: ApiService, private authService: AuthorizationService,
               private router: Router) {
   }
