@@ -5,9 +5,9 @@
         <h6>Описание:</h6>
         <p *ngIf="!isEditable">{{workout.description}}</p>
         <div *ngIf="isEditable">
-          <input
-            type="text"
-            placeholder="{{workout.description}}">
+          <textarea rows="4" cols="55">
+            {{workout.description}}"
+          </textarea>
         </div>
 
         <div *ngIf="!isEditable">
@@ -91,7 +91,8 @@
       <div *ngIf="isEditable" class="col-6 pull-right">
         <app-directory [editable]="true" [fullVersion]="false" [displayedStyle]="'table'"
         [initialSelection]="workout.exercises"
-        (selectedExercise)="addExercise($event)"></app-directory>
+        (selectedExercise)="addExercise($event)"
+        (unselectedExercise)="deleteExercise($event)"></app-directory>
       </div>
     </div>
   </div>

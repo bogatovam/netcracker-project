@@ -6,14 +6,14 @@ import {Router} from '@angular/router';
 import {AuthorizationService} from '../authorization/authorization.service';
 
 const workoutComplexes: WorkoutComplex[] = [{
-  id: "1",
-  name: "workout complex 1",
-  description: "dscr1",
+  id: '1',
+  name: 'workout complex 1',
+  description: 'dscr1',
   workouts: [
     {
-      id: "workout1",
-      name: "name1",
-      description: "Описание Описание Описание Описание Описание Описание Описание",
+      id: 'workout1',
+      name: 'name1',
+      description: 'Описание Описание Описание Описание Описание Описание Описание',
       exercises: [
 
         {
@@ -68,20 +68,20 @@ const workoutComplexes: WorkoutComplex[] = [{
           }
         }
       ]
-    },{
-      id: "workout2",
-      name: "name2",
-      description: "",
+    }, {
+      id: 'workout2',
+      name: 'name2',
+      description: '',
       exercises: []
-    },{
-      id: "workout1",
-      name: "name3",
-      description: "",
+    }, {
+      id: 'workout1',
+      name: 'name3',
+      description: '',
       exercises: []
-    },{
-      id: "workout1",
-      name: "name4",
-      description: "",
+    }, {
+      id: 'workout1',
+      name: 'name4',
+      description: '',
       exercises: []
     }
   ]
@@ -99,8 +99,9 @@ export class WorkoutComplexComponent implements OnInit {
   selectedWorkoutComplex: WorkoutComplex;
   selectedWorkout: Workout = null;
   errorMessage: string;
+  searchText: string;
 
-  isEditable:boolean=false;
+  isWorkoutComplexEditable: boolean = false;
 
   constructor(private apiService: ApiService, private authService: AuthorizationService,
               private router: Router) {
@@ -112,6 +113,10 @@ export class WorkoutComplexComponent implements OnInit {
 
   setEditable(flag: boolean): void {
     this.editableFlag = flag;
+  }
+
+  setWorkoutComplexEditable(flag: boolean): void {
+    this.isWorkoutComplexEditable = flag;
   }
 
   setAllWorkoutComplex() {
@@ -162,19 +167,21 @@ export class WorkoutComplexComponent implements OnInit {
   }
 
   createWorkoutComplex(): void {
+    let workoutComplex = new WorkoutComplex('', '', '', []);
+    workoutComplex.workouts = [];
+    this.selectWorkoutComplex(workoutComplex);
+
+    this.workouts = [];
+    this.workoutComplexes.push(this.selectedWorkoutComplex);
+    this.setWorkoutComplexEditable(true);
+  }
+
+  updateWorkout(workout: Workout): void {
 
   }
 
-  createWorkout(id: string): void {
-
-  }
-
-  updateWorkout($event): void {
-
-  }
-
-  deleteWorkout($event): void {
-
+  deleteWorkout(workout: Workout): void {
+    // this.workouts.splice(this.workouts.findIndex())
   }
 
   getMuscleLoad(w: Workout) {
@@ -183,5 +190,32 @@ export class WorkoutComplexComponent implements OnInit {
 
   getComplexity(w: Workout) {
     return [];
+  }
+
+  createWorkout(): void {
+    this.selectedWorkout = new Workout('', '', '', []);
+    this.selectedWorkout.exercises = [];
+    this.setEditable(true);
+  }
+
+
+  submit(): void {
+    this.setEditable(false);
+  }
+
+  cancel(): void {
+    this.setEditable(false);
+  }
+
+  saveWorkoutComplex(): void {
+    this.setWorkoutComplexEditable(false);
+    this.workoutComplexes.pop();
+    this.workoutComplexes.push(this.selectedWorkoutComplex);
+  }
+
+  cancelWorkoutComplex(): void {
+    this.setWorkoutComplexEditable(false);
+    this.workoutComplexes.pop();
+    this.selectedWorkoutComplex = null;
   }
 }

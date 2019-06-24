@@ -6,7 +6,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AppComponent} from './app.component';
 import {LoginComponent} from './authorization/login/login.component';
 
-import {DragDropModule} from '@angular/cdk/drag-drop'
+import {DragDropModule} from '@angular/cdk/drag-drop';
 import {httpInterceptorProviders} from './authorization/authorization-interceptor';
 import {RouterModule, Routes} from '@angular/router';
 import {SignupComponent} from './authorization/signup/signup.component';
@@ -58,6 +58,7 @@ import {
 import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {CdkDetailRowDirective} from './directory/cdk-detail-row.directive';
+import { WorkoutFilterPipe } from './shared/workout-filter.pipe';
 
 const routes: Routes = [
   {
@@ -134,7 +135,8 @@ const modules = [
     DirectoryComponent,
     WorkoutComplexComponent,
     ExerciseComponent,
-    CdkDetailRowDirective
+    CdkDetailRowDirective,
+    WorkoutFilterPipe
   ],
   imports: [
     BrowserModule,

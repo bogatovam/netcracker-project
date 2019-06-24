@@ -5,10 +5,9 @@ import {Router} from '@angular/router';
 import {ApiService} from '../shared/api.service';
 import {AuthorizationService} from '../authorization/authorization.service';
 import {Exercise} from '../shared/model/exercise';
-import {SelectionModel} from "@angular/cdk/collections";
-import {Workout} from "../shared/model/workout";
+import {SelectionModel} from '@angular/cdk/collections';
 
-const EXercises: Exercise[] = [
+const EXAMPLE: Exercise[] = [
   {
     id: 'id1',
     name: 'name',
@@ -210,27 +209,26 @@ const EXercises: Exercise[] = [
   ],
 })
 export class DirectoryComponent implements OnInit {
-  @Input() editable: boolean = false;
-  @Input() fullVersion: boolean = true;
-  @Input() exercises: Exercise[] = null;
-
-  displayedColumns: string[] = ['name', 'complexity'];
-  dataSource = new MatTableDataSource<Exercise>(EXercises);
-
+  @Input() editable = false;
+  @Input() fullVersion = true;
   @Input() displayedStyle = 'card';
-
   @Input() initialSelection = [];
-  allowMultiSelect = true;
-  selection = new SelectionModel<Exercise>(this.allowMultiSelect, this.initialSelection);
 
-  // need muscleLoad receive from server
-  muscleLoad: string[] = ['hips', 'biceps', 'abs', 'chest', 'shoulders', 'back'];
-  groupedBy: string = null;
+  @Output() unselectedExercise: EventEmitter<Exercise> = new EventEmitter<Exercise>();
+  @Output() selectedExercise: EventEmitter<Exercise> = new EventEmitter<Exercise>();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  @Output() selectedExercise: EventEmitter<Exercise> = new EventEmitter<Exercise>();
+  displayedColumns: string[] = ['name', 'complexity'];
+  dataSource = new MatTableDataSource<Exercise>(EXAMPLE);
+
+  allowMultiSelect = true;
+  selection = new SelectionModel<Exercise>(this.allowMultiSelect, this.initialSelection);
+
+  muscleLoad: string[] = null; // = ['hips', 'biceps', 'abs', 'chest', 'shoulders', 'back'];
+  groupedBy: string = null;
+
 
   constructor(private router: Router, private authService: AuthorizationService,
               private apiService: ApiService) {
@@ -239,25 +237,34 @@ export class DirectoryComponent implements OnInit {
   isExpansionDetailRow = (index, row) => row.hasOwnProperty('detailRow');
 
   ngOnInit() {
+    // this.loadExercises();
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.initialSelection.forEach(s => {
-      this.selection.select(this.dataSource.data.find((v, i, n)=>{return v.name===s.name}));
+      this.selection.select(this.dataSource.data.find((v, i, n) => {
+        return v.id === s.id;
+      }));
     });
-
-    if (this.editable) this.displayedColumns.unshift("select");
+    if (this.editable) this.displayedColumns.unshift('select');
   }
 
-  loadExercises(): Exercise[] {
-    this.apiService.getAllExercises().subscribe(
+  loadExercises(): void {
+    this.apiService.getMuscleLoad().subscribe(
       result => {
-        return result;
+        this.muscleLoad = result;
       },
       error1 => {
-        console.log(error1);
+        console.log('ERROR: get exercises load: ' + error1.toString());
       }
     );
-    return [];
+    this.apiService.getAllExercises().subscribe(
+      result => {
+        this.dataSource = new MatTableDataSource<Exercise>(result);
+      },
+      error1 => {
+        console.log('ERROR: get all exercise: ' + error1.toString());
+      }
+    );
   }
 
   applyFilter(filterValue: string): void {
@@ -266,15 +273,16 @@ export class DirectoryComponent implements OnInit {
         return (this.groupedBy === null && data.name.indexOf(filter) !== -1) ||
           (this.groupedBy !== null &&
             data.infForRecommendation.muscleLoad.get(this.groupedBy) > 0.4 &&
-            data.name.indexOf(filter) !== -1)
+            data.name.indexOf(filter) !== -1);
       };
 
     filterValue = filterValue.trim();
     filterValue = filterValue.toLowerCase();
-    if (filterValue === "")
+    if (filterValue === '') {
       this.applyGroupFilter(this.groupedBy);
-    else
+    } else {
       this.dataSource.filter = filterValue;
+    }
   }
 
   applyGroupFilter(filterValue: string): void {
@@ -289,14 +297,13 @@ export class DirectoryComponent implements OnInit {
     this.displayedStyle = 'table';
   }
 
-  isAllSelected() {
+  isAllSelected(): boolean {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
-    return numSelected == numRows;
+    return numSelected === numRows;
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
-  masterToggle() {
+  masterToggle(): void {
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.data.forEach(row => this.selection.select(row));
@@ -313,8 +320,21 @@ export class DirectoryComponent implements OnInit {
     this.dataSource.filter = '';
   }
 
-  selectExercise(e:Exercise): void{
-    console.log(e);
-    this.selectedExercise.emit(e);
+  selectExercise(e: Exercise): void {
+    this.selection.toggle(e);
+    if (this.selection.isSelected(e)) {
+      this.selectedExercise.emit(e);
+    } else {
+      this.unselectedExercise.emit(e);
+    }
+  }
+
+  selectALlExercise(): void {
+    this.masterToggle();
+
+    console.log(this.isAllSelected());
+    this.isAllSelected() ?
+      this.dataSource.data.forEach(row => this.unselectedExercise.emit(row)) :
+      this.dataSource.data.forEach(row => this.selectedExercise.emit(row));
   }
 }

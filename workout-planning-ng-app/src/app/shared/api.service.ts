@@ -10,6 +10,8 @@ import {Exercise} from './model/exercise';
 })
 export class ApiService {
 
+  private GET_ALL_EXERCISES = 'http://localhost:8080/free/exercises/all';
+  private GET_ALL_EXERCISES_LOAD = 'http://localhost:8080/free/exercises/load';
   private GET_ALL_WORKOUT = 'http://localhost:8080/workout/all';
   private GET_ALL_WORKOUT_COMPLEXES = 'http://localhost:8080/workout-complex/all';
 
@@ -31,6 +33,10 @@ export class ApiService {
   }
 
   getAllExercises(): Observable<Exercise[]> {
-    return this.http.get<Exercise[]>(this.BASE_URL + 'free/exercises/all');
+    return this.http.get<Exercise[]>(this.GET_ALL_EXERCISES);
+  }
+
+  getMuscleLoad(): Observable<string[]> {
+    return this.http.get<string[]>(this.GET_ALL_EXERCISES_LOAD);
   }
 }

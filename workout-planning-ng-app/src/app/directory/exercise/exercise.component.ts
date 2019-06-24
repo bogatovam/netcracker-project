@@ -1,6 +1,6 @@
 import {Component, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
 import {Exercise} from '../../shared/model/exercise';
-import {MatTableDataSource} from "@angular/material";
+import {MatTableDataSource} from '@angular/material';
 
 @Component({
   selector: 'app-exercise',

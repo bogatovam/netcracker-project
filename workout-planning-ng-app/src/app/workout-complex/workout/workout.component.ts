@@ -2,10 +2,10 @@ import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angula
 import {Workout} from '../../shared/model/workout';
 import {ApiService} from '../../shared/api.service';
 import {Exercise} from '../../shared/model/exercise';
-import {WorkoutComplex} from "../../shared/model/workout-complex";
-import {MatPaginator, MatSort, MatTable, MatTableDataSource} from "@angular/material";
-import {animate, state, style, transition, trigger} from "@angular/animations";
-import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
+import {WorkoutComplex} from '../../shared/model/workout-complex';
+import {MatPaginator, MatSort, MatTable, MatTableDataSource} from '@angular/material';
+import {animate, state, style, transition, trigger} from '@angular/animations';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-workout',
@@ -23,7 +23,7 @@ export class WorkoutComponent implements OnInit {
   displayedColumns: string[] = ['name', 'complexity'];
   selectedExercise: Exercise = null;
   @Input() workoutComplexes: WorkoutComplex[];
-  @Input() sourceWorkoutComplex: WorkoutComplex  ;
+  @Input() sourceWorkoutComplex: WorkoutComplex;
   @Input() workout: Workout;
 
   @Output() workoutUpdated: EventEmitter<Workout> = new EventEmitter<Workout>();
@@ -73,8 +73,16 @@ export class WorkoutComponent implements OnInit {
     moveItemInArray(this.dataSource.data, prevIndex, event.currentIndex);
     this.table.renderRows();
   }
-  addExercise(e:Exercise): void{
+
+  addExercise(e: Exercise): void {
     this.dataSource.data.unshift(e);
+    this.table.renderRows();
+  }
+
+  deleteExercise(e: Exercise) {
+    this.dataSource.data.splice(this.dataSource.data.findIndex((v, n, o) => {
+      return v.id === e.id
+    }), 1);
     this.table.renderRows();
   }
 }
