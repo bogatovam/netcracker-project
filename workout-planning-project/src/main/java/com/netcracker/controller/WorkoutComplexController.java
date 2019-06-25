@@ -116,6 +116,16 @@ public class WorkoutComplexController {
             Authentication authentication){
         return planningService.setNameWorkoutComplex(id, name, authentication.getName());
     }
+    @PutMapping(SET_DESCRIPTION_BY_ID)
+    @ApiOperation(value = "Set workout complex description by id")
+    public WorkoutComplex setDescriptionWorkoutComplex(
+            @ApiParam(value = "Workout complex id")
+            @PathVariable String id,
+            @ApiParam(value = "New workout complex name")
+            @RequestBody String description,
+            Authentication authentication){
+        return planningService.setDescriptionWorkoutComplex(id, description, authentication.getName());
+    }
 
     @DeleteMapping(DELETE_WORKOUT_COMPLEX_BY_ID)
     @ApiOperation(value = "Delete workout complex id")

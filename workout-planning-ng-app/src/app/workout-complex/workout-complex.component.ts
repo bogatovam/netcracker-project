@@ -4,88 +4,7 @@ import {Workout} from '../shared/model/workout';
 import {ApiService} from '../shared/api.service';
 import {Router} from '@angular/router';
 import {AuthorizationService} from '../authorization/authorization.service';
-
-const workoutComplexes: WorkoutComplex[] = [{
-  id: '1',
-  name: 'workout complex 1',
-  description: 'dscr1',
-  workouts: [
-    {
-      id: 'workout1',
-      name: 'name1',
-      description: 'Описание Описание Описание Описание Описание Описание Описание',
-      exercises: [
-
-        {
-          id: 'id1',
-          name: 'name',
-          description: {technique: 'description1', features: ''},
-          measureList: ['measure'],
-          infForRecommendation: {
-            complexity: 0.55,
-            muscleLoad: new Map([
-              ['hips', 0.3],
-              ['biceps', 0.3],
-              ['abs', 0.3],
-              ['chest', 0.5],
-              ['shoulders', 0.3],
-              ['back', 0.3]
-            ]),
-          }
-        },
-        {
-          id: 'id2',
-          name: 'name2',
-          description: {technique: 'description2', features: ''},
-          measureList: [''],
-          infForRecommendation: {
-            complexity: 0.55,
-            muscleLoad: new Map([
-              ['hips', 0.3],
-              ['biceps', 0.5],
-              ['abs', 0.3],
-              ['chest', 0.3],
-              ['shoulders', 0.3],
-              ['back', 0.3]
-            ]),
-          }
-        },
-        {
-          id: 'id3',
-          name: 'name3',
-          description: {technique: 'description3', features: ''},
-          measureList: [''],
-          infForRecommendation: {
-            complexity: 0.35,
-            muscleLoad: new Map([
-              ['hips', 0.5],
-              ['biceps', 0.3],
-              ['abs', 0.3],
-              ['chest', 0.3],
-              ['shoulders', 0.3],
-              ['back', 0.3]
-            ]),
-          }
-        }
-      ]
-    }, {
-      id: 'workout2',
-      name: 'name2',
-      description: '',
-      exercises: []
-    }, {
-      id: 'workout1',
-      name: 'name3',
-      description: '',
-      exercises: []
-    }, {
-      id: 'workout1',
-      name: 'name4',
-      description: '',
-      exercises: []
-    }
-  ]
-}];
+import {angularCoreEnv} from "@angular/core/src/render3/jit/environment";
 
 @Component({
   selector: 'app-workout-complex',
@@ -93,49 +12,70 @@ const workoutComplexes: WorkoutComplex[] = [{
   styleUrls: ['./workout-complex.component.css']
 })
 export class WorkoutComplexComponent implements OnInit {
-  editableFlag = false;
-  workoutComplexes: WorkoutComplex[] = workoutComplexes;
+  workoutComplexes: WorkoutComplex[] = [];
   workouts: Workout[] = [];
   selectedWorkoutComplex: WorkoutComplex;
   selectedWorkout: Workout = null;
   errorMessage: string;
   searchText: string;
 
-  isWorkoutComplexEditable: boolean = false;
+  isWorkoutComplexEditable = false;
+  isWorkoutEditableFlag = false;
 
   constructor(private apiService: ApiService, private authService: AuthorizationService,
               private router: Router) {
   }
 
   ngOnInit() {
-    //this.setAllWorkoutComplex();
+    this.setAllWorkoutComplex();
+    this.selectAllWorkouts();
   }
 
-  setEditable(flag: boolean): void {
-    this.editableFlag = flag;
+  setWorkoutEditable(flag: boolean): void {
+    this.isWorkoutEditableFlag = flag;
   }
 
   setWorkoutComplexEditable(flag: boolean): void {
     this.isWorkoutComplexEditable = flag;
   }
 
+  createWorkoutComplex(): void {
+    let workoutComplex = new WorkoutComplex('', '', '', []);
+    workoutComplex.description = '';
+    workoutComplex.workouts = [];
+    this.selectWorkoutComplex(workoutComplex);
+
+    this.workouts = [];
+    this.workoutComplexes.push(this.selectedWorkoutComplex);
+    this.setWorkoutComplexEditable(true);
+  }
+
+  saveWorkoutComplex(): void {
+    this.setWorkoutComplexEditable(false);
+   // if (this.selectedWorkoutComplex.id === null) {
+      this.apiService.createWorkoutComplex(this.selectedWorkoutComplex).subscribe(
+        result => {
+          this.selectedWorkoutComplex.id = result.id;
+        }
+      );
+   /// } else {
+   //   this.apiService.updateWorkoutComplex(this.selectedWorkoutComplex);
+  //  }
+  }
+
+  deleteWorkoutComplex(workoutComplex: WorkoutComplex): void {
+    this.workoutComplexes.splice(this.workoutComplexes.findIndex((v, n, o) => {
+      return v.id == workoutComplex.id;
+    }), 1);
+    if (this.selectedWorkoutComplex !== null && this.selectedWorkoutComplex.id == workoutComplex.id)
+      this.selectedWorkoutComplex = null;
+    this.apiService.deleteWorkoutComplex(workoutComplex).subscribe();
+  }
+
   setAllWorkoutComplex() {
     this.apiService.getAllWorkoutComplex().subscribe(
       result => {
-        console.log(result);
         this.workoutComplexes = result;
-      },
-      error => {
-        this.errorMessage = error;
-      }
-    );
-  }
-
-  setAllWorkout() {
-    this.apiService.getAllWorkout().subscribe(
-      result => {
-        console.log(result);
-        this.workouts = result;
       },
       error => {
         this.errorMessage = error;
@@ -147,33 +87,44 @@ export class WorkoutComplexComponent implements OnInit {
     this.selectedWorkoutComplex = null;
     this.selectedWorkout = null;
     this.workouts = [];
+
+    this.workoutComplexes.forEach((v, n, o) => {
+      v.workouts.forEach((w, n, o) => {
+        this.workouts.push(w);
+      });
+    });
   }
 
   selectWorkoutComplex(workoutComplex: WorkoutComplex): void {
     this.selectedWorkoutComplex = workoutComplex;
     this.workouts = workoutComplex.workouts;
     this.selectedWorkout = null;
+    if (this.isWorkoutComplexEditable) this.setWorkoutComplexEditable(false);
+  }
+
+  unselectWorkoutComplex(workoutComplex: WorkoutComplex): void {
+    this.selectedWorkoutComplex = null;
+    this.selectedWorkout = null;
+
+    this.selectAllWorkouts();
+
+    if (this.isWorkoutComplexEditable) this.setWorkoutComplexEditable(false);
   }
 
   selectWorkout(workout: Workout): void {
     this.selectedWorkout = workout;
   }
 
-  updateWorkoutComplex(workoutComplex: WorkoutComplex): void {
+  createWorkout(): void {
+    this.selectedWorkout = new Workout('', '', '', []);
+    this.selectedWorkout.exercises = [];
+    this.setWorkoutEditable(true);
   }
 
-  deleteWorkoutComplex(workoutComplex: WorkoutComplex): void {
-
-  }
-
-  createWorkoutComplex(): void {
-    let workoutComplex = new WorkoutComplex('', '', '', []);
-    workoutComplex.workouts = [];
-    this.selectWorkoutComplex(workoutComplex);
-
-    this.workouts = [];
-    this.workoutComplexes.push(this.selectedWorkoutComplex);
-    this.setWorkoutComplexEditable(true);
+  saveWorkout(): void {
+    this.selectedWorkout = new Workout('', '', '', []);
+    this.selectedWorkout.exercises = [];
+    this.setWorkoutEditable(true);
   }
 
   updateWorkout(workout: Workout): void {
@@ -181,7 +132,11 @@ export class WorkoutComplexComponent implements OnInit {
   }
 
   deleteWorkout(workout: Workout): void {
-    // this.workouts.splice(this.workouts.findIndex())
+    this.workouts.splice(this.workouts.findIndex((v, n, o) => {
+      return v.id == workout.id;
+    }), 1);
+    if (this.selectedWorkout !== null && this.selectedWorkout.id == workout.id)
+      this.selectedWorkout = null;
   }
 
   getMuscleLoad(w: Workout) {
@@ -192,30 +147,16 @@ export class WorkoutComplexComponent implements OnInit {
     return [];
   }
 
-  createWorkout(): void {
-    this.selectedWorkout = new Workout('', '', '', []);
-    this.selectedWorkout.exercises = [];
-    this.setEditable(true);
-  }
-
-
   submit(): void {
-    this.setEditable(false);
+    this.setWorkoutEditable(false);
   }
 
   cancel(): void {
-    this.setEditable(false);
-  }
-
-  saveWorkoutComplex(): void {
+    this.setWorkoutEditable(false);
     this.setWorkoutComplexEditable(false);
-    this.workoutComplexes.pop();
-    this.workoutComplexes.push(this.selectedWorkoutComplex);
-  }
-
-  cancelWorkoutComplex(): void {
-    this.setWorkoutComplexEditable(false);
-    this.workoutComplexes.pop();
-    this.selectedWorkoutComplex = null;
+    if (this.selectedWorkoutComplex.id === null) {
+      this.workoutComplexes.pop();
+      this.selectedWorkoutComplex = null;
+    }
   }
 }

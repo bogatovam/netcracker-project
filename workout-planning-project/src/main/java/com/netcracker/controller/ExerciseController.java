@@ -65,7 +65,7 @@ public class ExerciseController {
 
     @GetMapping(GET_DESCRIPTION_BY_ID)
     @ApiOperation(value = "Return exercises description by id")
-    public String getDescriptionOfExercise(
+    public Exercise.Description getDescriptionOfExercise(
             @ApiParam(value = "Exercises id")
             @PathVariable String id) {
         return dataDisplayService.getDescriptionOfExercise(id);
@@ -103,7 +103,7 @@ public class ExerciseController {
             @ApiParam(value = "Exercises id")
             @PathVariable String id,
             Authentication authentication) {
-        return dataDisplayService.getLastMeasurementOfExercise(id,authentication.getName());
+        return dataDisplayService.getLastMeasurementOfExercise(id, authentication.getName());
     }
 
     @PutMapping(SET_NAME_BY_ID)
@@ -135,5 +135,11 @@ public class ExerciseController {
             @PathVariable String id,
             Authentication authentication) {
         return planningService.deleteExercise(id, authentication.getName());
+    }
+
+    @GetMapping(GET_ALL_EXERCISES_LOAD)
+    @ApiOperation(value = "")
+    public String[] getExerciseLoad() {
+        return Exercise.muscleLoad;
     }
 }

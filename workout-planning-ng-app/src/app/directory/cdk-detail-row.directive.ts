@@ -1,7 +1,7 @@
 import {Directive, HostBinding, HostListener, Input, TemplateRef, ViewContainerRef} from '@angular/core';
 
 @Directive({
-  selector: '[cdkDetailRow]'
+  selector: '[appCdkDetailRow]'
 })
 export class CdkDetailRowDirective {
   private row: any;
@@ -14,13 +14,13 @@ export class CdkDetailRowDirective {
   }
 
   @Input()
-  set cdkDetailRow(value: any) {
+  set appCdkDetailRow(value: any) {
     if (value !== this.row) {
       this.row = value;
     }
   }
 
-  @Input('cdkDetailRowTpl')
+  @Input('appCdkDetailRowTpl')
   set template(value: TemplateRef<any>) {
     if (value !== this.tRef) {
       this.tRef = value;
@@ -50,3 +50,4 @@ export class CdkDetailRowDirective {
     }
   }
 }
+

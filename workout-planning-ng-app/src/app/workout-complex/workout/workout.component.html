@@ -21,14 +21,16 @@
       <div class="col-5 align-self-center">
         <div *ngIf="isEditable" class="form-group list-field">
           <h6>Тренировочный комплекс:</h6>
-          <select class="form-control">
-            <option *ngFor="let w of workoutComplexes" [defaultSelected]="sourceWorkoutComplex">{{w.name}}</option>
+          <select [(ngModel)]="sourceWorkoutComplex" class="form-control">
+            <option *ngFor="let w of workoutComplexes"
+                    [selected]="w.id === sourceWorkoutComplex.id">{{w.name}}</option>
           </select>
         </div>
         <div *ngIf="!isEditable" class="form-group  disabled list-field">
           <h6>Тренировочный комплекс:</h6>
           <select [disabled]="true" class="form-control">
-            <option *ngFor="let w of workoutComplexes " [defaultSelected]="sourceWorkoutComplex">{{w.name}}</option>
+            <option *ngFor="let w of workoutComplexes "
+                    [selected]="w.id === sourceWorkoutComplex.id">{{w.name}}</option>
           </select>
         </div>
       </div>
@@ -74,8 +76,9 @@
             <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectExercise(row)"
                      cdkDrag
                      [cdkDragData]="row"
-                     class="element-row" [cdkDetailRow]="row"
-                     [cdkDetailRowTpl]="tpl"
+                     class="element-row"
+                     [appCdkDetailRow]="row"
+                     [appCdkDetailRowTpl]="tpl"
             >
             </mat-row>
           </mat-table>
@@ -90,9 +93,9 @@
       </div>
       <div *ngIf="isEditable" class="col-6 pull-right">
         <app-directory [editable]="true" [fullVersion]="false" [displayedStyle]="'table'"
-        [initialSelection]="workout.exercises"
-        (selectedExercise)="addExercise($event)"
-        (unselectedExercise)="deleteExercise($event)"></app-directory>
+                       [initialSelection]="workout.exercises"
+                       (selectedExercise)="addExercise($event)"
+                       (unselectedExercise)="deleteExercise($event)"></app-directory>
       </div>
     </div>
   </div>

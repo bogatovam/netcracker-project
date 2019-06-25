@@ -35,7 +35,7 @@ public interface DataDisplayService {
     String getNameOfExercise(String exerciseId);
 
     // Получить описание упражнения
-    String getDescriptionOfExercise(String exerciseId);
+    Exercise.Description getDescriptionOfExercise(String exerciseId);
 
     // Получить меры упражнения
     List<String> getMeasuresOfExercise(String exerciseId);

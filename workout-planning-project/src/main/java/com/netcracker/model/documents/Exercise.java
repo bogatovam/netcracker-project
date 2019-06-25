@@ -17,6 +17,7 @@ import static com.netcracker.model.CollectionsNames.EXERCISE;
 @Document(EXERCISE)
 @ApiModel(value = "Describes an exercise")
 public class Exercise {
+    public static final String[] muscleLoad = {"hips", "biceps", "abs", "chest", "shoulders", "back"};
 
     @Id
     @ApiModelProperty(hidden = true)
@@ -26,8 +27,16 @@ public class Exercise {
     private List<String> measureList;
 
     private String name;
-    private String description;
+    private Description description;
+    private InfForRecommendation infForRecommendation;
 
     @Relations(edges = ExerciseToMeasurements.class, direction = Relations.Direction.OUTBOUND)
     private List<MeasurementsOfExercise> measurements;
+
+    @Data
+    public static class Description {
+        String technique;
+        String features;
+    }
+
 }

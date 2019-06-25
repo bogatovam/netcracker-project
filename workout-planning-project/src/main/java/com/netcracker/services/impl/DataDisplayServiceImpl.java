@@ -140,7 +140,7 @@ public class DataDisplayServiceImpl implements DataDisplayService {
     }
 
     @Override
-    public String getDescriptionOfExercise(String exerciseId) {
+    public Exercise.Description getDescriptionOfExercise(String exerciseId) {
         return getExercise(exerciseId).getDescription();
     }
 

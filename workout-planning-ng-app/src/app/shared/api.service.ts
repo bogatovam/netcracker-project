@@ -9,13 +9,14 @@ import {Exercise} from './model/exercise';
   providedIn: 'root'
 })
 export class ApiService {
+  private BASE_URL = 'http://localhost:8080';
 
   private GET_ALL_EXERCISES = 'http://localhost:8080/free/exercises/all';
   private GET_ALL_EXERCISES_LOAD = 'http://localhost:8080/free/exercises/load';
   private GET_ALL_WORKOUT = 'http://localhost:8080/workout/all';
   private GET_ALL_WORKOUT_COMPLEXES = 'http://localhost:8080/workout-complex/all';
-
-  private BASE_URL = 'http://localhost:8080/';
+  private CREATE_WORKOUT_COMPLEX = this.BASE_URL + "/workout-complex/create";
+  private WORKOUT_COMPLEX_BY_ID = this.BASE_URL + "/workout-complex/";
 
   constructor(private http: HttpClient) {
   }
@@ -39,4 +40,23 @@ export class ApiService {
   getMuscleLoad(): Observable<string[]> {
     return this.http.get<string[]>(this.GET_ALL_EXERCISES_LOAD);
   }
+
+  createWorkoutComplex(workoutComplex: WorkoutComplex): Observable<WorkoutComplex> {
+    return this.http.post<WorkoutComplex>(this.CREATE_WORKOUT_COMPLEX, workoutComplex);
+  }
+
+  deleteWorkoutComplex(workoutComplex: WorkoutComplex): Observable<WorkoutComplex> {
+    return this.http.delete<WorkoutComplex>(this.WORKOUT_COMPLEX_BY_ID
+      + workoutComplex.id + "/delete");
+  }
+
+  updateWorkoutComplex(workoutComplex: WorkoutComplex): void {
+    this.http.put<WorkoutComplex>(this.WORKOUT_COMPLEX_BY_ID
+      + workoutComplex.id + "/name",workoutComplex.name).subscribe();
+
+    this.http.put<WorkoutComplex>(this.WORKOUT_COMPLEX_BY_ID
+      + workoutComplex.id + "/description",workoutComplex.description).subscribe();
+  }
+
+
 }

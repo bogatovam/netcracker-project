@@ -78,8 +78,9 @@
           </ng-container>
 
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-          <mat-row *matRowDef="let row; columns: displayedColumns;" matRipple class="element-row" [appCdkDetailRow]="row"
-                   [cdkDetailRowTpl]="tpl">
+          <mat-row *matRowDef="let row; columns: displayedColumns;" matRipple class="element-row"
+                   [appCdkDetailRow]="row"
+                   [appCdkDetailRowTpl]="tpl">
           </mat-row>
         </mat-table>
         <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" [hidePageSize]="true"></mat-paginator>

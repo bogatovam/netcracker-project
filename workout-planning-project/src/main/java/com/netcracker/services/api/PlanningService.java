@@ -74,4 +74,6 @@ public interface PlanningService {
 
     // Изменить имя тренировочного комплексаЫ
     WorkoutComplex setNameWorkoutComplex(String workoutComplexId, String name, String userId);
+
+    WorkoutComplex setDescriptionWorkoutComplex(String id, String description, String userId);
 }

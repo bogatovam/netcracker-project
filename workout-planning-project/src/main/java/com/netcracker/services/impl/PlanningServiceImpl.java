@@ -117,7 +117,7 @@ public class PlanningServiceImpl implements PlanningService {
         UserToWComplex userToWComplex;
         WorkoutComplex newWorkoutComplex;
 
-        sourceUser = userRepository.findById(User.DEFAULT_USER_ID)
+        sourceUser = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("DEFAULT_USER_ID has bad value"));
 
         newWorkoutComplex = workoutComplexRepository.save(workoutComplex);
@@ -176,6 +176,17 @@ public class PlanningServiceImpl implements PlanningService {
 
         workoutComplexRepository.removeById(workoutComplexId);
         logger.info("User " + userId + " delete workout complex " + workoutComplexId);
+        return workoutComplex;
+    }
+
+    @Override
+    public WorkoutComplex setDescriptionWorkoutComplex(String id, String description, String userId) {
+        if (!authenticationService.checkAccessRightsToWorkoutComplex(id, userId)) return null;
+
+        WorkoutComplex workoutComplex = workoutComplexRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Workout Complex id " + id + " has bad value"));
+        workoutComplex.setDescription(description);
+        workoutComplexRepository.save(workoutComplex);
         return workoutComplex;
     }
 

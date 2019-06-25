@@ -57,8 +57,8 @@ import {
   } from '@angular/material';
 import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {CdkDetailRowDirective} from './directory/cdk-detail-row.directive';
 import { WorkoutFilterPipe } from './shared/workout-filter.pipe';
+import { CdkDetailRowDirective } from './directory/cdk-detail-row.directive';
 
 const routes: Routes = [
   {
@@ -135,8 +135,8 @@ const modules = [
     DirectoryComponent,
     WorkoutComplexComponent,
     ExerciseComponent,
-    CdkDetailRowDirective,
-    WorkoutFilterPipe
+    WorkoutFilterPipe,
+    CdkDetailRowDirective
   ],
   imports: [
     BrowserModule,

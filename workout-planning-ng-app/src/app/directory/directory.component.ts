@@ -7,195 +7,6 @@ import {AuthorizationService} from '../authorization/authorization.service';
 import {Exercise} from '../shared/model/exercise';
 import {SelectionModel} from '@angular/cdk/collections';
 
-const EXAMPLE: Exercise[] = [
-  {
-    id: 'id1',
-    name: 'name',
-    description: {technique: 'description1', features: ''},
-    measureList: ['measure'],
-    infForRecommendation: {
-      complexity: 0.55,
-      muscleLoad: new Map([
-        ['hips', 0.3],
-        ['biceps', 0.3],
-        ['abs', 0.3],
-        ['chest', 0.5],
-        ['shoulders', 0.3],
-        ['back', 0.3]
-      ]),
-    }
-  },
-  {
-    id: 'id2',
-    name: 'name2',
-    description: {technique: 'description2', features: ''},
-    measureList: [''],
-    infForRecommendation: {
-      complexity: 0.55,
-      muscleLoad: new Map([
-        ['hips', 0.3],
-        ['biceps', 0.5],
-        ['abs', 0.3],
-        ['chest', 0.3],
-        ['shoulders', 0.3],
-        ['back', 0.3]
-      ]),
-    }
-  },
-  {
-    id: 'id3',
-    name: 'name3',
-    description: {technique: 'description3', features: ''},
-    measureList: [''],
-    infForRecommendation: {
-      complexity: 0.35,
-      muscleLoad: new Map([
-        ['hips', 0.5],
-        ['biceps', 0.3],
-        ['abs', 0.3],
-        ['chest', 0.3],
-        ['shoulders', 0.3],
-        ['back', 0.3]
-      ]),
-    }
-  },
-  {
-    id: 'id3',
-    name: 'name3',
-    description: {technique: 'description3', features: ''},
-    measureList: [''],
-    infForRecommendation: {
-      complexity: 0.95,
-      muscleLoad: new Map([
-        ['hips', 0.5],
-        ['biceps', 0.3],
-        ['abs', 0.3],
-        ['chest', 0.3],
-        ['shoulders', 0.3],
-        ['back', 0.3]
-      ]),
-    }
-  },
-  {
-    id: 'id3',
-    name: 'name3',
-    description: {technique: 'description3', features: ''},
-    measureList: [''],
-    infForRecommendation: {
-      complexity: 0.55,
-      muscleLoad: new Map([
-        ['hips', 0.5],
-        ['biceps', 0.3],
-        ['abs', 0.3],
-        ['chest', 0.3],
-        ['shoulders', 0.3],
-        ['back', 0.3]
-      ]),
-    }
-  },
-  {
-    id: 'id3',
-    name: 'name3',
-    description: {technique: 'description3', features: ''},
-    measureList: [''],
-    infForRecommendation: {
-      complexity: 0.55,
-      muscleLoad: new Map([
-        ['hips', 0.5],
-        ['biceps', 0.3],
-        ['abs', 0.3],
-        ['chest', 0.3],
-        ['shoulders', 0.3],
-        ['back', 0.3]
-      ]),
-    }
-  },
-  {
-    id: 'id3',
-    name: 'name3',
-    description: {technique: 'description3', features: ''},
-    measureList: [''],
-    infForRecommendation: {
-      complexity: 0.55,
-      muscleLoad: new Map([
-        ['hips', 0.5],
-        ['biceps', 0.3],
-        ['abs', 0.3],
-        ['chest', 0.3],
-        ['shoulders', 0.3],
-        ['back', 0.3]
-      ]),
-    }
-  },
-  {
-    id: 'id3',
-    name: 'name3',
-    description: {technique: 'description3', features: ''},
-    measureList: [''],
-    infForRecommendation: {
-      complexity: 0.55,
-      muscleLoad: new Map([
-        ['hips', 0.5],
-        ['biceps', 0.3],
-        ['abs', 0.3],
-        ['chest', 0.3],
-        ['shoulders', 0.3],
-        ['back', 0.3]
-      ]),
-    }
-  },
-  {
-    id: 'id3',
-    name: 'name3',
-    description: {technique: 'description3', features: ''},
-    measureList: [''],
-    infForRecommendation: {
-      complexity: 0.55,
-      muscleLoad: new Map([
-        ['hips', 0.5],
-        ['biceps', 0.3],
-        ['abs', 0.3],
-        ['chest', 0.3],
-        ['shoulders', 0.3],
-        ['back', 0.3]
-      ]),
-    }
-  },
-  {
-    id: 'id3',
-    name: 'name3',
-    description: {technique: 'description3', features: ''},
-    measureList: [''],
-    infForRecommendation: {
-      complexity: 0.55,
-      muscleLoad: new Map([
-        ['hips', 0.5],
-        ['biceps', 0.3],
-        ['abs', 0.3],
-        ['chest', 0.3],
-        ['shoulders', 0.3],
-        ['back', 0.3]
-      ]),
-    }
-  },
-  {
-    id: 'id3',
-    name: 'name3',
-    description: {technique: 'description3', features: ''},
-    measureList: [''],
-    infForRecommendation: {
-      complexity: 0.55,
-      muscleLoad: new Map([
-        ['hips', 0.5],
-        ['biceps', 0.3],
-        ['abs', 0.3],
-        ['chest', 0.3],
-        ['shoulders', 0.3],
-        ['back', 0.3]
-      ]),
-    }
-  }];
-
 @Component({
   selector: 'app-directory',
   templateUrl: './directory.component.html',
@@ -221,7 +32,7 @@ export class DirectoryComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   displayedColumns: string[] = ['name', 'complexity'];
-  dataSource = new MatTableDataSource<Exercise>(EXAMPLE);
+  dataSource = new MatTableDataSource<Exercise>();
 
   allowMultiSelect = true;
   selection = new SelectionModel<Exercise>(this.allowMultiSelect, this.initialSelection);
@@ -237,7 +48,8 @@ export class DirectoryComponent implements OnInit {
   isExpansionDetailRow = (index, row) => row.hasOwnProperty('detailRow');
 
   ngOnInit() {
-    // this.loadExercises();
+    this.loadExercises();
+
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.initialSelection.forEach(s => {
@@ -259,6 +71,7 @@ export class DirectoryComponent implements OnInit {
     );
     this.apiService.getAllExercises().subscribe(
       result => {
+        console.log(result);
         this.dataSource = new MatTableDataSource<Exercise>(result);
       },
       error1 => {
@@ -332,9 +145,8 @@ export class DirectoryComponent implements OnInit {
   selectALlExercise(): void {
     this.masterToggle();
 
-    console.log(this.isAllSelected());
     this.isAllSelected() ?
-      this.dataSource.data.forEach(row => this.unselectedExercise.emit(row)) :
-      this.dataSource.data.forEach(row => this.selectedExercise.emit(row));
+      this.dataSource.data.forEach(row => this.selectedExercise.emit(row)) :
+      this.dataSource.data.forEach(row => this.unselectedExercise.emit(row));
   }
 }

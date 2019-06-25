@@ -15,6 +15,7 @@ public class ControllersPaths {
 
         /*   Read   operations   */
         public static final String GET_ALL_EXERCISES = "/free/exercises/all";
+        public static final String GET_ALL_EXERCISES_LOAD = "/free/exercises/load";
         public static final String GET_ALL_NAMES_OF_EXERCISES = "/free/exercises/names";
         public static final String GET_EXERCISE_BY_ID = "/free/exercises/{id}";
         public static final String GET_NAME_BY_ID = "/free/exercises/{id}/name"; //??
@@ -100,6 +101,7 @@ public class ControllersPaths {
         public static final String DEL_WORKOUT_BY_ID = "/workout-complex/{id}/workouts/{wid}/del";
         public static final String SET_NAME_WORKOUT_BY_ID = "/workout-complex/{id}/workouts/{wid}/name";
         public static final String SET_NAME_BY_ID = "/workout-complex/{id}/name";
+        public static final String SET_DESCRIPTION_BY_ID = "/workout-complex/{id}/description";
 
         /*   Delete operations   */
         public static final String DELETE_WORKOUT_COMPLEX_BY_ID = "/workout-complex/{id}/delete";

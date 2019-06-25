@@ -8,7 +8,7 @@
     <div class="info-tab">
       <div *ngIf="selectedWorkout === null" class="row workout-menu">
         <div class="col-md-8 align-self-center">
-          <input type="text" [(ngModel)]="searchText" class="form-control" placeholder="Нати...">
+          <input type="text" [(ngModel)]="searchText" class="form-control" placeholder="Найти...">
         </div>
         <div *ngIf="!isWorkoutComplexEditable" class="col-md-4">
           <button type="button" (click)="createWorkoutComplex()" class="dark-button">
@@ -24,7 +24,7 @@
           <button type="button" (click)="saveWorkoutComplex()" class="dark-button">
             <i class="fa fa-pencil"></i> Сохранить
           </button>
-          <button type="button" (click)="cancelWorkoutComplex()" class="dark-button">
+          <button type="button" (click)="cancel()" class="dark-button">
             <i class="fa fa-trash-o"></i> Отмена
           </button>
         </div>
@@ -33,19 +33,19 @@
 
       <div *ngIf="selectedWorkout !== null" class="row workout-menu">
         <div class="col-md-8">
-          <div *ngIf="!editableFlag" class="row align-self-center">
+          <div *ngIf="!isWorkoutEditableFlag" class="row align-self-center">
             <i class="fa fa fa-angle-left fa-2x m-4" (click)="selectWorkoutComplex(selectedWorkoutComplex)"></i>
             <h3 class="align-self-center">{{selectedWorkout.name}}</h3>
           </div>
-          <div *ngIf="editableFlag" class="row align-self-center">
+          <div *ngIf="isWorkoutEditableFlag" class="row align-self-center">
             <div class="col-7 align-self-center m-3">
               <label for="name">Название</label>
               <input id="name" type="text" class="form-control" placeholder="{{selectedWorkout.name}}">
             </div>
           </div>
         </div>
-        <div *ngIf="!editableFlag" class="col-md-4">
-          <button type="button" (click)="setEditable(true)" class="dark-button">
+        <div *ngIf="!isWorkoutEditableFlag" class="col-md-4">
+          <button type="button" (click)="setWorkoutEditable(true)" class="dark-button">
             <i class="fa fa-pencil"></i> Редактировать
           </button>
           <button type="button" (click)="deleteWorkout(selectedWorkout)" class="dark-button">
@@ -53,7 +53,7 @@
           </button>
         </div>
 
-        <div *ngIf="editableFlag" class="col-md-4">
+        <div *ngIf="isWorkoutEditableFlag" class="col-md-4">
           <button type="button" (click)="submit()" class="dark-button">
             <i class="fa fa-pencil"></i> Сохранить
           </button>
@@ -80,7 +80,8 @@
             <div class="row workout-complex-list-element">
               <i class="fa fa-book m-1"></i>
               <label>{{workoutComplex.name}}</label>
-              <i class="fa fa-trash-o text-danger m-1" (click)="deleteWorkoutComplex(workoutComplex)"></i>
+              <i *ngIf="!isWorkoutComplexEditable" class="fa fa-trash-o text-danger m-1"
+                 (click)="deleteWorkoutComplex(workoutComplex)"></i>
             </div>
           </a>
         </div>
@@ -104,13 +105,15 @@
                 <input id="wcdescription"
                        type="text"
                        class="input-group m-3"
-                       [ngModel]="selectedWorkoutComplex.description"
+                       [(ngModel)]="selectedWorkoutComplex.description"
                        placeholder="{{selectedWorkoutComplex.description}}"/>
               </div>
             </div>
 
-            <h3 *ngIf="selectedWorkoutComplex != null && !isWorkoutComplexEditable">
-              {{selectedWorkoutComplex.name}}</h3>
+            <div *ngIf="selectedWorkoutComplex != null && !isWorkoutComplexEditable" class="row">
+              <h3 class="align-self-center"> {{selectedWorkoutComplex.name}}</h3>
+              <a (click)="setWorkoutComplexEditable(true)"><i class="fa fa-pencil fa-2x m-2"></i></a>
+            </div>
             <p *ngIf="selectedWorkoutComplex != null && !isWorkoutComplexEditable">
               {{selectedWorkoutComplex.description}}</p>
 
@@ -122,7 +125,7 @@
           <!-- Cards with Workouts -->
           <div class="row workout-content">
             <div *ngFor="let w of workouts | workoutFilter:searchText">
-              <div class="card workout-card" (click)="selectWorkout(w)">
+              <div class="card workout-card">
                 <div class="row workout-card-tab">
                   <a>
                     <i class="fa fa-book m-1"></i>
@@ -134,7 +137,7 @@
                     <i class="fa fa-trash-o"></i>
                   </a>
                 </div>
-                <div class="card-body">
+                <div class="card-body" (click)="selectWorkout(w)">
                   <div>
                     <p *ngFor="let group of getMuscleLoad(w);"> {{group}} </p>
                     <p>Сложность: {{getComplexity(w)}}</p>
@@ -151,8 +154,9 @@
         <app-workout
           [workout]="selectedWorkout"
           [workoutComplexes]="workoutComplexes"
-          [isEditable]="editableFlag"
-          [sourceWorkoutComplex]="selectedWorkoutComplex">
+          [isEditable]="isWorkoutEditableFlag"
+          [sourceWorkoutComplex]="selectedWorkoutComplex"
+        (sourceWorkoutComplex)="selectedWorkoutComplex">
         </app-workout>
       </div>
     </div>
