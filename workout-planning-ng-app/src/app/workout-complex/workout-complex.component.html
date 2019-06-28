@@ -40,7 +40,7 @@
           <div *ngIf="isWorkoutEditableFlag" class="row align-self-center">
             <div class="col-7 align-self-center m-3">
               <label for="name">Название</label>
-              <input id="name" type="text" class="form-control" placeholder="{{selectedWorkout.name}}">
+              <input id="name" type="text" [(ngModel)]="selectedWorkout.name" class="form-control" placeholder="{{selectedWorkout.name}}">
             </div>
           </div>
         </div>
@@ -54,7 +54,7 @@
         </div>
 
         <div *ngIf="isWorkoutEditableFlag" class="col-md-4">
-          <button type="button" (click)="submit()" class="dark-button">
+          <button type="button" (click)="saveWorkout()" class="dark-button">
             <i class="fa fa-pencil"></i> Сохранить
           </button>
           <button type="button" (click)="cancel()" class="dark-button">
@@ -156,7 +156,8 @@
           [workoutComplexes]="workoutComplexes"
           [isEditable]="isWorkoutEditableFlag"
           [sourceWorkoutComplex]="selectedWorkoutComplex"
-        (sourceWorkoutComplex)="selectedWorkoutComplex">
+          (newSourceWorkoutComplex) ="changeSelectedWorkoutComplexFromWorkout($event)"
+        >
         </app-workout>
       </div>
     </div>

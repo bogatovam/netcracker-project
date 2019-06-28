@@ -121,7 +121,7 @@ public class WorkoutComplexController {
     public WorkoutComplex setDescriptionWorkoutComplex(
             @ApiParam(value = "Workout complex id")
             @PathVariable String id,
-            @ApiParam(value = "New workout complex name")
+            @ApiParam(value = "New workout complex description")
             @RequestBody String description,
             Authentication authentication){
         return planningService.setDescriptionWorkoutComplex(id, description, authentication.getName());

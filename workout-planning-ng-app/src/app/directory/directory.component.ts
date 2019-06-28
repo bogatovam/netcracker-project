@@ -1,11 +1,11 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {MatPaginator, MatTableDataSource, MatSort} from '@angular/material';
-import {animate, state, style, transition, trigger} from '@angular/animations';
-import {Router} from '@angular/router';
-import {ApiService} from '../shared/api.service';
-import {AuthorizationService} from '../authorization/authorization.service';
-import {Exercise} from '../shared/model/exercise';
-import {SelectionModel} from '@angular/cdk/collections';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { SelectionModel } from '@angular/cdk/collections';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { Router } from '@angular/router';
+import { AuthorizationService } from '../authorization/authorization.service';
+import { ApiService } from '../shared/api.service';
+import { Exercise } from '../shared/model/exercise';
 
 @Component({
   selector: 'app-directory',
@@ -47,7 +47,7 @@ export class DirectoryComponent implements OnInit {
 
   isExpansionDetailRow = (index, row) => row.hasOwnProperty('detailRow');
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadExercises();
 
     this.dataSource.paginator = this.paginator;
@@ -57,7 +57,9 @@ export class DirectoryComponent implements OnInit {
         return v.id === s.id;
       }));
     });
-    if (this.editable) this.displayedColumns.unshift('select');
+    if (this.editable) {
+      this.displayedColumns.unshift('select');
+    }
   }
 
   loadExercises(): void {
@@ -103,7 +105,7 @@ export class DirectoryComponent implements OnInit {
 
     this.dataSource.filterPredicate =
       (data: Exercise, filter: string) => {
-        return data.infForRecommendation.muscleLoad.get(filter) > 0.4;
+        return data.infForRecommendation.muscleLoad[filter] > 0.4;
       };
 
     this.dataSource.filter = filterValue;
@@ -124,7 +126,7 @@ export class DirectoryComponent implements OnInit {
 
   switchToCard(): void {
     this.displayedStyle = 'card';
-    this.groupedBy = null
+    this.groupedBy = null;
   }
 
   switchToTable(): void {

@@ -1,4 +1,6 @@
 export class SignUpInfo {
-  constructor(fullName: string, login: string, email: string, password: string,
-  gender: string,   age: string,   weight: string,   growth: string,   goal: string) {}
+  constructor(public fullName: string, public login: string, public email: string,
+              public password: string, public gender: string, public   age: string,
+              public weight: string, public growth: string, public   goal: string) {
+  }
 }

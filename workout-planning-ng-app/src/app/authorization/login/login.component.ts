@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-
+import { Router } from '@angular/router';
+import { AuthorizationLoginInfo } from '../../shared/model/login';
 import { AuthorizationService } from '../authorization.service';
 import { TokenStorageService } from '../token-storage.service';
-import { AuthorizationLoginInfo } from '../../shared/model/login';
-import {Router, RouterModule, Routes} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +19,7 @@ export class LoginComponent implements OnInit {
   constructor(private authService: AuthorizationService, private tokenStorage: TokenStorageService,
               private router: Router) {}
 
-  ngOnInit(){}
+  ngOnInit(): void {}
 
   onSubmit(): void {
     this.loginInfo = new AuthorizationLoginInfo(
@@ -32,10 +31,8 @@ export class LoginComponent implements OnInit {
       data => {
         this.tokenStorage.saveToken(data.accessToken);
         this.tokenStorage.saveUsername(data.username);
-        this.tokenStorage.saveAuthorities(data.authorities);
 
         this.authService.isLoginFailed = false;
-        this.roles = this.tokenStorage.getAuthorities();
         this.reloadPage();
       },
       error => {

@@ -22,6 +22,7 @@ public class Workout {
     private String id;
 
     private String name;
+    private String description;
 
     @Relations(edges = WorkoutToDate.class, direction = Relations.Direction.OUTBOUND)
     private List<ScheduledWorkout> scheduledWorkouts;

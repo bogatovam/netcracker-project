@@ -1,11 +1,11 @@
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {Workout} from '../../shared/model/workout';
-import {ApiService} from '../../shared/api.service';
-import {Exercise} from '../../shared/model/exercise';
-import {WorkoutComplex} from '../../shared/model/workout-complex';
-import {MatPaginator, MatSort, MatTable, MatTableDataSource} from '@angular/material';
-import {animate, state, style, transition, trigger} from '@angular/animations';
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { MatPaginator, MatSort, MatTable, MatTableDataSource } from '@angular/material';
+import { ApiService } from '../../shared/api.service';
+import { Exercise } from '../../shared/model/exercise';
+import { Workout } from '../../shared/model/workout';
+import { WorkoutComplex } from '../../shared/model/workout-complex';
 
 @Component({
   selector: 'app-workout',
@@ -26,11 +26,11 @@ export class WorkoutComponent implements OnInit {
   @Input() sourceWorkoutComplex: WorkoutComplex;
   @Input() workout: Workout;
 
-  @Output() workoutUpdated: EventEmitter<Workout> = new EventEmitter<Workout>();
-  @Output() workoutDeleted: EventEmitter<Workout> = new EventEmitter<Workout>();
-  @Output() unselectedWorkout: EventEmitter<WorkoutComplex> = new EventEmitter<WorkoutComplex>();
+  @Output() newSourceWorkoutComplex: EventEmitter<WorkoutComplex> = new EventEmitter<WorkoutComplex>();
 
   @Input() isEditable: boolean = false;
+
+  selectedSourceWorkoutId: string;
 
   dataSource = new MatTableDataSource<Exercise>();
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -40,35 +40,28 @@ export class WorkoutComponent implements OnInit {
   constructor(private apiService: ApiService) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.dataSource = new MatTableDataSource<Exercise>(this.workout.exercises);
-  }
-
-  updateWorkout(): void {
-    this.workoutUpdated.emit(this.workout);
-  }
-
-  deleteWorkout(): void {
-    this.workoutDeleted.emit(this.workout);
+    this.selectedSourceWorkoutId = this.sourceWorkoutComplex.id;
   }
 
   selectExercise(exercise: Exercise): void {
     this.selectedExercise = exercise;
   }
 
-  getMuscleLoad(w: any) {
+  getMuscleLoad(w: Workout): string[] {
     return [];
   }
 
-  getComplexity(w: any) {
-    return [];
+  getComplexity(w: Workout): string {
+    return '';
   }
 
   setEditable(flag: boolean): void {
     this.isEditable = flag;
   }
 
-  drop(event: CdkDragDrop<MatTableDataSource<Exercise>, any>) {
+  drop(event: CdkDragDrop<MatTableDataSource<Exercise>, any>): void {
     const prevIndex = this.dataSource.data.findIndex((d) => d === event.item.data);
     moveItemInArray(this.dataSource.data, prevIndex, event.currentIndex);
     this.table.renderRows();
@@ -79,10 +72,21 @@ export class WorkoutComponent implements OnInit {
     this.table.renderRows();
   }
 
-  deleteExercise(e: Exercise) {
+  deleteExercise(e: Exercise): void {
     this.dataSource.data.splice(this.dataSource.data.findIndex((v, n, o) => {
-      return v.id === e.id
+      return v.id === e.id;
     }), 1);
     this.table.renderRows();
+  }
+
+  changeSourceWorkoutComplex(): void {
+    console.log(this.selectedSourceWorkoutId);
+    this.workoutComplexes.forEach((workoutComplex) => {
+      if (this.selectedSourceWorkoutId === workoutComplex.id) {
+        this.sourceWorkoutComplex = workoutComplex;
+      }
+    });
+    this.newSourceWorkoutComplex.emit(this.sourceWorkoutComplex);
+    console.log(this.sourceWorkoutComplex);
   }
 }

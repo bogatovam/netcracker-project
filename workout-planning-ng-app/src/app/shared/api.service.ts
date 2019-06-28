@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {WorkoutComplex} from './model/workout-complex';
-import {Workout} from './model/workout';
-import {Exercise} from './model/exercise';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Exercise } from './model/exercise';
+import { Workout } from './model/workout';
+import { WorkoutComplex } from './model/workout-complex';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,9 @@ export class ApiService {
   private GET_ALL_WORKOUT = 'http://localhost:8080/workout/all';
   private GET_ALL_WORKOUT_COMPLEXES = 'http://localhost:8080/workout-complex/all';
   private CREATE_WORKOUT_COMPLEX = this.BASE_URL + "/workout-complex/create";
+
   private WORKOUT_COMPLEX_BY_ID = this.BASE_URL + "/workout-complex/";
+  private WORKOUT_BY_ID = this.BASE_URL + "/workout/";
 
   constructor(private http: HttpClient) {
   }
@@ -52,11 +54,26 @@ export class ApiService {
 
   updateWorkoutComplex(workoutComplex: WorkoutComplex): void {
     this.http.put<WorkoutComplex>(this.WORKOUT_COMPLEX_BY_ID
-      + workoutComplex.id + "/name",workoutComplex.name).subscribe();
+      + workoutComplex.id + "/name", workoutComplex.name).subscribe();
 
     this.http.put<WorkoutComplex>(this.WORKOUT_COMPLEX_BY_ID
-      + workoutComplex.id + "/description",workoutComplex.description).subscribe();
+      + workoutComplex.id + "/description", workoutComplex.description).subscribe();
   }
 
+  createWorkout(workout: Workout, workoutComplex: WorkoutComplex): Observable<Workout> {
+    return this.http.post<Workout>(this.WORKOUT_BY_ID + workoutComplex.id + "/create", workout);
+  }
+
+  deleteWorkout(workout: Workout): Observable<Workout> {
+    return this.http.delete<Workout>(this.WORKOUT_BY_ID + workout.id + "/delete");
+  }
+
+  changeWorkoutComplex(workout: Workout, newWorkoutComplex: WorkoutComplex): void {
+
+  }
+
+  updateWorkout(workout: Workout, workoutComplex: WorkoutComplex): void {
+
+  }
 
 }

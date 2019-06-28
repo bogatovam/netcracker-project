@@ -83,6 +83,12 @@ public class PlanningServiceImpl implements PlanningService {
                 workoutComplex(sourceWorkoutComplex).
                 workout(newWorkout).build();
         wComplexToWorkoutRepository.save(wComplexToWorkout);
+
+        newWorkout.getExercises().forEach(exercise->{
+            WorkoutToExercise workoutToExercise = WorkoutToExercise.builder()
+                    .exercise(exercise).workout(newWorkout).build();
+            workoutToExerciseRepository.save(workoutToExercise);
+        });
         logger.info("User " + userId + " create workout  " + workout);
 
         return newWorkout;
@@ -171,6 +177,9 @@ public class PlanningServiceImpl implements PlanningService {
                 .orElseThrow(() -> new NoSuchElementException(
                         "Workout Complex id " + workoutComplexId + " has bad value"));
 
+        workoutComplex.getWorkouts().forEach(workout -> {
+            deleteWorkout(workout.getId(), userId);
+        });
         userToWComplexRepository.removeAllByWcomplexId(workoutComplexId);
         wComplexToWorkoutRepository.removeAllByWorkoutComplexId(workoutComplexId);
 
@@ -186,6 +195,7 @@ public class PlanningServiceImpl implements PlanningService {
         WorkoutComplex workoutComplex = workoutComplexRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Workout Complex id " + id + " has bad value"));
         workoutComplex.setDescription(description);
+        System.out.println(workoutComplex);
         workoutComplexRepository.save(workoutComplex);
         return workoutComplex;
     }

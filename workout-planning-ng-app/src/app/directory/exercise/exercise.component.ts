@@ -1,6 +1,6 @@
-import {Component, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
-import {Exercise} from '../../shared/model/exercise';
-import {MatTableDataSource} from '@angular/material';
+import { Component, Input, OnInit } from '@angular/core';
+import { MatTableDataSource } from '@angular/material';
+import { Exercise } from '../../shared/model/exercise';
 
 @Component({
   selector: 'app-exercise',
@@ -16,6 +16,6 @@ export class ExerciseComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 }

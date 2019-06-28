@@ -1,23 +1,9 @@
-import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
-import {HttpClientModule} from '@angular/common/http';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-
-import {AppComponent} from './app.component';
-import {LoginComponent} from './authorization/login/login.component';
-
-import {DragDropModule} from '@angular/cdk/drag-drop';
-import {httpInterceptorProviders} from './authorization/authorization-interceptor';
-import {RouterModule, Routes} from '@angular/router';
-import {SignupComponent} from './authorization/signup/signup.component';
-import {NavigationComponent} from './navigation/navigation.component';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {WorkoutComponent} from './workout-complex/workout/workout.component';
-import {DirectoryComponent} from './directory/directory.component';
-import {WorkoutComplexComponent} from './workout-complex/workout-complex.component';
-import {ExerciseComponent} from './directory/exercise/exercise.component';
-import {CdkTableModule} from '@angular/cdk/table';
-import {CdkTreeModule} from '@angular/cdk/tree';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { CdkTableModule } from '@angular/cdk/table';
+import { CdkTreeModule } from '@angular/cdk/tree';
+import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MatAutocompleteModule,
   MatBadgeModule,
@@ -54,11 +40,23 @@ import {
   MatToolbarModule,
   MatTooltipModule,
   MatTreeModule,
-  } from '@angular/material';
-import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { WorkoutFilterPipe } from './shared/workout-filter.pipe';
+} from '@angular/material';
+import { BrowserModule } from '@angular/platform-browser';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule, Routes } from '@angular/router';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AppComponent } from './app.component';
+import { httpInterceptorProviders } from './authorization/authorization-interceptor';
+import { LoginComponent } from './authorization/login/login.component';
+import { SignupComponent } from './authorization/signup/signup.component';
 import { CdkDetailRowDirective } from './directory/cdk-detail-row.directive';
+import { DirectoryComponent } from './directory/directory.component';
+import { ExerciseComponent } from './directory/exercise/exercise.component';
+import { NavigationComponent } from './navigation/navigation.component';
+import { WorkoutFilterPipe } from './shared/workout-filter.pipe';
+import { WorkoutComplexComponent } from './workout-complex/workout-complex.component';
+import { WorkoutComponent } from './workout-complex/workout/workout.component';
 
 const routes: Routes = [
   {

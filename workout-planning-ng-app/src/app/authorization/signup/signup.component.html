@@ -96,7 +96,7 @@
               </div>
 
           <div class="form-group">
-            <button class="button-submit">Зарегистрироваться</button>
+            <button class="button-submit" (click)="onSubmit() ">Зарегистрироваться</button>
           </div>
           <div *ngIf="f.submitted && this.authService.isSignUpFailed" class="alert alert-danger danger">
             Ошибка: {{errorMessage}}

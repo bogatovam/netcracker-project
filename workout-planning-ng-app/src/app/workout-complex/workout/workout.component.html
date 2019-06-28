@@ -5,8 +5,8 @@
         <h6>Описание:</h6>
         <p *ngIf="!isEditable">{{workout.description}}</p>
         <div *ngIf="isEditable">
-          <textarea rows="4" cols="55">
-            {{workout.description}}"
+          <textarea [(ngModel)]="workout.description" rows="4" cols="55">
+            {{workout.description}}
           </textarea>
         </div>
 
@@ -21,9 +21,9 @@
       <div class="col-5 align-self-center">
         <div *ngIf="isEditable" class="form-group list-field">
           <h6>Тренировочный комплекс:</h6>
-          <select [(ngModel)]="sourceWorkoutComplex" class="form-control">
+          <select [(ngModel)]="selectedSourceWorkoutId" (change)="changeSourceWorkoutComplex()" class="form-control">
             <option *ngFor="let w of workoutComplexes"
-                    [selected]="w.id === sourceWorkoutComplex.id">{{w.name}}</option>
+                    [value]="w.id">{{w.name}}</option>
           </select>
         </div>
         <div *ngIf="!isEditable" class="form-group  disabled list-field">

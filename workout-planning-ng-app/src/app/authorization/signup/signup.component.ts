@@ -1,9 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-
-import {AuthorizationService} from '../authorization.service';
-import {SignUpInfo} from '../../shared/model/signup';
-import {Router} from '@angular/router';
-import {TokenStorageService} from '../token-storage.service';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { SignUpInfo } from '../../shared/model/signup';
+import { AuthorizationService } from '../authorization.service';
+import { TokenStorageService } from '../token-storage.service';
 
 @Component({
   selector: 'app-signup',
@@ -18,7 +17,7 @@ export class SignupComponent implements OnInit {
   constructor(private authService: AuthorizationService, private tokenStorage: TokenStorageService,
               private router: Router) {}
 
-  ngOnInit() {}
+  ngOnInit(): void {}
 
   onSubmit(): void {
     console.log(this.form);

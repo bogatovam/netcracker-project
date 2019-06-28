@@ -1,12 +1,7 @@
-import {Exercise} from './exercise';
+import { Exercise } from './exercise';
 
 export class Workout {
-  id: string;
-  name: string;
-  description: string;
-  exercises: Exercise[];
-
-  constructor(id: string, name: string,
-              description: string, exercises: Exercise[]) {
+  constructor(public id: string, public name: string,
+              public description: string, public exercises: Exercise[]) {
   }
 }
