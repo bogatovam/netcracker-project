@@ -10,7 +10,4 @@ import org.springframework.data.repository.query.Param;
 import static com.netcracker.model.CollectionsNames.WORKOUT_TO_EXERCISE;
 
 public interface WorkoutRepository extends ArangoRepository<Workout, String> {
-    //@Query("FOR w IN 1..1 @exerciseId `" + WORKOUT_TO_EXERCISE + "` RETURN w")
-    //ArangoCursor<Workout> findWorkoutsByExerciseId(@Param("exerciseId") String exerciseId);
-    Iterable<Workout> findByExercisesId(String id);
 }

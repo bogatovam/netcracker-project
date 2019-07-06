@@ -4,7 +4,6 @@ import com.netcracker.model.documents.*;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 public interface PlanningService {
 
@@ -29,10 +28,10 @@ public interface PlanningService {
     String setExerciseName(String exerciseId, String name, String userId);
 
     // Добавить упражнение в тренировку
-    Workout addListExercises(String workoutId, List<String> exerciseIdList, String userId);
+    Workout addListExercises(String workoutId, List<Exercise> exerciseList, String userId);
 
     // Удалить упражнение из тренировки
-    Workout delListExercises(String workoutId, List<String> exerciseIdList, String userId);
+    Workout delListExercises(String workoutId, List<Exercise> exerciseList, String userId);
 
     // Добавить упражнение в запланированную тренировку
     ScheduledWorkout addExerciseToScheduledWorkout(String scheduledWorkoutId, String exerciseId, String userId);
@@ -76,4 +75,8 @@ public interface PlanningService {
     WorkoutComplex setNameWorkoutComplex(String workoutComplexId, String name, String userId);
 
     WorkoutComplex setDescriptionWorkoutComplex(String id, String description, String userId);
+
+    Workout changeSourceWorkoutComplex(String workoutId, String oldWorkoutComplexId, String newWorkoutComplexId, String userId);
+
+    Workout updateWorkout(Workout workout, String userId);
 }

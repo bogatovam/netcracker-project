@@ -128,23 +128,31 @@ export class WorkoutComplexComponent implements OnInit {
       this.apiService.createWorkout(this.selectedWorkout, this.selectedWorkoutComplex).subscribe(
         result => {
           this.selectedWorkout.id = result.id;
+          this.updateData();
         }
       );
-      this.selectedWorkoutComplex.workouts.push(this.selectedWorkout);
     } else {
-      if (this.selectedWorkoutComplex.workouts.findIndex(w => {
+      if (this.selectedWorkoutComplex.workouts.find(w => {
         return w.id === this.selectedWorkout.id;
-      })) {
-        // if source workout complex changed
-        this.apiService.changeWorkoutComplex(this.selectedWorkout, this.selectedWorkoutComplex);
+      }) === undefined) {
+       console.log(' if source workout complex changed');
+        this.apiService.changeWorkoutComplex(this.selectedWorkout, this.selectedWorkoutComplex, this.selectedWorkoutComplex);
       }
-      this.apiService.updateWorkout(this.selectedWorkout, this.selectedWorkoutComplex);
+      this.apiService.updateWorkout(this.selectedWorkout).subscribe(
+        result=>{
+          this.updateData();
+        }
+      );
     }
   }
 
   deleteWorkout(workout: Workout): void {
 
-    this.apiService.deleteWorkout(workout).subscribe();
+    this.apiService.deleteWorkout(workout).subscribe(
+      result => {
+        this.updateData();
+      }
+    );
     this.workouts.splice(this.workouts.findIndex((v, n, o) => {
       return v.id === workout.id;
     }), 1);
@@ -173,7 +181,23 @@ export class WorkoutComplexComponent implements OnInit {
     this.selectedWorkout = null;
   }
 
-  changeSelectedWorkoutComplexFromWorkout(workoutComplex: WorkoutComplex): void {
-    this.selectedWorkoutComplex = workoutComplex;
+   updateData(): void {
+    this.apiService.getAllWorkoutComplex().subscribe(
+      result => {
+        console.log("I done!");
+        this.workoutComplexes = result;
+        if(this.selectedWorkoutComplex!==null) {
+          this.selectedWorkoutComplex = this.workoutComplexes.find((w) => {
+            return w.id === this.selectedWorkoutComplex.id;
+          });
+          this.workouts = this.selectedWorkoutComplex.workouts;
+        } else {
+          this.selectAllWorkouts();
+        }
+      },
+      error => {
+        this.errorMessage = error;
+      }
+    );
   }
-}
+ }

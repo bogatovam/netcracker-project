@@ -68,6 +68,10 @@ const routes: Routes = [
     component: WorkoutComplexComponent
   },
   {
+    path: 'workout-complex/wo',
+    component: WorkoutComplexComponent
+  },
+  {
     path: 'authentication/signin',
     component: LoginComponent
   },
@@ -148,7 +152,6 @@ const modules = [
     modules
   ],
   exports: [modules],
-
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
 })

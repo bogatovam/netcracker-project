@@ -5,13 +5,13 @@ import com.netcracker.model.documents.*;
 import com.netcracker.repository.edges.*;
 import com.netcracker.repository.documents.*;
 import com.netcracker.services.api.AuthenticationService;
+import com.netcracker.services.api.DataDisplayService;
 import com.netcracker.services.api.PlanningService;
 
 import lombok.RequiredArgsConstructor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -34,6 +34,8 @@ public class PlanningServiceImpl implements PlanningService {
     private final ExerciseToMeasurementsRepository exerciseToMeasurementsRepository;
     private final UserToWComplexRepository userToWComplexRepository;
     private final ScheduledWorkoutToExerciseMeasurementRepository sWToExMeasurementRepository;
+
+    private final DataDisplayService dataDisplayService;
 
     private static final Logger logger = LoggerFactory.getLogger(PlanningServiceImpl.class);
 
@@ -170,6 +172,18 @@ public class PlanningServiceImpl implements PlanningService {
     }
 
     @Override
+    public Workout changeSourceWorkoutComplex(String workoutId, String oldWorkoutComplexId, String newWorkoutComplexId, String userId) {
+        Workout workout = dataDisplayService.getWorkoutById(workoutId, userId);
+        WorkoutComplex workoutComplex = dataDisplayService.getWorkoutComplexById(oldWorkoutComplexId, userId);
+
+        wComplexToWorkoutRepository.removeAllByWorkoutId(workoutId);
+        WComplexToWorkout newConnection = WComplexToWorkout.builder().workout(workout)
+                .workoutComplex(workoutComplex).build();
+        wComplexToWorkoutRepository.save(newConnection);
+        return null;
+    }
+
+    @Override
     public WorkoutComplex deleteWorkoutComplex(String workoutComplexId, String userId) {
         if (!authenticationService.checkAccessRightsToWorkoutComplex(workoutComplexId, userId))
             return null;
@@ -229,49 +243,38 @@ public class PlanningServiceImpl implements PlanningService {
     }
 
     @Override
-    public Workout addListExercises(String workoutId, List<String> exerciseIdList, String userId) {
+    public Workout addListExercises(String workoutId, List<Exercise> exerciseList, String userId) {
         if (!authenticationService.checkAccessRightsToWorkout(workoutId, userId)) return null;
         Workout workout = workoutRepository.findById(workoutId)
                 .orElseThrow(() -> new NoSuchElementException("Workout id " + workoutId + " has bad value"));
 
-        exerciseIdList.forEach(exerciseId -> {
-            Exercise exercise = exerciseRepository.findById(exerciseId).
-                    orElseThrow(() -> new NoSuchElementException("Exercise id " + exerciseId + " has bad value"));
-            if (!workoutToExerciseRepository.findByWorkoutIdAndExerciseId(workoutId, exerciseId).isPresent()) {
-                WorkoutToExercise workoutToExercise = WorkoutToExercise.builder()
-                        .workout(workout)
-                        .exercise(exercise)
-                        .build();
-                workoutToExerciseRepository.save(workoutToExercise);
-            } else
-                System.out.println("Exercise " + exercise.getName() + " with id:" + exerciseId + " already exist in workout with id:" + workoutId);
+        exerciseList.forEach(exercise -> {
+            WorkoutToExercise workoutToExercise = WorkoutToExercise.builder().workout(workout).exercise(exercise).build();
+            workoutToExerciseRepository.save(workoutToExercise);
         });
         workoutRepository.save(workout);
-        logger.info("User " + userId + " add list exercises " + exerciseIdList + " to workout " + workoutId);
+        logger.info("User " + userId + " add list exercises " + exerciseList + " to workout " + workoutId);
 
         return workout;
     }
 
     @Override
-    public Workout delListExercises(String workoutId, List<String> exerciseIdList, String userId) {
+    public Workout delListExercises(String workoutId, List<Exercise> exerciseList, String userId) {
         if (!authenticationService.checkAccessRightsToWorkout(workoutId, userId)) return null;
 
         Workout workout = workoutRepository.findById(workoutId)
                 .orElseThrow(() -> new NoSuchElementException("Workout id " + workoutId + " has bad value"));
-        exerciseIdList.forEach(exerciseId -> {
-            Exercise exercise = exerciseRepository.findById(exerciseId)
-                    .orElseThrow(() -> new NoSuchElementException("Exercise id " + exerciseId + " has bad value"));
-
+        exerciseList.forEach(exercise -> {
             Optional<WorkoutToExercise> workoutToExercise =
-                    workoutToExerciseRepository.findByWorkoutIdAndExerciseId(workoutId, exerciseId);
+                    workoutToExerciseRepository.findByWorkoutIdAndExerciseId(workoutId, exercise.getId());
             if (workoutToExercise.isPresent()) {
                 workoutToExerciseRepository.removeById(workoutToExercise.get().getId());
             } else
-                System.out.println("Exercise " + exercise.getName() + " with id:" + exerciseId + " don't exist in workout with id:" + workoutId);
+                System.out.println("Exercise " + exercise.getName() + " with id:" + exercise.getId() + " don't exist in workout with id:" + workoutId);
 
         });
         workoutRepository.save(workout);
-        logger.info("User " + userId + " del list exercises " + exerciseIdList + " from workout " + workoutId);
+        logger.info("User " + userId + " del list exercises " + exerciseList + " from workout " + workoutId);
 
         return workout;
     }
@@ -539,4 +542,12 @@ public class PlanningServiceImpl implements PlanningService {
         return workoutComplex;
     }
 
+    @Override
+    public Workout updateWorkout(Workout workout, String userId) {
+        Workout oldWorkout = dataDisplayService.getWorkoutById(workout.getId(), userId);
+        delListExercises(oldWorkout.getId(), oldWorkout.getExercises(), userId);
+        Workout newWorkout = workoutRepository.save(workout);
+        addListExercises(newWorkout.getId(), workout.getExercises(), userId);
+        return newWorkout;
+    }
 }

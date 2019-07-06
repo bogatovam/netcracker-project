@@ -37,6 +37,7 @@ public class ControllersPaths {
 
         /*   Create operations   */
         public static final String CREATE_WORKOUT = "/workout/create";
+        public static final String UPDATE_WORKOUT = "/workout/update";
         public static final String CREATE_WORKOUT_WITH_COMPLEX = "/workout/{wcid}/create";
 
         /*   Read   operations   */
@@ -51,6 +52,7 @@ public class ControllersPaths {
         public static final String ADD_LIST_OF_EXERCISES_BY_ID = "/workout/{id}/exercises/add";
         public static final String DEL_LIST_OF_EXERCISES_BY_ID = "/workout/{id}/exercises/del";
         public static final String SET_NAME_BY_ID = "/workout/{id}/name";
+        public static final String CHANGE_SOURCE_WORKOUT_COMPLEX = "/workout/change/{id}/{oldwcid}/{newwcid}";
 
         /*   Delete operations   */
         public static final String DELETE_WORKOUT_BY_ID = "/workout/{id}/delete";

@@ -155,8 +155,7 @@
           [workout]="selectedWorkout"
           [workoutComplexes]="workoutComplexes"
           [isEditable]="isWorkoutEditableFlag"
-          [sourceWorkoutComplex]="selectedWorkoutComplex"
-          (newSourceWorkoutComplex) ="changeSelectedWorkoutComplexFromWorkout($event)"
+          [(sourceWorkoutComplex)]="selectedWorkoutComplex"
         >
         </app-workout>
       </div>

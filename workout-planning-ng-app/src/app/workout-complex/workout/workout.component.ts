@@ -26,10 +26,9 @@ export class WorkoutComponent implements OnInit {
   @Input() sourceWorkoutComplex: WorkoutComplex;
   @Input() workout: Workout;
 
-  @Output() newSourceWorkoutComplex: EventEmitter<WorkoutComplex> = new EventEmitter<WorkoutComplex>();
-
+  @Output() sourceWorkoutComplexChange: EventEmitter<WorkoutComplex> = new EventEmitter<WorkoutComplex>();
   @Input() isEditable: boolean = false;
-
+  isLoaded: boolean = false;
   selectedSourceWorkoutId: string;
 
   dataSource = new MatTableDataSource<Exercise>();
@@ -39,11 +38,23 @@ export class WorkoutComponent implements OnInit {
 
   constructor(private apiService: ApiService) {
   }
-
   ngOnInit(): void {
+    if(this.sourceWorkoutComplex === null) {
+      this.apiService.getSourceWorkoutComplex(this.workout).subscribe(
+        result => {
+          console.log(result);
+          this.sourceWorkoutComplex = result;
+          this.selectedSourceWorkoutId = result.id;
+          this.sourceWorkoutComplexChange.emit(this.sourceWorkoutComplex);
+          this.isLoaded = true;
+        }
+      );
+    } else {
+      this.selectedSourceWorkoutId = this.sourceWorkoutComplex.id;
+      this.isLoaded = true;
+    }
     this.dataSource = new MatTableDataSource<Exercise>(this.workout.exercises);
-    this.selectedSourceWorkoutId = this.sourceWorkoutComplex.id;
-  }
+      }
 
   selectExercise(exercise: Exercise): void {
     this.selectedExercise = exercise;
@@ -86,7 +97,7 @@ export class WorkoutComponent implements OnInit {
         this.sourceWorkoutComplex = workoutComplex;
       }
     });
-    this.newSourceWorkoutComplex.emit(this.sourceWorkoutComplex);
+    this.sourceWorkoutComplexChange.emit(this.sourceWorkoutComplex);
     console.log(this.sourceWorkoutComplex);
   }
 }

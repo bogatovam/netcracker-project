@@ -37,6 +37,14 @@ public class WorkoutController {
              Authentication authentication) {
         return planningService.createWorkout(wcid, workout, authentication.getName());
     }
+    @PostMapping(UPDATE_WORKOUT)
+    @ApiOperation(value = "Update workout with complex")
+    public Workout updateWorkout(
+            @ApiParam(value = "Body of updated workout")
+            @RequestBody Workout workout,
+            Authentication authentication) {
+        return planningService.updateWorkout(workout, authentication.getName());
+    }
     @PostMapping(CREATE_WORKOUT)
     @ApiOperation(value = "Create workout")
     public Workout createWorkout(
@@ -77,6 +85,18 @@ public class WorkoutController {
         return dataDisplayService.getSourceWorkoutComplex(id, authentication.getName());
     }
 
+    @GetMapping(CHANGE_SOURCE_WORKOUT_COMPLEX)
+    @ApiOperation(value = "Change source workout complex of workout")
+    public Workout changeSourceWorkoutComplex(
+            @ApiParam(value = "Workout complex id")
+            @PathVariable String id,
+            @ApiParam(value = "Workout complex id")
+            @PathVariable String oldwcid,
+            @ApiParam(value = "Workout complex id")
+            @PathVariable String newwcid,
+            Authentication authentication){
+        return planningService.changeSourceWorkoutComplex(id, oldwcid, newwcid, authentication.getName());
+    }
     @GetMapping(GET_EXERCISES_BY_ID)
     @ApiOperation(value = "Get all exercises")
     public List<Exercise> getExercises(
@@ -104,27 +124,27 @@ public class WorkoutController {
         return dataDisplayService.getScheduledWorkouts(id, authentication.getName());
     }
 
-    @PostMapping(ADD_LIST_OF_EXERCISES_BY_ID)
-    @ApiOperation(value = "Add list of exercise to workout")
-    public Workout addListExercises(
-            @ApiParam(value = "Workout id")
-            @PathVariable String id,
-            @ApiParam(value = "List of exercise")
-            @RequestBody List<String> exerciseIdList,
-             Authentication authentication){
-        return planningService.addListExercises(id, exerciseIdList, authentication.getName());
-    }
-
-    @DeleteMapping(DEL_LIST_OF_EXERCISES_BY_ID)
-    @ApiOperation(value = "Del list of exercide from workout")
-    public Workout delListExercises(
-            @ApiParam(value = "Workout id")
-            @PathVariable String id,
-            @ApiParam(value = "List of exercise")
-            @RequestBody List<String> exerciseIdList,
-             Authentication authentication){
-        return planningService.delListExercises(id, exerciseIdList, authentication.getName());
-    }
+    //@PostMapping(ADD_LIST_OF_EXERCISES_BY_ID)
+    //@ApiOperation(value = "Add list of exercise to workout")
+    //public Workout addListExercises(
+    //        @ApiParam(value = "Workout id")
+    //        @PathVariable String id,
+    //        @ApiParam(value = "List of exercise")
+    //        @RequestBody List<String> exerciseIdList,
+    //         Authentication authentication){
+    //    return planningService.addListExercises(id, exerciseIdList, authentication.getName());
+    //}
+//
+    //@DeleteMapping(DEL_LIST_OF_EXERCISES_BY_ID)
+    //@ApiOperation(value = "Del list of exercide from workout")
+    //public Workout delListExercises(
+    //        @ApiParam(value = "Workout id")
+    //        @PathVariable String id,
+    //        @ApiParam(value = "List of exercise")
+    //        @RequestBody List<String> exerciseIdList,
+    //         Authentication authentication){
+    //    return planningService.delListExercises(id, exerciseIdList, authentication.getName());
+    //}
 
     @PutMapping(SET_NAME_BY_ID)
     @ApiOperation(value = "Set name of workout")

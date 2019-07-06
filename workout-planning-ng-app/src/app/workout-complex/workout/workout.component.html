@@ -1,4 +1,5 @@
-<div class="card workout-description">
+<div *ngIf="isLoaded" >
+  <div class="card workout-description">
   <div class="card-body inf">
     <div class="row justify-content-md-center">
       <div class="col-md-7">
@@ -38,7 +39,7 @@
   </div>
 </div>
 
-<div class="row">
+  <div class="row">
   <div class="col-md-12 workout-content">
     <div class="header-tab">
       <div class="row justify-content-md-center">
@@ -73,7 +74,7 @@
               </mat-cell>
             </ng-container>
 
-            <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectExercise(row)"
+            <mat-row *matRowDef="let row; columns: displayedColumns;"
                      cdkDrag
                      [cdkDragData]="row"
                      class="element-row"
@@ -99,4 +100,5 @@
       </div>
     </div>
   </div>
+</div>
 </div>

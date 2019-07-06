@@ -1,11 +1,11 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { SelectionModel } from '@angular/cdk/collections';
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
-import { Router } from '@angular/router';
-import { AuthorizationService } from '../authorization/authorization.service';
-import { ApiService } from '../shared/api.service';
-import { Exercise } from '../shared/model/exercise';
+import {animate, state, style, transition, trigger} from '@angular/animations';
+import {SelectionModel} from '@angular/cdk/collections';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {MatPaginator, MatSort, MatTable, MatTableDataSource} from '@angular/material';
+import {Router} from '@angular/router';
+import {AuthorizationService} from '../authorization/authorization.service';
+import {ApiService} from '../shared/api.service';
+import {Exercise} from '../shared/model/exercise';
 
 @Component({
   selector: 'app-directory',
@@ -28,6 +28,7 @@ export class DirectoryComponent implements OnInit {
   @Output() unselectedExercise: EventEmitter<Exercise> = new EventEmitter<Exercise>();
   @Output() selectedExercise: EventEmitter<Exercise> = new EventEmitter<Exercise>();
 
+  @ViewChild(MatTable) table: MatTable<Exercise>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -40,7 +41,6 @@ export class DirectoryComponent implements OnInit {
   muscleLoad: string[] = null; // = ['hips', 'biceps', 'abs', 'chest', 'shoulders', 'back'];
   groupedBy: string = null;
 
-
   constructor(private router: Router, private authService: AuthorizationService,
               private apiService: ApiService) {
   }
@@ -48,15 +48,12 @@ export class DirectoryComponent implements OnInit {
   isExpansionDetailRow = (index, row) => row.hasOwnProperty('detailRow');
 
   ngOnInit(): void {
-    this.loadExercises();
-
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    this.initialSelection.forEach(s => {
-      this.selection.select(this.dataSource.data.find((v, i, n) => {
-        return v.id === s.id;
-      }));
-    });
+
+    this.loadExercises();
+    // console.log(this.initialSelection);
+
     if (this.editable) {
       this.displayedColumns.unshift('select');
     }
@@ -66,15 +63,25 @@ export class DirectoryComponent implements OnInit {
     this.apiService.getMuscleLoad().subscribe(
       result => {
         this.muscleLoad = result;
-      },
+        },
       error1 => {
         console.log('ERROR: get exercises load: ' + error1.toString());
       }
     );
     this.apiService.getAllExercises().subscribe(
       result => {
-        console.log(result);
+//        console.log(result);
         this.dataSource = new MatTableDataSource<Exercise>(result);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+
+        this.initialSelection.forEach(s => {
+          this.selection.select(this.dataSource.data.find((v, i, n) => {
+            return v.id === s.id;
+          }));
+        });
+
+        this.table.renderRows();
       },
       error1 => {
         console.log('ERROR: get all exercise: ' + error1.toString());
@@ -85,7 +92,7 @@ export class DirectoryComponent implements OnInit {
   applyFilter(filterValue: string): void {
     this.dataSource.filterPredicate =
       (data: Exercise, filter: string) => {
-        return (this.groupedBy === null && data.name.indexOf(filter) !== -1) ||
+        return (this.groupedBy === null && data.name.indexOf(filter) != -1) ||
           (this.groupedBy !== null &&
             data.infForRecommendation.muscleLoad.get(this.groupedBy) > 0.4 &&
             data.name.indexOf(filter) !== -1);
