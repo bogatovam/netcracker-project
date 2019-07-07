@@ -39,7 +39,7 @@ export class WorkoutComponent implements OnInit {
   constructor(private apiService: ApiService) {
   }
   ngOnInit(): void {
-    if(this.sourceWorkoutComplex === null) {
+    if (this.sourceWorkoutComplex === null) {
       this.apiService.getSourceWorkoutComplex(this.workout).subscribe(
         result => {
           console.log(result);

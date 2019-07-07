@@ -139,7 +139,7 @@ export class WorkoutComplexComponent implements OnInit {
         this.apiService.changeWorkoutComplex(this.selectedWorkout, this.selectedWorkoutComplex, this.selectedWorkoutComplex);
       }
       this.apiService.updateWorkout(this.selectedWorkout).subscribe(
-        result=>{
+        result => {
           this.updateData();
         }
       );
@@ -186,7 +186,7 @@ export class WorkoutComplexComponent implements OnInit {
       result => {
         console.log("I done!");
         this.workoutComplexes = result;
-        if(this.selectedWorkoutComplex!==null) {
+        if (this.selectedWorkoutComplex !== null) {
           this.selectedWorkoutComplex = this.workoutComplexes.find((w) => {
             return w.id === this.selectedWorkoutComplex.id;
           });

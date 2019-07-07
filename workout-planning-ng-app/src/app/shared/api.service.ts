@@ -1,9 +1,9 @@
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {Exercise} from './model/exercise';
-import {Workout} from './model/workout';
-import {WorkoutComplex} from './model/workout-complex';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Exercise } from './model/exercise';
+import { Workout } from './model/workout';
+import { WorkoutComplex } from './model/workout-complex';
 
 @Injectable({
   providedIn: 'root'
@@ -69,11 +69,11 @@ export class ApiService {
   }
 
   changeWorkoutComplex(workout: Workout, oldWorkoutComplex: WorkoutComplex, newWorkoutComplex: WorkoutComplex): void {
-    this.http.get(this.WORKOUT_BY_ID + 'change/' + workout.id+'/' + oldWorkoutComplex.id + '/' + newWorkoutComplex.id).subscribe();
+    this.http.get(this.WORKOUT_BY_ID + 'change/' + workout.id + '/' + oldWorkoutComplex.id + '/' + newWorkoutComplex.id).subscribe();
   }
 
   updateWorkout(workout: Workout): Observable<Workout> {
-    return this.http.post<Workout>(this.WORKOUT_BY_ID+'update', workout);
+    return this.http.post<Workout>(this.WORKOUT_BY_ID + 'update', workout);
   }
 
   getSourceWorkoutComplex(workout: Workout): Observable<WorkoutComplex> {

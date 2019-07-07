@@ -1,11 +1,11 @@
-import {animate, state, style, transition, trigger} from '@angular/animations';
-import {SelectionModel} from '@angular/cdk/collections';
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {MatPaginator, MatSort, MatTable, MatTableDataSource} from '@angular/material';
-import {Router} from '@angular/router';
-import {AuthorizationService} from '../authorization/authorization.service';
-import {ApiService} from '../shared/api.service';
-import {Exercise} from '../shared/model/exercise';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { SelectionModel } from '@angular/cdk/collections';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { MatPaginator, MatSort, MatTable, MatTableDataSource } from '@angular/material';
+import { Router } from '@angular/router';
+import { AuthorizationService } from '../authorization/authorization.service';
+import { ApiService } from '../shared/api.service';
+import { Exercise } from '../shared/model/exercise';
 
 @Component({
   selector: 'app-directory',
@@ -63,7 +63,7 @@ export class DirectoryComponent implements OnInit {
     this.apiService.getMuscleLoad().subscribe(
       result => {
         this.muscleLoad = result;
-        },
+      },
       error1 => {
         console.log('ERROR: get exercises load: ' + error1.toString());
       }
@@ -92,7 +92,7 @@ export class DirectoryComponent implements OnInit {
   applyFilter(filterValue: string): void {
     this.dataSource.filterPredicate =
       (data: Exercise, filter: string) => {
-        return (this.groupedBy === null && data.name.indexOf(filter) != -1) ||
+        return (this.groupedBy === null && data.name.indexOf(filter) !== -1) ||
           (this.groupedBy !== null &&
             data.infForRecommendation.muscleLoad.get(this.groupedBy) > 0.4 &&
             data.name.indexOf(filter) !== -1);

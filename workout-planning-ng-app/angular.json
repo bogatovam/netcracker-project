@@ -99,6 +99,7 @@
               "src/tsconfig.spec.json"
             ],
             "exclude": [
+              "**/src/test.ts",
               "**/node_modules/**"
             ]
           }
@@ -127,6 +128,7 @@
           "options": {
             "tsConfig": "e2e/tsconfig.e2e.json",
             "exclude": [
+              "**/e2e/src/**",
               "**/node_modules/**"
             ]
           }
