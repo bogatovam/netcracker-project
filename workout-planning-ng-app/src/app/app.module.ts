@@ -1,5 +1,6 @@
 import { HttpClientModule } from "@angular/common/http";
 import { NgModule } from '@angular/core';
+import {MatButtonModule, MatMenuModule, MatToolbarModule} from "@angular/material";
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { EffectsModule } from "@ngrx/effects";
@@ -16,8 +17,11 @@ import { NavigationComponent } from './components/navigation/navigation.componen
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-     StoreModule.forRoot(reducers),
-     EffectsModule.forRoot([]),
+    StoreModule.forRoot(reducers),
+    EffectsModule.forRoot([]),
+    MatMenuModule,
+    MatToolbarModule,
+    MatButtonModule,
     AuthorizationModule,
     AppRoutingModule,
   ],
@@ -28,4 +32,5 @@ import { NavigationComponent } from './components/navigation/navigation.componen
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

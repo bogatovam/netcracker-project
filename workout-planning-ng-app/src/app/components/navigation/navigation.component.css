@@ -1,0 +1,15 @@
+.nav-bar {
+  background-color: #00063d;
+  height: max-content;
+  flex-wrap: wrap;
+}
+
+.nav-button {
+  height: 50px;
+  font-size: 14px;
+  font-family: sans-serif;
+}
+
+.right {
+  justify-content: flex-end;
+}

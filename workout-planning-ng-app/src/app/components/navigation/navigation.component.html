@@ -1,1 +1,16 @@
-<p>navigation works!</p>
+<mat-toolbar class="nav-bar" color="primary">
+  <button *ngIf="!isLogin" class="nav-button" mat-button [matMenuTriggerFor]="workoutMenu">Тренировочный процесс</button>
+  <mat-menu #workoutMenu="matMenu">
+    <button mat-menu-item>Тренировки и комплексы</button>
+  </mat-menu>
+
+  <button class="nav-button" mat-button>Справочник</button>
+
+  <button class="nav-button" [matMenuTriggerFor]="mainMenu" mat-button><i class="fa fa-user fa-2x"></i></button>
+  <mat-menu #mainMenu="matMenu">
+    <button *ngIf="!isLogin" [routerLink]="'authentication/login'" mat-menu-item>Войти</button>
+    <button *ngIf="!isLogin" mat-menu-item>Зарегистрироваться</button>
+    <button *ngIf="isLogin" mat-menu-item>Моя страница</button>
+    <button *ngIf="isLogin" mat-menu-item>Выйти</button>
+  </mat-menu>
+</mat-toolbar>

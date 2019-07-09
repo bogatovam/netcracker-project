@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from "@ngrx/store";
+import { tap } from "rxjs/operators";
+import { AppState, selectIsLoggedIn } from "src/app/authorization/store";
 
 @Component({
   selector: 'app-navigation',
@@ -6,10 +9,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./navigation.component.css']
 })
 export class NavigationComponent implements OnInit {
+  isLogin: boolean = false ;
 
-  constructor() { }
+  constructor(private store: Store<AppState>) {
+  }
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.store.select(selectIsLoggedIn).subscribe(flag => this.isLogin = flag);
   }
 
 }
