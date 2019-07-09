@@ -1,9 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from "@angular/forms";
+import { FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from "@angular/forms";
+import { ErrorStateMatcher } from "@angular/material";
 import { Router } from '@angular/router';
+import { Store } from "@ngrx/store";
 import { AuthorizationLoginInfo } from "src/app/authorization/models/login";
+import { User } from "src/app/authorization/models/user";
 import { AuthorizationService } from "src/app/authorization/services/authorization.service";
 import { TokenStorageService } from "src/app/authorization/services/token-storage.service";
+import { AppState } from "src/app/authorization/store";
+import { LogIn } from "src/app/authorization/store/actions/authorization.actions";
+
+/** Error when invalid control is dirty, touched, or submitted. */
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const isSubmitted = form && form.submitted;
+    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
+  }
+}
 
 @Component({
   selector: 'app-login',
@@ -11,43 +24,26 @@ import { TokenStorageService } from "src/app/authorization/services/token-storag
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-  loginForm = new FormGroup({});
+  user: User;
+  loginFormControl = new FormControl(this.user.login, [Validators.required]);
+  passwordFormControl = new FormControl(this.user.password, [Validators.required]);
 
-  form: any = {};
-  errorMessage = '';
-  roles: string[] = [];
+  loginFormModel = new FormGroup({
+    login: this.loginFormControl,
+    password: this.passwordFormControl
+  });
 
-  private loginInfo: AuthorizationLoginInfo;
+  matcher = new MyErrorStateMatcher();
 
-  constructor(private authService: AuthorizationService, private tokenStorage: TokenStorageService,
-              private router: Router) {}
-
-  ngOnInit(): void {}
-
-  onSubmit(): void {
-    this.loginInfo = new AuthorizationLoginInfo(
-      this.form.username,
-      this.form.password);
-    console.log(this.loginInfo);
-
-    this.authService.attemptAuth(this.loginInfo).subscribe(
-      data => {
-        this.tokenStorage.saveToken(data.accessToken);
-        this.tokenStorage.saveUsername(data.username);
-
-        this.authService.isLoginFailed = false;
-        this.reloadPage();
-      },
-      error => {
-        console.log(error);
-        this.errorMessage = error.error.message;
-        this.authService.isLoginFailed = true;
-      }
-    );
+  constructor(private router: Router, private store: Store<AppState>) {
   }
 
-  reloadPage(): void {
-    window.location.reload();
+  ngOnInit(): void {
+  }
+
+  onSubmit(): void {
+    console.log(this.loginFormModel);
+    this.store.dispatch<LogIn>(new LogIn(this.user));
   }
 
   redirect(): void {

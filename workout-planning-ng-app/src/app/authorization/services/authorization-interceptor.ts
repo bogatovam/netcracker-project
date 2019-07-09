@@ -8,13 +8,10 @@ import { TokenStorageService } from "src/app/authorization/services/token-storag
 
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor(private token: TokenStorageService) {
-  }
-
   // tslint:disable-next-line:no-any
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let authReq = req;
-    const token = this.token.getToken();
+    const token = TokenStorageService.getToken();
     if (token != null) {
       authReq = req.clone({headers: req.headers.set('Authorization', 'Bearer ' + token)});
     }

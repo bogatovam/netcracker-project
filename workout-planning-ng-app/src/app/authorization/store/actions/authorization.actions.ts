@@ -1,7 +1,8 @@
 import { Action } from '@ngrx/store';
+import {User} from "src/app/authorization/models/user";
 
 
-export enum AuthActionTypes {
+export enum AuthorizationActionTypes {
   LOGIN = '[Auth] Login',
   LOGIN_SUCCESS = '[Auth] Login Success',
   LOGIN_FAILURE = '[Auth] Login Failure',
@@ -13,44 +14,44 @@ export enum AuthActionTypes {
 }
 
 export class LogIn implements Action {
-  readonly type = AuthActionTypes.LOGIN;
-  constructor(public payload: any) {}
+  readonly type = AuthorizationActionTypes.LOGIN;
+  constructor(public payload: User) {}
 }
 
 export class LogInSuccess implements Action {
-  readonly type = AuthActionTypes.LOGIN_SUCCESS;
-  constructor(public payload: any) {}
+  readonly type = AuthorizationActionTypes.LOGIN_SUCCESS;
+  constructor(public payload: User) {}
 }
 
 export class LogInFailure implements Action {
-  readonly type = AuthActionTypes.LOGIN_FAILURE;
-  constructor(public payload: any) {}
+  readonly type = AuthorizationActionTypes.LOGIN_FAILURE;
+  constructor(public payload: string) {}
 }
 
 export class SignUp implements Action {
-  readonly type = AuthActionTypes.SIGNUP;
-  constructor(public payload: any) {}
+  readonly type = AuthorizationActionTypes.SIGNUP;
+  constructor(public payload: User) {}
 }
 
 export class SignUpSuccess implements Action {
-  readonly type = AuthActionTypes.SIGNUP_SUCCESS;
-  constructor(public payload: any) {}
+  readonly type = AuthorizationActionTypes.SIGNUP_SUCCESS;
+  constructor(public payload: string) {}
 }
 
 export class SignUpFailure implements Action {
-  readonly type = AuthActionTypes.SIGNUP_FAILURE;
+  readonly type = AuthorizationActionTypes.SIGNUP_FAILURE;
   constructor(public payload: any) {}
 }
 
 export class LogOut implements Action {
-  readonly type = AuthActionTypes.LOGOUT;
+  readonly type = AuthorizationActionTypes.LOGOUT;
 }
 
 export class GetStatus implements Action {
-  readonly type = AuthActionTypes.GET_STATUS;
+  readonly type = AuthorizationActionTypes.GET_STATUS;
 }
 
-export type All =
+export type AuthorizationActions =
   | LogIn
   | LogInSuccess
   | LogInFailure

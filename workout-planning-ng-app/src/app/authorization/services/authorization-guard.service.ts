@@ -11,7 +11,7 @@ export class AuthorizationGuardService implements CanActivate {
   }
 
   canActivate(): boolean {
-    if (!this.token.getToken()) {
+    if (!TokenStorageService.getToken()) {
       this.router.navigateByUrl('/log-in');
       return false;
     }

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from "@angular/forms";
+import { MatButtonModule, MatCardModule, MatDialogModule, MatInputModule } from "@angular/material";
 import { EffectsModule } from "@ngrx/effects";
 import { AuthorizationGuardService } from "src/app/authorization/services/authorization-guard.service";
 import { httpInterceptorProviders } from "src/app/authorization/services/authorization-interceptor";
@@ -10,14 +11,18 @@ import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
 
 const AUTH_ROUTES = [
-  {path: 'log-in', component: LoginComponent},
-  {path: 'sign-up', component: SignupComponent},
+  {path: 'login', component: LoginComponent},
+  {path: 'signup', component: SignupComponent},
 ];
 
 @NgModule({
   declarations: [LoginComponent, SignupComponent],
   imports: [
     CommonModule,
+    MatButtonModule,
+    MatCardModule,
+    MatDialogModule,
+    MatInputModule,
     ReactiveFormsModule,
     EffectsModule.forFeature([AuthorizationEffects])
   ],

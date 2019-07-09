@@ -1,4 +1,5 @@
-import { All, AuthActionTypes } from '../actions/authorization.actions';
+import { User } from "src/app/authorization/models/user";
+import { AuthorizationActions, AuthorizationActionTypes } from '../actions/authorization.actions';
 
 export interface State {
   // is a user authenticated?
@@ -15,43 +16,37 @@ export const initialState: State = {
   errorMessage: null
 };
 
-export function reducer(state = initialState, action: All): State {
+export function reducer(state: State = initialState, action: AuthorizationActions): State {
   switch (action.type) {
-    case AuthActionTypes.LOGIN_SUCCESS: {
+    case AuthorizationActionTypes.LOGIN_SUCCESS: {
       return {
         ...state,
         isAuthenticated: true,
         user: {
           token: action.payload.token,
-          email: action.payload.email
+          login: action.payload.login
         },
         errorMessage: null
       };
     }
-    case AuthActionTypes.LOGIN_FAILURE: {
+    case AuthorizationActionTypes.LOGIN_FAILURE: {
       return {
         ...state,
         errorMessage: 'Incorrect email and/or password.'
       };
     }
-    case AuthActionTypes.SIGNUP_SUCCESS: {
+    case AuthorizationActionTypes.SIGNUP_SUCCESS: {
       return {
-        ...state,
-        isAuthenticated: true,
-        user: {
-          token: action.payload.token,
-          email: action.payload.email
-        },
-        errorMessage: null
+        ...state
       };
     }
-    case AuthActionTypes.SIGNUP_FAILURE: {
+    case AuthorizationActionTypes.SIGNUP_FAILURE: {
       return {
         ...state,
         errorMessage: 'That email is already in use.'
       };
     }
-    case AuthActionTypes.LOGOUT: {
+    case AuthorizationActionTypes.LOGOUT: {
       return initialState;
     }
     default: {
