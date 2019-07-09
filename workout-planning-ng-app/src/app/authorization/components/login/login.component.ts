@@ -42,7 +42,8 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log(this.loginFormModel);
+    this.user.login = this.loginFormModel.controls['login'].value;
+    this.user.password = this.loginFormModel.controls['password'].value;
     this.store.dispatch<LogIn>(new LogIn(this.user));
   }
 

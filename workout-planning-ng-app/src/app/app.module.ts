@@ -9,6 +9,7 @@ import { AuthorizationModule } from "src/app/authorization/authorization.module"
 import { reducers } from "src/app/authorization/store";
 
 import { AppComponent } from './app.component';
+import { NavigationComponent } from './components/navigation/navigation.component';
 
 @NgModule({
   imports: [
@@ -21,7 +22,8 @@ import { AppComponent } from './app.component';
     AppRoutingModule,
   ],
   declarations: [
-    AppComponent
+    AppComponent,
+    NavigationComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

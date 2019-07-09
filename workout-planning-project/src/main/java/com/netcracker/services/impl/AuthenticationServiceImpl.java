@@ -57,26 +57,33 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public ResponseEntity<?> signIn(User user) {
-        logger.info("Start authentication for " + user.getLogin());
+        logger.info("Start authentication for " + user);
+        try {
+            User authUser = null;
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getLogin(), user.getPassword())
-        );
-        logger.info("authentication: " + authentication);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        logger.info("set context with: " + authentication);
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(user.getLogin(), user.getPassword())
+            );
+            logger.info("authentication: " + authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            logger.info("set context with: " + authentication);
 
-        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-        logger.info("userPrincipal: " + userPrincipal);
+            UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+            logger.info("userPrincipal: " + userPrincipal);
 
-        String jwt = tokenProvider.generateToken(authentication);
-        logger.info("Authentication for " + userPrincipal.getUser() + " was successful");
-        User authUser = userPrincipal.getUser();
+            String jwt = tokenProvider.generateToken(authentication);
 
-        authUser.setToken(jwt);
-        authUser.setPassword("");
+            logger.info("Authentication for " + userPrincipal.getUser() + " was successful");
+            authUser = userPrincipal.getUser();
 
-        return ResponseEntity.ok(authUser);
+            authUser.setToken(jwt);
+            authUser.setPassword("");
+            return ResponseEntity.ok(authUser);
+        } catch (RuntimeException e) {
+            logger.error("Can not set user authentication: " + e.getMessage());
+            return new ResponseEntity<>(new ResponseMessage("Fail -> User is not found!"),
+                    HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Override

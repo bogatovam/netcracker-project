@@ -57,7 +57,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             // If header is present, try grab user principal from database and perform authorization
             Authentication authentication = getUsernamePasswordAuthentication(request);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             logger.error("Can not set user authentication ", e);
         }
         // Continue filter execution

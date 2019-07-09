@@ -50,7 +50,6 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        System.out.println(user);
         return user.getState()!= null && !user.getState().equals(User.State.BANNED);
     }
 
