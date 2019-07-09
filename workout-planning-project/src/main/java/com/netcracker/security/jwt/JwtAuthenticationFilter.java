@@ -1,6 +1,6 @@
 package com.netcracker.security.jwt;
 
-import com.netcracker.model.view.request.SignInRequest;
+import com.netcracker.model.documents.User;
 import lombok.Data;
 
 import org.slf4j.Logger;
@@ -45,9 +45,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         logger.info("Triggered attemptAuthentication");
 
         // Grab credentials and map them to login viewmodel
-        SignInRequest credentials = null;
+        User credentials = null;
         try {
-            credentials = new ObjectMapper().readValue(request.getInputStream(), SignInRequest.class);
+            credentials = new ObjectMapper().readValue(request.getInputStream(), User.class);
         } catch (IOException e) {
             e.printStackTrace();
         }

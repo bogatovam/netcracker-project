@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,6 +49,9 @@ public class User {
 
     @Field("workouts_goal")
     private Goals workoutsGoal;
+
+    @Transient
+    private String token;
 
     @Relations(edges = UserToWComplex.class, direction = Relations.Direction.OUTBOUND)
     private List<WorkoutComplex> workoutsComplexes;

@@ -1,23 +1,18 @@
 package com.netcracker.services.impl;
 
-import com.arangodb.ArangoCursor;
 import com.netcracker.model.documents.User;
 import com.netcracker.model.documents.Workout;
 import com.netcracker.model.documents.WorkoutComplex;
-import com.netcracker.model.view.request.SignUpRequest;
-import com.netcracker.model.view.response.JwtResponse;
 import com.netcracker.model.view.response.ResponseMessage;
 import com.netcracker.repository.documents.UserRepository;
 import com.netcracker.repository.edges.WComplexToWorkoutRepository;
 import com.netcracker.repository.edges.WorkoutToDateRepository;
 import com.netcracker.security.details.UserPrincipal;
-import com.netcracker.security.jwt.JwtAuthorizationFilter;
 import com.netcracker.security.jwt.JwtTokenProvider;
 import com.netcracker.services.api.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -61,11 +56,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public ResponseEntity<?> signIn(String login, String password) {
-        logger.info("Start authentication for " + login);
+    public ResponseEntity<?> signIn(User user) {
+        logger.info("Start authentication for " + user.getLogin());
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(login, password)
+                new UsernamePasswordAuthenticationToken(user.getLogin(), user.getPassword())
         );
         logger.info("authentication: " + authentication);
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -75,36 +70,30 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         logger.info("userPrincipal: " + userPrincipal);
 
         String jwt = tokenProvider.generateToken(authentication);
-        logger.info("Authentication for " + login + " was successful");
-        logger.info("Authentication return " +
-                (new JwtResponse(jwt, userPrincipal.getUsername(), userPrincipal.getAuthorities())).toString());
+        logger.info("Authentication for " + userPrincipal.getUser() + " was successful");
+        User authUser = userPrincipal.getUser();
 
-        return ResponseEntity.ok(new JwtResponse(jwt, userPrincipal.getUsername(), userPrincipal.getAuthorities()));
+        authUser.setToken(jwt);
+        authUser.setPassword("");
+
+        return ResponseEntity.ok(authUser);
     }
 
     @Override
-    public ResponseEntity<?> signUp(SignUpRequest signUpRequest) {
-        if (userRepository.existsByLogin(signUpRequest.getUsername())) {
+    public ResponseEntity<?> signUp(User user) {
+        if (userRepository.existsByLogin(user.getLogin())) {
             return new ResponseEntity<>(new ResponseMessage("Fail -> Username is already taken!"),
                     HttpStatus.BAD_REQUEST);
         }
 
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+        if (userRepository.existsByEmail(user.getEmail())) {
             return new ResponseEntity<>(new ResponseMessage("Fail -> Email is already in use!"),
                     HttpStatus.BAD_REQUEST);
         }
 
-        // Creating user's account
-        User user = User.builder()
-                .fullName(signUpRequest.getName())
-                .login(signUpRequest.getUsername())
-                .email(signUpRequest.getEmail())
-                .password(signUpRequest.getPassword())
-                .build();
-
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        user.setRoles(signUpRequest.getRole().toString());
+        user.setRoles(user.getRoles());
 
         User result = userRepository.save(user);
 
@@ -118,7 +107,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public Boolean checkAccessRightsToWorkoutComplex(String workoutComplexId, String userId) {
-        List<User> owner = userRepository.findUserByWorkoutComplexId("workout-complex/"+workoutComplexId).asListRemaining();
+        List<User> owner = userRepository.findUserByWorkoutComplexId("workout-complex/" + workoutComplexId).asListRemaining();
         if (owner == null || owner.isEmpty()) {
             logger.info("While checkAccessRights for user " + userId + " and workout " + workoutComplexId + " smth went wrong: user is bad");
             return false;

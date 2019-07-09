@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SignUpInfo } from '../../shared/model/signup';
-import { AuthorizationService } from '../authorization.service';
-import { TokenStorageService } from '../token-storage.service';
+import { AuthorizationService } from "src/app/authorization/services/authorization.service";
+import { TokenStorageService } from "src/app/authorization/services/token-storage.service";
 
 @Component({
   selector: 'app-signup',
@@ -11,7 +10,6 @@ import { TokenStorageService } from '../token-storage.service';
 })
 export class SignupComponent implements OnInit {
   form: any = {};
-  signupInfo: SignUpInfo;
   errorMessage = '';
 
   constructor(private authService: AuthorizationService, private tokenStorage: TokenStorageService,
@@ -22,29 +20,5 @@ export class SignupComponent implements OnInit {
   onSubmit(): void {
     console.log(this.form);
 
-    this.signupInfo = new SignUpInfo(
-      this.form.name,
-      this.form.username,
-      this.form.email,
-      this.form.password,
-      this.form.gender,
-      this.form.age,
-      this.form.weight,
-      this.form.growth,
-      this.form.goal
-    );
-
-    this.authService.signUp(this.signupInfo).subscribe(
-      data => {
-        console.log(data);
-        this.authService.isSignedUp = true;
-        this.authService.isSignUpFailed = false;
-      },
-      error => {
-        console.log(error);
-        this.errorMessage = error.error.message;
-        this.authService.isSignUpFailed = true;
-      }
-    );
   }
 }

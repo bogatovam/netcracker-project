@@ -1,12 +1,12 @@
 package com.netcracker.services.api;
 
-import com.netcracker.model.view.request.SignUpRequest;
+import com.netcracker.model.documents.User;
 import org.springframework.http.ResponseEntity;
 
 public interface AuthenticationService {
-    ResponseEntity<?> signIn(String login, String password);
+    ResponseEntity<?> signIn(User user);
 
-    ResponseEntity<?> signUp(SignUpRequest signUpRequest);
+    ResponseEntity<?> signUp(User user);
 
     Boolean checkAccessRightsToWorkout(String workoutId, String userId);
     Boolean checkAccessRightsToWorkoutComplex(String workoutComplexId, String userId);

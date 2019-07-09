@@ -24,7 +24,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-  user: User;
+  user: User = new User('', '', '');
   loginFormControl = new FormControl(this.user.login, [Validators.required]);
   passwordFormControl = new FormControl(this.user.password, [Validators.required]);
 

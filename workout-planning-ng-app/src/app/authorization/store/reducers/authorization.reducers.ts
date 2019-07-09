@@ -54,3 +54,4 @@ export function reducer(state: State = initialState, action: AuthorizationAction
     }
   }
 }
+export const selectIsLoggedIn = (state: State) => state.isAuthenticated;
