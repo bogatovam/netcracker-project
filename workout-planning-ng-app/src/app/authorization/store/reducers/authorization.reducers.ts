@@ -46,7 +46,7 @@ export function reducer(state: State = initialState, action: AuthorizationAction
         errorMessage: 'That email is already in use.'
       };
     }
-    case AuthorizationActionTypes.LOGOUT: {
+    case AuthorizationActionTypes.LOGOUT_CONFIRMED: {
       return initialState;
     }
     default: {

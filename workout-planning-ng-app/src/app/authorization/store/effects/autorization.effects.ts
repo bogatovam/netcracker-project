@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
+import { MatDialog } from "@angular/material";
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Observable, of } from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, exhaustMap, map, switchMap, tap } from 'rxjs/operators';
+import {LogoutComponent} from "src/app/authorization/components/logout/logout.component";
 import { AuthorizationService } from "src/app/authorization/services/authorization.service";
 import { TokenStorageService } from "src/app/authorization/services/token-storage.service";
 import * as fromAuth from '../actions/authorization.actions';
@@ -15,6 +17,7 @@ export class AuthorizationEffects {
     private actions: Actions,
     private authService: AuthorizationService,
     private router: Router,
+    private dialogService: MatDialog
   ) {
   }
 
@@ -100,9 +103,27 @@ export class AuthorizationEffects {
   @Effect({dispatch: false})
   public LogOut: Observable<any> = this.actions.pipe(
     ofType(fromAuth.AuthorizationActionTypes.LOGOUT),
+    exhaustMap(() =>
+      this.dialogService
+        .open(LogoutComponent)
+        .afterClosed()
+        .pipe(
+          map(confirmed => {
+            if (confirmed) {
+              return new fromAuth.LogOutConfirmed();
+            } else {
+              return new fromAuth.LogOutCancelled();
+            }
+          })
+        )
+    )
+  );
+
+  @Effect({dispatch: false})
+  public LogOutConfirmed: Observable<any> = this.actions.pipe(
+    ofType(fromAuth.AuthorizationActionTypes.LOGOUT),
     tap((user) => {
       TokenStorageService.logOut();
     })
   );
-
 }
