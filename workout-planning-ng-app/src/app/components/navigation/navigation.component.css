@@ -2,14 +2,19 @@
   background-color: #00063d;
   height: max-content;
   flex-wrap: wrap;
+  justify-content: space-between;
+
 }
 
 .nav-button {
   height: 50px;
   font-size: 14px;
   font-family: sans-serif;
+  flex: 3 0 auto;
 }
 
 .right {
+  flex-grow: 100;
+  display: flex;
   justify-content: flex-end;
 }

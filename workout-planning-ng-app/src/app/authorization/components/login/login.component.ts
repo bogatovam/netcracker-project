@@ -3,10 +3,7 @@ import { FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from "
 import { ErrorStateMatcher } from "@angular/material";
 import { Router } from '@angular/router';
 import { Store } from "@ngrx/store";
-import { AuthorizationLoginInfo } from "src/app/authorization/models/login";
 import { User } from "src/app/authorization/models/user";
-import { AuthorizationService } from "src/app/authorization/services/authorization.service";
-import { TokenStorageService } from "src/app/authorization/services/token-storage.service";
 import { AppState } from "src/app/authorization/store";
 import { LogIn } from "src/app/authorization/store/actions/authorization.actions";
 

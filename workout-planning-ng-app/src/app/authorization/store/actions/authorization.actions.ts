@@ -10,45 +10,62 @@ export enum AuthorizationActionTypes {
   SIGNUP_SUCCESS = '[Auth] Signup Success',
   SIGNUP_FAILURE = '[Auth] Signup Failure',
   LOGOUT = '[Auth] Logout',
-  GET_STATUS = '[Auth] GetStatus'
+  LOGOUT_CONFIRMED = '[Auth] Logout confirmed',
+  LOGOUT_CANCELLED = '[Auth] Logout cancelled'
 }
 
 export class LogIn implements Action {
   readonly type = AuthorizationActionTypes.LOGIN;
-  constructor(public payload: User) {}
+
+  constructor(public payload: User) {
+  }
 }
 
 export class LogInSuccess implements Action {
   readonly type = AuthorizationActionTypes.LOGIN_SUCCESS;
-  constructor(public payload: User) {}
+
+  constructor(public payload: User) {
+  }
 }
 
 export class LogInFailure implements Action {
   readonly type = AuthorizationActionTypes.LOGIN_FAILURE;
-  constructor(public payload: string) {}
+
+  constructor(public payload: string) {
+  }
 }
 
 export class SignUp implements Action {
   readonly type = AuthorizationActionTypes.SIGNUP;
-  constructor(public payload: User) {}
+
+  constructor(public payload: User) {
+  }
 }
 
 export class SignUpSuccess implements Action {
   readonly type = AuthorizationActionTypes.SIGNUP_SUCCESS;
-  constructor(public payload: string) {}
+
+  constructor(public payload: string) {
+  }
 }
 
 export class SignUpFailure implements Action {
   readonly type = AuthorizationActionTypes.SIGNUP_FAILURE;
-  constructor(public payload: any) {}
+
+  constructor(public payload: any) {
+  }
 }
 
 export class LogOut implements Action {
   readonly type = AuthorizationActionTypes.LOGOUT;
 }
 
-export class GetStatus implements Action {
-  readonly type = AuthorizationActionTypes.GET_STATUS;
+export class LogOutConfirmed implements Action {
+  readonly type = AuthorizationActionTypes.LOGOUT_CONFIRMED;
+}
+
+export class LogOutCancelled implements Action {
+  readonly type = AuthorizationActionTypes.LOGOUT_CANCELLED;
 }
 
 export type AuthorizationActions =
@@ -59,4 +76,5 @@ export type AuthorizationActions =
   | SignUpSuccess
   | SignUpFailure
   | LogOut
-  | GetStatus;
+  | LogOutCancelled
+  | LogOutConfirmed;
