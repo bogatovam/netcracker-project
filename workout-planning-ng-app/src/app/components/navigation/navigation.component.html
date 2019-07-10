@@ -1,18 +1,18 @@
 <mat-toolbar class="nav-bar" color="primary">
-  <button *ngIf="!isLogin" class="nav-button" mat-button [matMenuTriggerFor]="workoutMenu">Тренировочный процесс</button>
+  <button *ngIf="isLogin" class="nav-button" mat-button [matMenuTriggerFor]="workoutMenu">Тренировочный процесс</button>
   <mat-menu #workoutMenu="matMenu">
-    <button [routerLink]=workoutComplexUrl mat-menu-item>Тренировки и комплексы</button>
+    <button class="nav-button" [routerLink]=workoutComplexUrl mat-menu-item>Тренировки и комплексы</button>
   </mat-menu>
 
   <button class="nav-button" [routerLink]=directoryUrl  mat-button>Справочник</button>
 
   <div class="right">
-  <button class="" [matMenuTriggerFor]="mainMenu" mat-button><i class="fa fa-user fa-2x"></i></button>
+  <button [matMenuTriggerFor]="mainMenu" mat-button><i class="fa fa-user fa-2x"></i></button>
   <mat-menu #mainMenu="matMenu">
-    <button *ngIf="!isLogin" [routerLink]=loginUrl  mat-menu-item>Войти</button>
-    <button *ngIf="!isLogin" [routerLink]=signupUrl mat-menu-item>Зарегистрироваться</button>
-    <button *ngIf="isLogin"  [routerLink]=homeUrl   mat-menu-item>Моя страница</button>
-    <button *ngIf="isLogin"  (click)="logOut()"     mat-menu-item>Выйти</button>
+    <button class="nav-button" *ngIf="!isLogin" [routerLink]=loginUrl  mat-menu-item>Войти</button>
+    <button class="nav-button" *ngIf="!isLogin" [routerLink]=signupUrl mat-menu-item>Зарегистрироваться</button>
+    <button class="nav-button" *ngIf="isLogin"  [routerLink]=homeUrl   mat-menu-item>Моя страница</button>
+    <button class="nav-button" *ngIf="isLogin"  (click)="logOut()"     mat-menu-item>Выйти</button>
   </mat-menu>
   </div>
 </mat-toolbar>

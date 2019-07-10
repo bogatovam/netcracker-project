@@ -1,31 +1,29 @@
 <div class="login-container">
-  <div class="login-logo ">
-    <img src="../../../../assets/images/logo.jpg" alt=""/>
-  </div>
-
   <form noValidate [formGroup]="loginFormModel" (ngSubmit)="onSubmit()" class="login-form">
+    <img class="login-logo" src="../../../../assets/images/logo.jpg" alt=""/>
+    <div class="fields-panel">
+      <mat-form-field class="fields">
+        <input matInput type="text" class="form-control"
+               placeholder="Логин" formControlName="login" [errorStateMatcher]="matcher" required/>
+        <mat-error *ngIf="loginFormControl.hasError('required')">
+          Login is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
 
-    <mat-form-field>
-      <input matInput type="text" class="form-control"
-             placeholder="Логин" formControlName="login" [errorStateMatcher]="matcher" required/>
-      <mat-error *ngIf="loginFormControl.hasError('required')">
-        Login is <strong>required</strong>
-      </mat-error>
-    </mat-form-field>
-
-    <mat-form-field>
-      <input matInput type="password" class="form-control"
-             placeholder="Пароль" formControlName="password" [errorStateMatcher]="matcher" required/>
-      <mat-error *ngIf="passwordFormControl.hasError('required')">
-        Password is <strong>required</strong>
-      </mat-error>
-    </mat-form-field>
+      <mat-form-field class="fields">
+        <input matInput type="password" class="form-control"
+               placeholder="Пароль" formControlName="password" [errorStateMatcher]="matcher" required/>
+        <mat-error *ngIf="passwordFormControl.hasError('required')">
+          Password is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
     <div class="login-buttons">
-      <button type="submit" mat-button>Войти</button>
+      <button type="submit" class="button-submit" mat-button>Войти</button>
       <div class="horizontal-separator">
         <p>или</p>
       </div>
-      <button type="button" (click)="redirect()" class="button-signup">Зарегистрировасться</button>
+      <button type="button" (click)="redirect()"  mat-button class="button-signup">Зарегистрировасться</button>
     </div>
   </form>
 </div>
