@@ -1,9 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { JwtResponse } from "src/app/authorization/models/jwt-response";
-import { AuthorizationLoginInfo } from "src/app/authorization/models/login";
-import { SignUpInfo } from "src/app/authorization/models/signup";
 import { User } from "src/app/authorization/models/user";
 import { TokenStorageService } from 'src/app/authorization/services/token-storage.service';
 

@@ -1,7 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from "@angular/forms";
-import { MatButtonModule, MatCardModule, MatDialogModule, MatInputModule } from "@angular/material";
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatDatepickerModule,
+  MatDialogModule,
+  MatInputModule, MatNativeDateModule,
+  MatRadioModule, MatSelectModule
+} from "@angular/material";
 import { RouterModule } from "@angular/router";
 import { EffectsModule } from "@ngrx/effects";
 import { AuthRoutingModule } from "src/app/authorization/auth-routing.module";
@@ -27,6 +34,10 @@ import { LogoutComponent } from './components/logout/logout.component';
     MatCardModule,
     MatDialogModule,
     MatInputModule,
+    MatRadioModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSelectModule,
     ReactiveFormsModule,
     AuthRoutingModule,
     EffectsModule.forFeature([AuthorizationEffects]),

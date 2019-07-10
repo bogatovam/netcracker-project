@@ -1,0 +1,94 @@
+<div class="signup-container">
+  <form noValidate [formGroup]="signUpFormModel" (ngSubmit)="onSubmit()" class="signup-form">
+    <img class="logo" src="../../../../assets/images/logo.jpg" alt=""/>
+    <div class="row">
+      <div class="form-fields-panel-left">
+        <mat-form-field class="form-fields">
+          <input matInput type="text"
+                 placeholder="Имя" formControlName="fullName" [errorStateMatcher]="matcher" required/>
+          <mat-error *ngIf="fullNameFormControl.hasError('required')">
+            Введите <strong>полное имя</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="form-fields">
+          <input matInput type="text"
+                 placeholder="Электронная почта" formControlName="email" [errorStateMatcher]="matcher" required/>
+          <mat-error *ngIf="emailFormControl.hasError('required')">
+            Введите <strong>e-mail</strong>
+          </mat-error>
+          <mat-error *ngIf="emailFormControl.hasError('email')">
+            Введите корректный <strong>e-mail</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="form-fields">
+          <input matInput type="text"
+                 placeholder="Логин" formControlName="login" [errorStateMatcher]="matcher" required/>
+          <mat-error *ngIf="loginFormControl.hasError('required')">
+            Введите <strong>логин</strong>
+          </mat-error>
+          <mat-error *ngIf="loginFormControl.hasError('minLength')">
+            <strong>Логин</strong> должен быть не меньше 6 символов
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="form-fields">
+          <input matInput type="password"
+                 placeholder="Пароль" formControlName="password" [errorStateMatcher]="matcher" required/>
+          <mat-error *ngIf="passwordFormControl.hasError('required')">
+            Введите <strong>пароль</strong>
+          </mat-error>
+          <mat-error *ngIf="passwordFormControl.hasError('minLength')">
+            <strong>Пароль</strong> должен быть не меньше 6 символов
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-fields-panel-right">
+
+        <mat-radio-group
+          aria-labelledby="example-radio-group-label"
+          class="gender-radio-group form-fields"
+          formControlName="gender">
+          <mat-radio-button class="gender-radio-button" *ngFor="let g of genders" [value]="g.char">
+            {{g.name}}
+          </mat-radio-button>
+        </mat-radio-group>
+
+        <mat-form-field class="form-fields right-fields">
+          <input matInput [matDatepicker]="dob" placeholder="Дата рождения"
+                 [formControl]="dobFormControl" [contentEditable]="false">
+          <mat-datepicker-toggle matSuffix [for]="dob"></mat-datepicker-toggle>
+          <mat-datepicker #dob></mat-datepicker>
+          <mat-error *ngIf="dobFormControl.invalid">
+            Введите дату в формате день/месяц/год
+          </mat-error>
+        </mat-form-field>
+
+        <div class="gender-radio-group">
+          <mat-form-field class=" gender-radio-button">
+            <label class="simple-label">Ваш вес</label>
+            <input matInput value=60 type="number" formControlName="weight"
+                   [errorStateMatcher]="matcher"/>
+          </mat-form-field>
+          <mat-form-field class=" gender-radio-button">
+            <label class="simple-label">Ваш рост</label>
+            <input matInput value="170" formControlName="growth" type="number"
+                   [errorStateMatcher]="matcher"/>
+          </mat-form-field>
+        </div>
+        <mat-form-field class="form-fields right-fields">
+          <mat-label>Цель тренировок</mat-label>
+          <mat-select formControlName="workoutsGoal">
+            <mat-option *ngFor="let goal of goals" [value]="goal.goal">
+              {{goal.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="login-buttons">
+      <button type="submit" mat-button class="button-submit">Зарегистрироваться</button>
+    </div>
+  </form>
+</div>

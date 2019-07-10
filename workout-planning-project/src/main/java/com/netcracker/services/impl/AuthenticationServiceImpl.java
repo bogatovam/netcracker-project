@@ -89,22 +89,25 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public ResponseEntity<?> signUp(User user) {
         if (userRepository.existsByLogin(user.getLogin())) {
-            return new ResponseEntity<>(new ResponseMessage("Fail -> Username is already taken!"),
+            return new ResponseEntity<>(new ResponseMessage("Username is already taken!"),
                     HttpStatus.BAD_REQUEST);
         }
 
         if (userRepository.existsByEmail(user.getEmail())) {
-            return new ResponseEntity<>(new ResponseMessage("Fail -> Email is already in use!"),
+            return new ResponseEntity<>(new ResponseMessage("Email is already in use!"),
                     HttpStatus.BAD_REQUEST);
         }
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (user.isValid()) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        user.setRoles(user.getRoles());
+            user.setRoles(user.getRoles());
 
-        User result = userRepository.save(user);
+            User result = userRepository.save(user);
 
-        return new ResponseEntity<>(new ResponseMessage("User registered successfully!"), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseMessage("User registered successfully!"), HttpStatus.OK);
+        } else return new ResponseEntity<>(new ResponseMessage("User fields have bad value"),
+                HttpStatus.BAD_REQUEST);
     }
 
     public Boolean checkAccessRightsToWorkout(String workoutId, String userId) {

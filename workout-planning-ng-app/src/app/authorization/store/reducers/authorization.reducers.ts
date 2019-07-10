@@ -23,8 +23,19 @@ export function reducer(state: State = initialState, action: AuthorizationAction
         ...state,
         isAuthenticated: true,
         user: {
+          id: action.payload.id,
+          fullName: action.payload.fullName,
+          email: action.payload.email,
+          login: action.payload.login,
+          password: action.payload.password,
+          roles: action.payload.roles,
+          state: action.payload.state,
+          gender: action.payload.gender,
+          dateOfBirth: action.payload.dateOfBirth,
+          weight: action.payload.weight,
+          growth: action.payload.growth,
+          workoutsGoal: action.payload.workoutsGoal,
           token: action.payload.token,
-          login: action.payload.login
         },
         errorMessage: null
       };
@@ -55,3 +66,4 @@ export function reducer(state: State = initialState, action: AuthorizationAction
   }
 }
 export const selectIsLoggedIn = (state: State) => state.isAuthenticated;
+export const selectUser = (state: State) => state.user;

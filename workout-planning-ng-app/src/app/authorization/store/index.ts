@@ -11,7 +11,13 @@ export const reducers = {
 };
 
 export const selectAuthState = createFeatureSelector<fromAuth.State>('auth');
+
 export const selectIsLoggedIn = createSelector(
   selectAuthState,
   fromAuth.selectIsLoggedIn
+);
+
+export const selectUser = createSelector(
+  selectAuthState,
+  fromAuth.selectUser
 );

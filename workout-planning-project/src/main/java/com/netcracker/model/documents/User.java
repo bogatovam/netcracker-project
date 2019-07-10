@@ -15,6 +15,7 @@ import org.springframework.data.annotation.Transient;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import static com.netcracker.model.CollectionsNames.USER;
@@ -43,7 +44,7 @@ public class User {
     private State state;
 
     private String gender;
-    private Integer age;
+    private Date dateOfBirth;
     private Integer weight;
     private Integer growth;
 
@@ -56,17 +57,31 @@ public class User {
     @Relations(edges = UserToWComplex.class, direction = Relations.Direction.OUTBOUND)
     private List<WorkoutComplex> workoutsComplexes;
 
-    public List<String> getRoleList(){
-        if(this.roles.length() > 0){
+    public List<String> getRoleList() {
+        if (this.roles.length() > 0) {
             return Arrays.asList(this.roles.split(","));
         }
         return new ArrayList<>();
     }
+
+    public boolean isValid() {
+        return (login != null && login.length() > 6) &&
+                (fullName != null && fullName.length() > 0) &&
+                (email != null && email.length() > 6) &&
+                (password != null && password.length() > 6) &&
+                (roles != null) &&
+                (state != null) &&
+                (gender != null) &&
+                (dateOfBirth != null) &&
+                (weight != null);
+    }
+
     public static enum Goals {
         WEIGHT_LOSS,
         SET_MASS,
         MUSCLE_RELIEF
     }
+
     public static enum State {
         ACTIVE, BANNED, DELETED;
     }
