@@ -18,8 +18,8 @@ import { AuthorizationService } from "src/app/authorization/services/authorizati
 import { AuthorizationEffects } from "src/app/authorization/store/effects/autorization.effects";
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
-import { SignupComponent } from './components/signup/signup.component';
 import { LogoutComponent } from './components/logout/logout.component';
+import { SignupComponent } from './components/signup/signup.component';
 
 @NgModule({
   declarations: [

@@ -1,3 +1,5 @@
+import { WorkoutComplex } from "src/app/models/workout-complex";
+
 export class User {
   constructor(public id?: string,
               public fullName?: string,
@@ -11,7 +13,8 @@ export class User {
               public dateOfBirth?: Date,
               public weight?: number,
               public growth?: number,
-              public workoutsGoal?: Goals
+              public workoutsGoal?: Goals,
+              public workoutsComplexes?: WorkoutComplex[]
   ) {
   }
 }

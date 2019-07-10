@@ -7,6 +7,7 @@ import { EffectsModule } from "@ngrx/effects";
 import { StoreModule } from "@ngrx/store";
 import { AppRoutingModule } from "src/app/app-routing.module";
 import { AuthorizationModule } from "src/app/authorization/authorization.module";
+import {LogoutComponent} from "src/app/authorization/components/logout/logout.component";
 import { reducers } from "src/app/authorization/store";
 
 import { AppComponent } from './app.component';
@@ -30,7 +31,8 @@ import { NavigationComponent } from './components/navigation/navigation.componen
     NavigationComponent
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [LogoutComponent]
 })
 export class AppModule {
 }

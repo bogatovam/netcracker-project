@@ -1,4 +1,5 @@
 import { User } from "src/app/authorization/models/user";
+import { TokenStorageService } from "src/app/authorization/services/token-storage.service";
 import { AuthorizationActions, AuthorizationActionTypes } from '../actions/authorization.actions';
 
 export interface State {
@@ -11,7 +12,7 @@ export interface State {
 }
 
 export const initialState: State = {
-  isAuthenticated: false,
+  isAuthenticated: TokenStorageService.getToken() !== null,
   user: null,
   errorMessage: null
 };
@@ -58,7 +59,12 @@ export function reducer(state: State = initialState, action: AuthorizationAction
       };
     }
     case AuthorizationActionTypes.LOGOUT_CONFIRMED: {
-      return initialState;
+      return {
+        ...state,
+        isAuthenticated: false,
+        user: null,
+        errorMessage: null
+      };
     }
     default: {
       return state;

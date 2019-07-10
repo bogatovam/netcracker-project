@@ -3,6 +3,7 @@ package com.netcracker.model.documents;
 import com.arangodb.springframework.annotation.Document;
 import com.arangodb.springframework.annotation.Field;
 import com.arangodb.springframework.annotation.Relations;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.netcracker.model.edges.UserToWComplex;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -54,6 +55,7 @@ public class User {
     @Transient
     private String token;
 
+    @JsonIgnore
     @Relations(edges = UserToWComplex.class, direction = Relations.Direction.OUTBOUND)
     private List<WorkoutComplex> workoutsComplexes;
 

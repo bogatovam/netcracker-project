@@ -17,8 +17,7 @@ export class LogoutComponent implements OnInit {
   }
 
   confirm(): void {
+    console.log('!!');
     this.ref.close(true);
   }
-
-
 }

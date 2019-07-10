@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Observable, of } from 'rxjs';
 import { catchError, exhaustMap, map, switchMap, tap } from 'rxjs/operators';
-import {LogoutComponent} from "src/app/authorization/components/logout/logout.component";
+import { LogoutComponent } from "src/app/authorization/components/logout/logout.component";
 import { AuthorizationService } from "src/app/authorization/services/authorization.service";
 import { TokenStorageService } from "src/app/authorization/services/token-storage.service";
 import * as fromAuth from '../actions/authorization.actions';
@@ -28,6 +28,7 @@ export class AuthorizationEffects {
     switchMap(payload => {
       return this.authService.logIn(payload).pipe(
         map((user) => {
+          console.log(user.workoutsComplexes);
           return new fromAuth.LogInSuccess(user);
         }),
         catchError((error) => {
@@ -100,7 +101,7 @@ export class AuthorizationEffects {
     )
   );
 
-  @Effect({dispatch: false})
+  @Effect()
   public LogOut: Observable<any> = this.actions.pipe(
     ofType(fromAuth.AuthorizationActionTypes.LOGOUT),
     exhaustMap(() =>
@@ -121,9 +122,10 @@ export class AuthorizationEffects {
 
   @Effect({dispatch: false})
   public LogOutConfirmed: Observable<any> = this.actions.pipe(
-    ofType(fromAuth.AuthorizationActionTypes.LOGOUT),
-    tap((user) => {
+    ofType(fromAuth.AuthorizationActionTypes.LOGOUT_CONFIRMED),
+    tap(() => {
       TokenStorageService.logOut();
+       this.router.navigate([this.authService.authorizationFailureUrl]);
     })
   );
 }
