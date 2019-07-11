@@ -1,0 +1,36 @@
+.exercise-panel {
+  height: 40vh;
+  overflow: auto;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.load-table-panel {
+  width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+}
+
+.load-table {
+  background-color: #00063d;
+}
+
+.mat-header-cell {
+  color: white;
+  font-size: 15px;
+}
+
+.mat-cell {
+  color: white;
+  font-size: 15px;
+}
+
+.measure-list {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.list-element{
+  width: 35vw;
+}

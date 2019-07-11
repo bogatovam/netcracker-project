@@ -1,7 +1,6 @@
 import { Action } from '@ngrx/store';
 import { User } from "src/app/authorization/models/user";
 
-
 export enum AuthorizationActionTypes {
   LOGIN = '[Auth] Login',
   LOGIN_SUCCESS = '[Auth] Login Success',

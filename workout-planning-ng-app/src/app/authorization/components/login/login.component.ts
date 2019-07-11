@@ -4,8 +4,9 @@ import { ErrorStateMatcher } from "@angular/material";
 import { Router } from '@angular/router';
 import { Store } from "@ngrx/store";
 import { User } from "src/app/authorization/models/user";
-import { AppState, selectError } from "src/app/authorization/store";
+import { selectError } from "src/app/authorization/store";
 import { LogIn } from "src/app/authorization/store/actions/authorization.actions";
+import {AppState} from "src/app/store/state/app.state";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {

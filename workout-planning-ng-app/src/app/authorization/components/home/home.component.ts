@@ -3,8 +3,9 @@ import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { Observable } from "rxjs";
 import { User } from "src/app/authorization/models/user";
-import { AppState, selectIsLoggedIn, selectUser } from "src/app/authorization/store";
+import { selectIsLoggedIn, selectUser } from "src/app/authorization/store";
 import { DeleteUser, GetUser } from "src/app/authorization/store/actions/authorization.actions";
+import {AppState} from "src/app/store/state/app.state";
 
 @Component({
   selector: 'app-home',

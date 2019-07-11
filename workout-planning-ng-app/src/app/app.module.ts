@@ -1,6 +1,23 @@
-import { HttpClientModule } from "@angular/common/http";
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { CdkTableModule } from "@angular/cdk/table";
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { MatButtonModule, MatMenuModule, MatToolbarModule } from "@angular/material";
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatCheckboxModule,
+  MatDialogModule,
+  MatInputModule,
+  MatListModule,
+  MatMenuModule,
+  MatPaginatorModule,
+  MatSelectModule,
+  MatSortModule,
+  MatTableModule,
+  MatTabsModule,
+  MatToolbarModule,
+  MatTreeModule,
+} from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { EffectsModule } from "@ngrx/effects";
@@ -9,6 +26,7 @@ import { AppRoutingModule } from "src/app/app-routing.module";
 import { AuthorizationModule } from "src/app/authorization/authorization.module";
 import { LogoutComponent } from "src/app/authorization/components/logout/logout.component";
 import { reducers } from "src/app/authorization/store";
+import { ApiService } from "src/app/services/api.service";
 
 import { AppComponent } from './app.component';
 import { DirectoryComponent } from './components/directory/directory.component';
@@ -18,6 +36,17 @@ import { WorkoutComplexComponent } from './components/workout-complex/workout-co
 import { WorkoutComponent } from './components/workout/workout.component';
 import { CdkDetailRowDirective } from './shared/directives/cdk-detail-row.directive';
 import { WorkoutFilterPipe } from './shared/pipes/workout-filter.pipe';
+
+const MAT_MODULES = [
+  DragDropModule,
+  CdkTableModule,
+  MatPaginatorModule,
+  MatSortModule,
+  MatTableModule,
+  MatTabsModule,
+  MatInputModule,
+  MatCheckboxModule
+];
 
 @NgModule({
   imports: [
@@ -31,6 +60,7 @@ import { WorkoutFilterPipe } from './shared/pipes/workout-filter.pipe';
     MatButtonModule,
     AuthorizationModule,
     AppRoutingModule,
+    MAT_MODULES
   ],
   declarations: [
     AppComponent,
@@ -42,7 +72,8 @@ import { WorkoutFilterPipe } from './shared/pipes/workout-filter.pipe';
     CdkDetailRowDirective,
     WorkoutFilterPipe
   ],
-  providers: [],
+  exports: [MAT_MODULES],
+  providers: [ApiService],
   bootstrap: [AppComponent],
   entryComponents: [LogoutComponent]
 })
