@@ -38,4 +38,6 @@ public interface PlanningService {
     Workout changeSourceWorkoutComplex(String workoutId, String oldWorkoutComplexId, String newWorkoutComplexId, String userId);
 
     Workout updateWorkout(Workout workout, String userId);
+
+    WorkoutComplex updateWorkoutComplex(WorkoutComplex workoutComplex, String userId);
 }

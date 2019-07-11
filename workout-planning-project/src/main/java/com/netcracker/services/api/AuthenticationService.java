@@ -10,6 +10,4 @@ public interface AuthenticationService {
 
     Boolean checkAccessRightsToWorkout(String workoutId, String userId);
     Boolean checkAccessRightsToWorkoutComplex(String workoutComplexId, String userId);
-
-    ResponseEntity<?> getUserById(String userId, String authUserId);
 }

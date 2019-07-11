@@ -8,6 +8,8 @@ import com.netcracker.services.api.AuthenticationService;
 import com.netcracker.services.api.DataDisplayService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -27,6 +29,22 @@ public class DataDisplayServiceImpl implements DataDisplayService {
     private final WComplexToWorkoutRepository wComplexToWorkoutRepository;
     private final WorkoutToExerciseRepository workoutToExerciseRepository;
     private final UserToWComplexRepository userToWComplexRepository;
+
+    @Override
+    public ResponseEntity<?> getUserById(String userId, String authUserId) {
+        User sourceUser = getUserById(authUserId);
+        if (sourceUser.getId().equals(userId)) {
+            return ResponseEntity.ok(sourceUser);
+        } else {
+            return new ResponseEntity<>("User is not authorized to take action",
+                    HttpStatus.FORBIDDEN);
+        }
+    }
+
+    public User getUserById(String userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("User has bad value"));
+    }
 
     @Override
     public List<Exercise> getAllExercise() {
@@ -84,5 +102,19 @@ public class DataDisplayServiceImpl implements DataDisplayService {
         if (!authenticationService.checkAccessRightsToWorkoutComplex(workoutComplexId, userId))
             return null;
         return getWorkoutComplexById(workoutComplexId, userId).getWorkouts();
+    }
+
+    @Override
+    public ResponseEntity<?> getAllWorkout(String userId) {
+        List<Workout> result = new ArrayList<>();
+        try {
+            User user = getUserById(userId);
+            user.getWorkoutsComplexes().forEach(wc -> {
+                result.addAll(wc.getWorkouts());
+            });
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 }

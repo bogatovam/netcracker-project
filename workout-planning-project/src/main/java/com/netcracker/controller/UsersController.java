@@ -2,6 +2,7 @@ package com.netcracker.controller;
 
 import com.netcracker.model.documents.User;
 import com.netcracker.services.api.AuthenticationService;
+import com.netcracker.services.api.DataDisplayService;
 import com.netcracker.services.api.PlanningService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -21,6 +22,9 @@ public class UsersController {
 
     @Autowired
     private PlanningService planningService;
+
+    @Autowired
+    DataDisplayService dataDisplayService;
 
     @PostMapping(USER_SIGN_IN)
     @ApiOperation(value = "Authenticate User")
@@ -43,7 +47,7 @@ public class UsersController {
             @ApiParam(value = "User id")
             @PathVariable String id,
             Authentication authentication) {
-        return  authenticationService.getUserById(id, authentication.getName());
+        return  dataDisplayService.getUserById(id, authentication.getName());
     }
 
     @DeleteMapping(DELETE_USER_BY_ID)

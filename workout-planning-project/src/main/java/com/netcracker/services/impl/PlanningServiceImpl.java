@@ -255,4 +255,11 @@ public class PlanningServiceImpl implements PlanningService {
         addListExercises(newWorkout.getId(), workout.getExercises(), userId);
         return newWorkout;
     }
+
+    @Override
+    public WorkoutComplex updateWorkoutComplex(WorkoutComplex workoutComplex, String userId) {
+        if (!authenticationService.checkAccessRightsToWorkoutComplex(workoutComplex.getId(), userId))
+            return null;
+        return workoutComplexRepository.save(workoutComplex);
+    }
 }

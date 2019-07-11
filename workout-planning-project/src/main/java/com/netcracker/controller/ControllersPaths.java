@@ -18,7 +18,7 @@ public class ControllersPaths {
         /*   Read   operations   */
         public static final String GET_ALL_EXERCISES = "/free/exercises/all";
         public static final String GET_ALL_EXERCISES_LOAD = "/free/exercises/load";
-        public static final String GET_EXERCISE_BY_ID = "/free/exercises/{id}";
+        public static final String GET_EXERCISE_BY_ID = "/free/exercise/{id}";
 
         /*   Update operations   */
         public static final String SET_NAME_BY_ID = "/exercises/{id}/name";
@@ -34,8 +34,9 @@ public class ControllersPaths {
 
         /*   Read   operations   */
         public static final String GET_WORKOUT_BY_ID = "/workout/{id}";
-        public static final String GET_SOURCE_WORKOUT_COMPLEX_BY_ID = "/workout/{id}/complex";
-        public static final String GET_EXERCISES_BY_ID = "/workout/{id}/exercises";
+        public static final String GET_SOURCE_WORKOUT_COMPLEX_BY_ID = "/workout/complex/{id}";
+        public static final String GET_EXERCISES_BY_ID = "/workout/exercises/{id}";
+        public static final String GET_ALL_WORKOUT = "/workout/all";
 
         /*   Update operations   */
         public static final String UPDATE_WORKOUT = "/workout/update";
@@ -62,6 +63,6 @@ public class ControllersPaths {
         public static final String UPDATE_WORKOUT_COMPLEX = "/workout-complex/update";
 
         /*   Delete operations   */
-        public static final String DELETE_WORKOUT_COMPLEX_BY_ID = "/workout-complex/{id}/delete";
+        public static final String DELETE_WORKOUT_COMPLEX_BY_ID = "/workout-complex/delete/{id}";
     }
 }

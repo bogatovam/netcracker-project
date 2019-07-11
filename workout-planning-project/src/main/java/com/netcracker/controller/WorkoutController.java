@@ -32,9 +32,10 @@ public class WorkoutController {
             @PathVariable String wcid,
             @ApiParam(value = "Body of created workout")
             @RequestBody Workout workout,
-             Authentication authentication) {
+            Authentication authentication) {
         return planningService.createWorkout(wcid, workout, authentication.getName());
     }
+
     @PostMapping(UPDATE_WORKOUT)
     @ApiOperation(value = "Update workout with complex")
     public Workout updateWorkout(
@@ -48,21 +49,26 @@ public class WorkoutController {
     @ApiOperation(value = "Get workout by id")
     public ResponseEntity<?> getWorkoutById(
             @ApiParam(value = "Workout id")
-            @PathVariable String id ,
-            Authentication authentication){
-
+            @PathVariable String id,
+            Authentication authentication) {
         Workout workoutById = dataDisplayService.getWorkoutById(id, authentication.getName());
         if (workoutById == null)
-            return  ResponseEntity.status(HttpStatus.FORBIDDEN).body("");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Workout  with id: " + id + " doesn't exist");
         return ResponseEntity.ok(workoutById);
+    }
+
+    @GetMapping(GET_ALL_WORKOUT)
+    @ApiOperation(value = "Get all workout")
+    public ResponseEntity<?> getAllWorkout(Authentication authentication) {
+        return dataDisplayService.getAllWorkout(authentication.getName());
     }
 
     @GetMapping(GET_SOURCE_WORKOUT_COMPLEX_BY_ID)
     @ApiOperation(value = "Get source workout complex")
     public WorkoutComplex getSourceWorkoutComplex(
             @ApiParam(value = "Workout id")
-            @PathVariable String id ,
-            Authentication authentication){
+            @PathVariable String id,
+            Authentication authentication) {
         return dataDisplayService.getSourceWorkoutComplex(id, authentication.getName());
     }
 
@@ -75,15 +81,16 @@ public class WorkoutController {
             @PathVariable String oldwcid,
             @ApiParam(value = "Workout complex id")
             @PathVariable String newwcid,
-            Authentication authentication){
+            Authentication authentication) {
         return planningService.changeSourceWorkoutComplex(id, oldwcid, newwcid, authentication.getName());
     }
+
     @GetMapping(GET_EXERCISES_BY_ID)
     @ApiOperation(value = "Get all exercises")
     public List<Exercise> getExercises(
             @ApiParam(value = "Workout id")
             @PathVariable String id,
-            Authentication authentication ){
+            Authentication authentication) {
         return dataDisplayService.getExercises(id, authentication.getName());
     }
 
@@ -92,7 +99,7 @@ public class WorkoutController {
     public Workout deleteWorkout(
             @ApiParam(value = "Workout id")
             @PathVariable String id,
-             Authentication authentication){
+            Authentication authentication) {
         return planningService.deleteWorkout(id, authentication.getName());
     }
 }

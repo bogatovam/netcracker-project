@@ -1,12 +1,15 @@
 package com.netcracker.services.api;
 
 import com.netcracker.model.documents.*;
+import org.springframework.http.ResponseEntity;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 public interface DataDisplayService {
+    ResponseEntity<?> getUserById(String userId, String authUserId);
+
     List<Exercise> getAllExercise();
 
     List<WorkoutComplex> getAllWorkoutComplex(String userId);
@@ -25,4 +28,6 @@ public interface DataDisplayService {
 
     // Получить все тренировки комплекса
     List<Workout> getWorkouts(String workoutComplexId, String userId);
+
+    ResponseEntity<?> getAllWorkout(String userId);
 }

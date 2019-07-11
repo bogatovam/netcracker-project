@@ -96,18 +96,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 HttpStatus.BAD_REQUEST);
     }
 
-    @Override
-    public ResponseEntity<?> getUserById(String userId, String authUserId) {
-        User sourceUser = userRepository.findById(authUserId)
-                .orElseThrow(() -> new NoSuchElementException("User has bad value"));
-        if (sourceUser.getId().equals(userId)) {
-            return ResponseEntity.ok(sourceUser);
-        } else {
-            return new ResponseEntity<>("User is not authorized to take action",
-                    HttpStatus.FORBIDDEN);
-        }
-    }
-
     public Boolean checkAccessRightsToWorkout(String workoutId, String userId) {
         WorkoutComplex source = getSourceWorkoutComplex(workoutId);
         return checkAccessRightsToWorkoutComplex(source.getId(), userId);
