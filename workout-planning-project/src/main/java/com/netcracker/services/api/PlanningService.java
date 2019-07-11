@@ -3,7 +3,6 @@ package com.netcracker.services.api;
 import com.netcracker.model.documents.*;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Date;
 import java.util.List;
 
 public interface PlanningService {
@@ -14,8 +13,6 @@ public interface PlanningService {
 
     ResponseEntity<?> deleteUserById(String userId, String authUserId);
 
-    ScheduledWorkout createScheduledWorkout(String id, ScheduledWorkout scheduledWorkout, String userId);
-
     WorkoutComplex createWorkoutComplex(WorkoutComplex workoutComplex, String userId);
 
     Exercise deleteExercise(String exerciseId, String userId);
@@ -23,8 +20,6 @@ public interface PlanningService {
     Workout deleteWorkout(String workoutId, String userId);
 
     WorkoutComplex deleteWorkoutComplex(String workoutComplexId, String userId);
-
-    ScheduledWorkout deleteScheduledWorkout(String workoutId, String scheduledWorkoutId, String userId);
 
     String setExerciseName(String exerciseId, String name, String userId);
 
@@ -34,48 +29,11 @@ public interface PlanningService {
     // Удалить упражнение из тренировки
     Workout delListExercises(String workoutId, List<Exercise> exerciseList, String userId);
 
-    // Добавить упражнение в запланированную тренировку
-    ScheduledWorkout addExerciseToScheduledWorkout(String scheduledWorkoutId, String exerciseId, String userId);
-
-    // Измерить упражнение в запланированной тренировке
-    MeasurementsOfExercise addExerciseMeasurement(String scheduledWorkoutId, String exerciseId, Measurement measurement, String userId);
-
-    MeasurementsOfExercise updateExerciseMeasurement(String scheduledWorkoutId, String exerciseId, String numberMeasurement, Measurement measurement, String userId);
-
-    MeasurementsOfExercise delExerciseMeasurement(String scheduledWorkoutId, String exerciseId, String numberMeasurement, String userId);
-
-    // Measurement addMeasurementOfExercise(String exerciseId, String measurementOfExerciseId, Measurement measurement);
-
-    // Measurement delMeasurementOfExercise(String exerciseId, String measurementOfExerciseId, String number);
-
-    // Удалить упражнение из запланированной тренировки
-    ScheduledWorkout deleteExerciseFromScheduledWorkout(String scheduledWorkoutId, String exerciseId, String userId);
-
     // Добавить тренировку в комплекс
     Workout addWorkout(String workoutComplexId, Workout workout, String userId);
 
     // Удалить тренировку из комплекса
-    Workout delWorkout(String workoutComplexId, String workoutId, String userId);
-
-    // Запланировать тренировку на дату/время
-    Workout setWorkoutToDate(String workoutId, Date date, String userId);
-
-    // Назначить тренировку в другой комплекс
-    Workout setWorkoutComplexToWorkout(String workoutComplexId, String workoutId, String userId);
-
-    // Изменить название тренировки
-    Workout setNameWorkout(String workoutId, String name, String userId);
-
-    // Изменить дату запланированной тренировки
-    void setDateScheduledWorkout(String scheduledWorkoutId, Date date, String userId);
-
-    // Изменить статус запланированной тренировки
-    void setStatusScheduledWorkout(String scheduledWorkoutId, String status, String userId);
-
-    // Изменить имя тренировочного комплексаЫ
-    WorkoutComplex setNameWorkoutComplex(String workoutComplexId, String name, String userId);
-
-    WorkoutComplex setDescriptionWorkoutComplex(String id, String description, String userId);
+    Workout deleteWorkout(String workoutComplexId, String workoutId, String userId);
 
     Workout changeSourceWorkoutComplex(String workoutId, String oldWorkoutComplexId, String newWorkoutComplexId, String userId);
 

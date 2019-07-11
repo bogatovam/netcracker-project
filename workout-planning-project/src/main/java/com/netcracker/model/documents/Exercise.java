@@ -4,7 +4,6 @@ import com.arangodb.springframework.annotation.Document;
 import com.arangodb.springframework.annotation.Field;
 import com.arangodb.springframework.annotation.Relations;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.netcracker.model.edges.ExerciseToMeasurements;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -30,10 +29,6 @@ public class Exercise {
     private String name;
     private Description description;
     private InfForRecommendation infForRecommendation;
-
-    @JsonIgnore
-    @Relations(edges = ExerciseToMeasurements.class, direction = Relations.Direction.OUTBOUND)
-    private List<MeasurementsOfExercise> measurements;
 
     @Data
     public static class Description {

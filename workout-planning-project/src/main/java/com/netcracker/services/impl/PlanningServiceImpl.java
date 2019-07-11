@@ -25,17 +25,12 @@ public class PlanningServiceImpl implements PlanningService {
     private final UserRepository userRepository;
     private final ExerciseRepository exerciseRepository;
     private final WorkoutRepository workoutRepository;
-    private final ScheduledWorkoutRepository scheduledWorkoutRepository;
-    private final MeasurementsOfExerciseRepository measurementsOfExerciseRepository;
     private final WorkoutComplexRepository workoutComplexRepository;
     private final AuthenticationService authenticationService;
 
     private final WComplexToWorkoutRepository wComplexToWorkoutRepository;
     private final WorkoutToExerciseRepository workoutToExerciseRepository;
-    private final WorkoutToDateRepository workoutToDateRepository;
-    private final ExerciseToMeasurementsRepository exerciseToMeasurementsRepository;
     private final UserToWComplexRepository userToWComplexRepository;
-    private final ScheduledWorkoutToExerciseMeasurementRepository sWToExMeasurementRepository;
 
     private final DataDisplayService dataDisplayService;
 
@@ -96,28 +91,6 @@ public class PlanningServiceImpl implements PlanningService {
     }
 
     @Override
-    public ScheduledWorkout createScheduledWorkout(String workoutId, ScheduledWorkout scheduledWorkout, String userId) {
-        Workout sourceWorkout;
-        WorkoutToDate workoutToDate;
-        ScheduledWorkout newScheduledWorkout;
-
-        authenticationService.checkAccessRightsToWorkout(workoutId, userId);
-        sourceWorkout = workoutRepository.findById(workoutId)
-                .orElseThrow(() -> new NoSuchElementException(
-                        "Workout id" + workoutId + " has bad value"));
-
-        newScheduledWorkout = scheduledWorkoutRepository.save(scheduledWorkout);
-
-        workoutToDate = WorkoutToDate.builder()
-                .scheduledWorkout(newScheduledWorkout)
-                .workout(sourceWorkout).build();
-
-        workoutToDateRepository.save(workoutToDate);
-        logger.info("User " + userId + " create workout  " + workoutId);
-        return newScheduledWorkout;
-    }
-
-    @Override
     public WorkoutComplex createWorkoutComplex(WorkoutComplex workoutComplex, String userId) {
         // #TODO change when spring security is added!
         User sourceUser;
@@ -143,31 +116,9 @@ public class PlanningServiceImpl implements PlanningService {
                 orElseThrow(() -> new NoSuchElementException(
                         "Exercise id " + exerciseId + " has bad value"));
         workoutToExerciseRepository.removeAllByExerciseId(delExercise.getId());
-
-        delExercise.getMeasurements().forEach(measurement ->
-                measurementsOfExerciseRepository.removeById(measurement.getId()));
-
-        exerciseToMeasurementsRepository.removeAllByExerciseId(delExercise.getId());
-
         exerciseRepository.removeById(exerciseId);
         logger.info("User " + userId + " delete exercise " + exerciseId);
         return delExercise;
-    }
-
-    @Override
-    public Workout deleteWorkout(String workoutId, String userId) {
-        Workout workout = workoutRepository.findById(workoutId)
-                .orElseThrow(() -> new NoSuchElementException("Workout id " + workoutId + " has bad value"));
-
-        if (!authenticationService.checkAccessRightsToWorkout(workoutId, userId))
-            return null;
-        wComplexToWorkoutRepository.removeAllByWorkoutId(workoutId);
-        workoutToExerciseRepository.removeAllByWorkoutId(workoutId);
-        workoutToDateRepository.removeAllByWorkoutId(workoutId);
-
-        workoutRepository.delete(workout);
-        logger.info("User " + userId + " delete workout  " + workoutId);
-        return workout;
     }
 
     @Override
@@ -199,36 +150,6 @@ public class PlanningServiceImpl implements PlanningService {
         workoutComplexRepository.removeById(workoutComplexId);
         logger.info("User " + userId + " delete workout complex " + workoutComplexId);
         return workoutComplex;
-    }
-
-    @Override
-    public WorkoutComplex setDescriptionWorkoutComplex(String id, String description, String userId) {
-        if (!authenticationService.checkAccessRightsToWorkoutComplex(id, userId)) return null;
-
-        WorkoutComplex workoutComplex = workoutComplexRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Workout Complex id " + id + " has bad value"));
-        workoutComplex.setDescription(description);
-        System.out.println(workoutComplex);
-        workoutComplexRepository.save(workoutComplex);
-        return workoutComplex;
-    }
-
-    @Override
-    public ScheduledWorkout deleteScheduledWorkout(String workoutId, String scheduledWorkoutId, String userId) {
-        if (!authenticationService.checkAccessRightsToScheduledWorkout(scheduledWorkoutId, userId)) return null;
-        ScheduledWorkout scheduledWorkout = scheduledWorkoutRepository.findById(scheduledWorkoutId)
-                .orElseThrow(() -> new NoSuchElementException("Scheduled Workout id " + scheduledWorkoutId + " has bad value"));
-        workoutToDateRepository.removeAllByScheduledWorkoutId(scheduledWorkoutId);
-
-        scheduledWorkout.getExerciseToMeasurements().forEach(etm -> {
-            measurementsOfExerciseRepository.removeById(etm.getMeasures().getId());
-            exerciseToMeasurementsRepository.removeById(etm.getId());
-        });
-
-        sWToExMeasurementRepository.removeAllByScheduledWorkoutId(scheduledWorkoutId);
-        scheduledWorkoutRepository.removeById(scheduledWorkoutId);
-        logger.info("User " + userId + " delete scheduled  workout " + scheduledWorkoutId);
-        return scheduledWorkout;
     }
 
     @Override
@@ -279,140 +200,6 @@ public class PlanningServiceImpl implements PlanningService {
     }
 
     @Override
-    public ScheduledWorkout addExerciseToScheduledWorkout(String scheduledWorkoutId, String exerciseId, String userId) {
-        if (!authenticationService.checkAccessRightsToScheduledWorkout(scheduledWorkoutId, userId)) return null;
-        ScheduledWorkout scheduledWorkout = scheduledWorkoutRepository.findById(scheduledWorkoutId)
-                .orElseThrow(() -> new NoSuchElementException("Scheduled Workout id " + scheduledWorkoutId + " has bad value"));
-
-        Exercise exercise = exerciseRepository.findById(exerciseId)
-                .orElseThrow(() -> new NoSuchElementException("Exercise id " + scheduledWorkoutId + " has bad value"));
-        Boolean res = scheduledWorkout.getExerciseToMeasurements().stream().anyMatch(e -> e.getExercise().equals(exercise));
-
-        if (res)
-            throw new IllegalArgumentException(
-                    "Exercise with id:" + exercise.getId() + " already exists in scheduled workout with id" + scheduledWorkoutId);
-
-        addExerciseToScheduledWorkout(scheduledWorkout, exercise, userId);
-        logger.info("User " + userId + " add exercise  " + exerciseId + " to scheduled workout  " + scheduledWorkoutId);
-
-        return scheduledWorkout;
-    }
-
-    public void addExerciseToScheduledWorkout(ScheduledWorkout scheduledWorkout, Exercise exercise, String userId) {
-        if (!authenticationService.checkAccessRightsToScheduledWorkout(scheduledWorkout.getId(), userId)) return;
-
-        MeasurementsOfExercise measurements = MeasurementsOfExercise.builder()
-                .listSet(new LinkedList<>()).build();
-        measurementsOfExerciseRepository.save(measurements);
-
-        ExerciseToMeasurements exerciseToMeasurements = ExerciseToMeasurements.builder()
-                .exercise(exercise)
-                .measures(measurements).build();
-        exerciseToMeasurementsRepository.save(exerciseToMeasurements);
-
-        ScheduledWorkoutToExerciseMeasurement swtem = ScheduledWorkoutToExerciseMeasurement.builder()
-                .scheduledWorkout(scheduledWorkout)
-                .exerciseToMeasurements(exerciseToMeasurements).build();
-        sWToExMeasurementRepository.save(swtem);
-        logger.info("User " + userId + " add exercise  " + exercise + " to scheduled workout  " + scheduledWorkout);
-
-    }
-
-    @Override
-    public MeasurementsOfExercise addExerciseMeasurement(String scheduledWorkoutId,
-                                                         String exerciseId, Measurement measurement, String userId) {
-        if (!authenticationService.checkAccessRightsToScheduledWorkout(scheduledWorkoutId, userId)) return null;
-
-        ScheduledWorkout scheduledWorkout = scheduledWorkoutRepository.findById(scheduledWorkoutId)
-                .orElseThrow(() -> new NoSuchElementException("Scheduled Workout id " + scheduledWorkoutId + " has bad value"));
-
-        Exercise exercise = exerciseRepository.findById(exerciseId)
-                .orElseThrow(() -> new NoSuchElementException("Exercise id " + scheduledWorkoutId + " has bad value"));
-
-        Optional<ExerciseToMeasurements> exerciseToMeasurements =
-                scheduledWorkout.getExerciseToMeasurements().stream().filter(e -> e.getExercise().equals(exercise)).findFirst();
-        if (exerciseToMeasurements.isPresent()) {
-            MeasurementsOfExercise measures = exerciseToMeasurements.get().getMeasures();
-            measures.getListSet().add(measurement);
-            measurementsOfExerciseRepository.save(measures);
-            return measures;
-        }
-        return null;
-    }
-
-    @Override
-    public MeasurementsOfExercise updateExerciseMeasurement(String scheduledWorkoutId, String exerciseId,
-                                                            String numberMeasurement, Measurement measurement, String userId) {
-        if (!authenticationService.checkAccessRightsToScheduledWorkout(scheduledWorkoutId, userId)) return null;
-
-        ScheduledWorkout scheduledWorkout = scheduledWorkoutRepository.findById(scheduledWorkoutId)
-                .orElseThrow(() -> new NoSuchElementException("Scheduled Workout id " + scheduledWorkoutId + " has bad value"));
-
-        Exercise exercise = exerciseRepository.findById(exerciseId)
-                .orElseThrow(() -> new NoSuchElementException("Exercise id " + scheduledWorkoutId + " has bad value"));
-
-        Optional<ExerciseToMeasurements> exerciseToMeasurements =
-                scheduledWorkout.getExerciseToMeasurements().stream().filter(e -> e.getExercise().equals(exercise)).findFirst();
-        if (exerciseToMeasurements.isPresent()) {
-            MeasurementsOfExercise measures = exerciseToMeasurements.get().getMeasures();
-            Measurement oldMeasurement = measures.getListSet().get(Integer.parseInt(numberMeasurement));
-
-            oldMeasurement.setComment(measurement.getComment());
-            oldMeasurement.setMeasure(measurement.getMeasure());
-
-            measurementsOfExerciseRepository.save(measures);
-            return measures;
-        }
-        return null;
-    }
-
-    @Override
-    public MeasurementsOfExercise delExerciseMeasurement(String scheduledWorkoutId, String exerciseId,
-                                                         String numberMeasurement, String userId) {
-        if (!authenticationService.checkAccessRightsToScheduledWorkout(scheduledWorkoutId, userId)) return null;
-
-        ScheduledWorkout scheduledWorkout = scheduledWorkoutRepository.findById(scheduledWorkoutId)
-                .orElseThrow(() -> new NoSuchElementException("Scheduled Workout id " + scheduledWorkoutId + " has bad value"));
-
-        Exercise exercise = exerciseRepository.findById(exerciseId)
-                .orElseThrow(() -> new NoSuchElementException("Exercise id " + scheduledWorkoutId + " has bad value"));
-
-        Optional<ExerciseToMeasurements> exerciseToMeasurements =
-                scheduledWorkout.getExerciseToMeasurements().stream().filter(e -> e.getExercise().equals(exercise)).findFirst();
-        if (exerciseToMeasurements.isPresent()) {
-            MeasurementsOfExercise measures = exerciseToMeasurements.get().getMeasures();
-            measures.getListSet().remove(Integer.parseInt(numberMeasurement));
-            measurementsOfExerciseRepository.save(measures);
-            return measures;
-        }
-        return null;
-    }
-
-    @Override
-    public ScheduledWorkout deleteExerciseFromScheduledWorkout(String scheduledWorkoutId, String exerciseId, String userId) {
-        if (!authenticationService.checkAccessRightsToScheduledWorkout(scheduledWorkoutId, userId)) return null;
-
-        ScheduledWorkout scheduledWorkout = scheduledWorkoutRepository.findById(scheduledWorkoutId)
-                .orElseThrow(() -> new NoSuchElementException("Scheduled Workout id " + scheduledWorkoutId + " has bad value"));
-
-        Exercise exercise = exerciseRepository.findById(exerciseId)
-                .orElseThrow(() -> new NoSuchElementException("Exercise id " + scheduledWorkoutId + " has bad value"));
-
-        ExerciseToMeasurements exerciseToMeasurements =
-                scheduledWorkout.getExerciseToMeasurements().stream()
-                        .filter((e) -> e.getExercise().equals(exercise)).findFirst()
-                        .orElseThrow(() -> new IllegalArgumentException(
-                                "Scheduled workout(id) " + scheduledWorkoutId +
-                                        " doesnt have exercise(id)" + exerciseId));
-
-        MeasurementsOfExercise measurements = exerciseToMeasurements.getMeasures();
-        measurementsOfExerciseRepository.removeById(measurements.getId());
-        sWToExMeasurementRepository.removeAllByExerciseToMeasurementsId(exerciseToMeasurements.getId());
-        exerciseToMeasurementsRepository.removeById(exerciseToMeasurements.getId());
-        return scheduledWorkout;
-    }
-
-    @Override
     public Workout addWorkout(String workoutComplexId, Workout workout, String userId) {
         if (!authenticationService.checkAccessRightsToWorkoutComplex(workoutComplexId, userId)) return null;
 
@@ -430,7 +217,22 @@ public class PlanningServiceImpl implements PlanningService {
     }
 
     @Override
-    public Workout delWorkout(String workoutComplexId, String workoutId, String userId) {
+    public Workout deleteWorkout(String workoutId, String userId) {
+        Workout workout = workoutRepository.findById(workoutId)
+                .orElseThrow(() -> new NoSuchElementException("Workout id " + workoutId + " has bad value"));
+
+        if (!authenticationService.checkAccessRightsToWorkout(workoutId, userId))
+            return null;
+        wComplexToWorkoutRepository.removeAllByWorkoutId(workoutId);
+        workoutToExerciseRepository.removeAllByWorkoutId(workoutId);
+
+        workoutRepository.delete(workout);
+        logger.info("User " + userId + " delete workout  " + workoutId);
+        return workout;
+    }
+
+    @Override
+    public Workout deleteWorkout(String workoutComplexId, String workoutId, String userId) {
         if (!authenticationService.checkAccessRightsToWorkoutComplex(workoutComplexId, userId)) return null;
 
         if (!authenticationService.checkAccessRightsToWorkout(workoutId, userId)) return null;
@@ -440,105 +242,9 @@ public class PlanningServiceImpl implements PlanningService {
 
         wComplexToWorkoutRepository.removeByWorkoutIdAndWorkoutComplexId(workoutComplexId, workoutId);
         workoutToExerciseRepository.removeAllByWorkoutId(workoutId);
-        workoutToDateRepository.removeAllByWorkoutId(workoutId);
 
         workoutRepository.delete(workout);
         return workout;
-    }
-
-    @Override
-    public Workout setWorkoutToDate(String workoutId, Date date, String userId) {
-
-        if (!authenticationService.checkAccessRightsToWorkout(workoutId, userId)) return null;
-
-        Workout workout = workoutRepository.findById(workoutId)
-                .orElseThrow(() -> new NoSuchElementException("Workout id " + workoutId + " has bad value"));
-
-        ScheduledWorkout scheduledWorkout = ScheduledWorkout.builder()
-                .dateWorkout(date)
-                .status(ScheduledWorkout.Status.SCHEDULED)
-                .exerciseToMeasurements(new LinkedList<>())
-                .build();
-
-        scheduledWorkout = scheduledWorkoutRepository.save(scheduledWorkout);
-        for (Exercise exercise : workout.getExercises()) {
-            addExerciseToScheduledWorkout(scheduledWorkout, exercise, userId);
-        }
-
-        WorkoutToDate workoutToDate = WorkoutToDate.builder()
-                .workout(workout)
-                .scheduledWorkout(scheduledWorkout)
-                .build();
-        workoutToDateRepository.save(workoutToDate);
-        return workout;
-    }
-
-    @Override
-    public Workout setWorkoutComplexToWorkout(String workoutComplexId, String workoutId, String userId) {
-        if (!authenticationService.checkAccessRightsToWorkoutComplex(workoutComplexId, userId)) return null;
-
-        if (!authenticationService.checkAccessRightsToWorkout(workoutId, userId)) return null;
-
-
-        Workout workout = workoutRepository.findById(workoutId)
-                .orElseThrow(() -> new NoSuchElementException("Workout id " + workoutId + " has bad value"));
-
-        WorkoutComplex workoutComplex = workoutComplexRepository.findById(workoutId)
-                .orElseThrow(() -> new NoSuchElementException("Workout Complex id " + workoutComplexId + " has bad value"));
-
-        wComplexToWorkoutRepository.removeAllByWorkoutId(workoutId);
-        WComplexToWorkout wComplexToWorkout = WComplexToWorkout.builder()
-                .workout(workout)
-                .workoutComplex(workoutComplex)
-                .build();
-        wComplexToWorkoutRepository.save(wComplexToWorkout);
-        return workout;
-    }
-
-    @Override
-    public Workout setNameWorkout(String workoutId, String name, String userId) {
-        if (!authenticationService.checkAccessRightsToWorkout(workoutId, userId)) return null;
-
-        Workout workout = workoutRepository.findById(workoutId)
-                .orElseThrow(() -> new NoSuchElementException("Workout id " + workoutId + " has bad value"));
-        workout.setName(name);
-        workoutRepository.save(workout);
-        return workout;
-    }
-
-    @Override
-    public void setDateScheduledWorkout(String scheduledWorkoutId, Date date, String userId) {
-        if (!authenticationService.checkAccessRightsToScheduledWorkout(scheduledWorkoutId, userId)) return;
-
-        ScheduledWorkout scheduledWorkout = scheduledWorkoutRepository.findById(scheduledWorkoutId)
-                .orElseThrow(() -> new NoSuchElementException("Scheduled Workout id " + scheduledWorkoutId + " has bad value"));
-        scheduledWorkout.setDateWorkout(date);
-        scheduledWorkoutRepository.save(scheduledWorkout);
-    }
-
-    @Override
-    public void setStatusScheduledWorkout(String scheduledWorkoutId, String status, String userId) {
-        if (!authenticationService.checkAccessRightsToScheduledWorkout(scheduledWorkoutId, userId)) return;
-
-        ScheduledWorkout scheduledWorkout = scheduledWorkoutRepository.findById(scheduledWorkoutId)
-                .orElseThrow(() -> new NoSuchElementException("Scheduled Workout id " + scheduledWorkoutId + " has bad value"));
-        if (status.equals("DONE") && scheduledWorkout.getStatus().equals(ScheduledWorkout.Status.SCHEDULED)) {
-            // TODO: Make smth with date and calculating parameters(information)
-            scheduledWorkout.setStatus(ScheduledWorkout.Status.DONE);
-            scheduledWorkout.calculateInformation(new Date());
-        }
-        scheduledWorkoutRepository.save(scheduledWorkout);
-    }
-
-    @Override
-    public WorkoutComplex setNameWorkoutComplex(String workoutComplexId, String name, String userId) {
-        if (!authenticationService.checkAccessRightsToWorkoutComplex(workoutComplexId, userId)) return null;
-
-        WorkoutComplex workoutComplex = workoutComplexRepository.findById(workoutComplexId)
-                .orElseThrow(() -> new NoSuchElementException("Workout Complex id " + workoutComplexId + " has bad value"));
-        workoutComplex.setName(name);
-        workoutComplexRepository.save(workoutComplex);
-        return workoutComplex;
     }
 
     @Override

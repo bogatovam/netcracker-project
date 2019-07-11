@@ -5,7 +5,6 @@ import com.netcracker.model.documents.Workout;
 import com.netcracker.model.documents.WorkoutComplex;
 import com.netcracker.repository.documents.UserRepository;
 import com.netcracker.repository.edges.WComplexToWorkoutRepository;
-import com.netcracker.repository.edges.WorkoutToDateRepository;
 import com.netcracker.security.details.UserPrincipal;
 import com.netcracker.security.jwt.JwtTokenProvider;
 import com.netcracker.services.api.AuthenticationService;
@@ -34,17 +33,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider tokenProvider;
-    private final WorkoutToDateRepository workoutToDateRepository;
     private final WComplexToWorkoutRepository wComplexToWorkoutRepository;
-
-    private Workout getSourceWorkout(String scheduledWorkoutId) {
-        return workoutToDateRepository.findByScheduledWorkoutId(scheduledWorkoutId)
-                .orElseThrow(() -> {
-                    logger.error("Invalid scheduledWorkoutId:" + scheduledWorkoutId);
-                    return new IllegalArgumentException("Invalid scheduledWorkoutId:" + scheduledWorkoutId);
-                })
-                .getWorkout();
-    }
 
     private WorkoutComplex getSourceWorkoutComplex(String workoutId) {
         return wComplexToWorkoutRepository.findByWorkoutId(workoutId)
@@ -132,11 +121,5 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return false;
         }
         return owner.get(0).getId().equals(userId);
-    }
-
-    @Override
-    public Boolean checkAccessRightsToScheduledWorkout(String scheduledWorkoutId, String userId) {
-        Workout workout = getSourceWorkout(scheduledWorkoutId);
-        return checkAccessRightsToWorkout(workout.getId(), userId);
     }
 }

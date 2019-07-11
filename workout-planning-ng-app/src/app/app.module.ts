@@ -16,6 +16,8 @@ import { ExerciseComponent } from './components/exercise/exercise.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { WorkoutComplexComponent } from './components/workout-complex/workout-complex.component';
 import { WorkoutComponent } from './components/workout/workout.component';
+import { CdkDetailRowDirective } from './shared/directives/cdk-detail-row.directive';
+import { WorkoutFilterPipe } from './shared/pipes/workout-filter.pipe';
 
 @NgModule({
   imports: [
@@ -36,7 +38,9 @@ import { WorkoutComponent } from './components/workout/workout.component';
     DirectoryComponent,
     WorkoutComponent,
     WorkoutComplexComponent,
-    ExerciseComponent
+    ExerciseComponent,
+    CdkDetailRowDirective,
+    WorkoutFilterPipe
   ],
   providers: [],
   bootstrap: [AppComponent],
