@@ -4,7 +4,7 @@ import { ErrorStateMatcher } from "@angular/material";
 import { Router } from '@angular/router';
 import { Store } from "@ngrx/store";
 import { Gender, Goal, Goals, State, User } from "src/app/authorization/models/user";
-import { AppState } from "src/app/authorization/store";
+import {AppState, selectError} from "src/app/authorization/store";
 import { SignUp } from "src/app/authorization/store/actions/authorization.actions";
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -21,7 +21,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
-
+  errorMessage: string;
   user: User = new User();
 
   matcher = new MyErrorStateMatcher();
@@ -56,6 +56,7 @@ export class SignupComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.store.select(selectError).subscribe(message => this.errorMessage = message);
   }
 
   onSubmit(): void {

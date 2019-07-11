@@ -1,6 +1,7 @@
 package com.netcracker.services.api;
 
 import com.netcracker.model.documents.*;
+import org.springframework.http.ResponseEntity;
 
 import java.util.Date;
 import java.util.List;
@@ -9,9 +10,9 @@ public interface PlanningService {
 
     Exercise createExercise(Exercise exercise, String userId);
 
-    Workout createWorkout(Workout workout, String userId);
-
     Workout createWorkout(String workoutComplexId, Workout workout, String userId);
+
+    ResponseEntity<?> deleteUserById(String userId, String authUserId);
 
     ScheduledWorkout createScheduledWorkout(String id, ScheduledWorkout scheduledWorkout, String userId);
 

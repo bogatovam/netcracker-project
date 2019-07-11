@@ -11,7 +11,10 @@ export enum AuthorizationActionTypes {
   SIGNUP_FAILURE = '[Auth] Signup Failure',
   LOGOUT = '[Auth] Logout',
   LOGOUT_CONFIRMED = '[Auth] Logout confirmed',
-  LOGOUT_CANCELLED = '[Auth] Logout cancelled'
+  LOGOUT_CANCELLED = '[Auth] Logout cancelled',
+  GET_USER = '[Auth] Get user',
+  SET_USER = '[Auth] Set user',
+  DELETE_USER = '[Auth] Delete user'
 }
 
 export class LogIn implements Action {
@@ -68,6 +71,21 @@ export class LogOutCancelled implements Action {
   readonly type = AuthorizationActionTypes.LOGOUT_CANCELLED;
 }
 
+export class GetUser implements Action {
+  readonly type = AuthorizationActionTypes.GET_USER;
+}
+
+export class SetUser implements Action {
+  readonly type = AuthorizationActionTypes.SET_USER;
+
+  constructor(public payload: User) {
+  }
+}
+
+export class DeleteUser implements Action {
+  readonly type = AuthorizationActionTypes.DELETE_USER;
+}
+
 export type AuthorizationActions =
   | LogIn
   | LogInSuccess
@@ -77,4 +95,7 @@ export type AuthorizationActions =
   | SignUpFailure
   | LogOut
   | LogOutCancelled
-  | LogOutConfirmed;
+  | LogOutConfirmed
+  | GetUser
+  | SetUser
+  | DeleteUser;

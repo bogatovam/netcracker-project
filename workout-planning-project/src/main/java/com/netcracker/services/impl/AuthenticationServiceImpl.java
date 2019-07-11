@@ -10,6 +10,7 @@ import com.netcracker.repository.edges.WorkoutToDateRepository;
 import com.netcracker.security.details.UserPrincipal;
 import com.netcracker.security.jwt.JwtTokenProvider;
 import com.netcracker.services.api.AuthenticationService;
+import com.netcracker.services.api.PlanningService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +42,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private Workout getSourceWorkout(String scheduledWorkoutId) {
         return workoutToDateRepository.findByScheduledWorkoutId(scheduledWorkoutId)
                 .orElseThrow(() -> {
-                    logger.info("Invalid scheduledWorkoutId:" + scheduledWorkoutId);
+                    logger.error("Invalid scheduledWorkoutId:" + scheduledWorkoutId);
                     return new IllegalArgumentException("Invalid scheduledWorkoutId:" + scheduledWorkoutId);
                 })
                 .getWorkout();
@@ -49,7 +51,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private WorkoutComplex getSourceWorkoutComplex(String workoutId) {
         return wComplexToWorkoutRepository.findByWorkoutId(workoutId)
                 .orElseThrow(() -> {
-                    logger.info("Invalid scheduledWorkoutId:" + workoutId);
+                    logger.error("Invalid scheduledWorkoutId:" + workoutId);
                     return new IllegalArgumentException("Invalid scheduledWorkoutId:" + workoutId);
                 })
                 .getWorkoutComplex();
@@ -57,19 +59,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public ResponseEntity<?> signIn(User user) {
-        logger.info("Start authentication for " + user);
         try {
             User authUser = null;
 
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(user.getLogin(), user.getPassword())
             );
-            logger.info("authentication: " + authentication);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            logger.info("set context with: " + authentication);
 
             UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-            logger.info("userPrincipal: " + userPrincipal);
 
             String jwt = tokenProvider.generateToken(authentication);
 
@@ -88,17 +86,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public ResponseEntity<?> signUp(User user) {
-        if (userRepository.existsByLogin(user.getLogin())) {
-            return new ResponseEntity<>(new ResponseMessage("Username is already taken!"),
-                    HttpStatus.BAD_REQUEST);
-        }
-
-        if (userRepository.existsByEmail(user.getEmail())) {
-            return new ResponseEntity<>(new ResponseMessage("Email is already in use!"),
-                    HttpStatus.BAD_REQUEST);
-        }
-
         if (user.isValid()) {
+
+            if (userRepository.existsByLogin(user.getLogin())) {
+                return new ResponseEntity<>(new ResponseMessage("Username is already taken!"),
+                        HttpStatus.BAD_REQUEST);
+            }
+
+            if (userRepository.existsByEmail(user.getEmail())) {
+                return new ResponseEntity<>(new ResponseMessage("Email is already in use!"),
+                        HttpStatus.BAD_REQUEST);
+            }
+
             user.setPassword(passwordEncoder.encode(user.getPassword()));
 
             user.setRoles(user.getRoles());
@@ -110,6 +109,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 HttpStatus.BAD_REQUEST);
     }
 
+    @Override
+    public ResponseEntity<?> getUserById(String userId, String authUserId) {
+        User sourceUser = userRepository.findById(authUserId)
+                .orElseThrow(() -> new NoSuchElementException("User has bad value"));
+        if (sourceUser.getId().equals(userId)) {
+            return ResponseEntity.ok(sourceUser);
+        } else {
+            return new ResponseEntity<>(new ResponseMessage("User is not authorized to take action"),
+                    HttpStatus.FORBIDDEN);
+        }
+    }
+
     public Boolean checkAccessRightsToWorkout(String workoutId, String userId) {
         WorkoutComplex source = getSourceWorkoutComplex(workoutId);
         return checkAccessRightsToWorkoutComplex(source.getId(), userId);
@@ -119,7 +130,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public Boolean checkAccessRightsToWorkoutComplex(String workoutComplexId, String userId) {
         List<User> owner = userRepository.findUserByWorkoutComplexId("workout-complex/" + workoutComplexId).asListRemaining();
         if (owner == null || owner.isEmpty()) {
-            logger.info("While checkAccessRights for user " + userId + " and workout " + workoutComplexId + " smth went wrong: user is bad");
+            logger.error("While checkAccessRights for user " + userId + " and workout " + workoutComplexId + " smth went wrong: user is bad");
             return false;
         }
         return owner.get(0).getId().equals(userId);

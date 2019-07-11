@@ -5,7 +5,7 @@ import { User } from "src/app/authorization/models/user";
 import { TokenStorageService } from 'src/app/authorization/services/token-storage.service';
 
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
 
 @Injectable({
@@ -14,6 +14,7 @@ const httpOptions = {
 export class AuthorizationService {
   loginUrl: string = 'http://localhost:8080/authentication/signin';
   signupUrl: string = 'http://localhost:8080/authentication/signup';
+  userByIdUrl: string = 'http://localhost:8080/user/';
 
   logOutUrl: string = 'http://localhost:4200';
   authorizationSuccessUrl: string = '/home';
@@ -30,5 +31,13 @@ export class AuthorizationService {
 
   signUp(user: User): Observable<string> {
     return this.http.post<string>(this.signupUrl, user, httpOptions);
+  }
+
+  getUser(userId: string): Observable<User> {
+    return this.http.get<User>(this.userByIdUrl + userId, httpOptions);
+  }
+
+  deleteUser(userId: string): Observable<void> {
+    return this.http.delete<void>(this.userByIdUrl +  userId, httpOptions);
   }
 }

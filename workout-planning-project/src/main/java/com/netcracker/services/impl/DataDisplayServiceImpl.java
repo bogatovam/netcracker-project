@@ -34,7 +34,6 @@ public class DataDisplayServiceImpl implements DataDisplayService {
     private final UserToWComplexRepository userToWComplexRepository;
     private final ScheduledWorkoutToExerciseMeasurementRepository sWToExMeasurementRepository;
 
-
     @Override
     public List<Exercise> getAllExercise() {
         return Lists.newArrayList(exerciseRepository.findAll());

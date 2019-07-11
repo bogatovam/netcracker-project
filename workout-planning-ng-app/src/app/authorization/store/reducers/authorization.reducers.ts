@@ -4,7 +4,7 @@ import { AuthorizationActions, AuthorizationActionTypes } from '../actions/autho
 
 export interface State {
   // is a user authenticated?
-  isAuthenticated: boolean;
+  isLogin: boolean;
   // if authenticated, there should be a user object
   user: User | null;
   // error message
@@ -12,7 +12,7 @@ export interface State {
 }
 
 export const initialState: State = {
-  isAuthenticated: TokenStorageService.getToken() !== null,
+  isLogin: TokenStorageService.getToken() !== null,
   user: null,
   errorMessage: null
 };
@@ -22,7 +22,7 @@ export function reducer(state: State = initialState, action: AuthorizationAction
     case AuthorizationActionTypes.LOGIN_SUCCESS: {
       return {
         ...state,
-        isAuthenticated: true,
+        isLogin: true,
         user: {
           id: action.payload.id,
           fullName: action.payload.fullName,
@@ -44,7 +44,7 @@ export function reducer(state: State = initialState, action: AuthorizationAction
     case AuthorizationActionTypes.LOGIN_FAILURE: {
       return {
         ...state,
-        errorMessage: 'Incorrect email and/or password.'
+        errorMessage: 'Некорректный логин или пароль'
       };
     }
     case AuthorizationActionTypes.SIGNUP_SUCCESS: {
@@ -55,14 +55,22 @@ export function reducer(state: State = initialState, action: AuthorizationAction
     case AuthorizationActionTypes.SIGNUP_FAILURE: {
       return {
         ...state,
-        errorMessage: 'That email is already in use.'
+        errorMessage: 'Пользователь с таким логином уже существует'
       };
     }
     case AuthorizationActionTypes.LOGOUT_CONFIRMED: {
       return {
         ...state,
-        isAuthenticated: false,
+        isLogin: false,
         user: null,
+        errorMessage: null
+      };
+    }
+    case AuthorizationActionTypes.SET_USER: {
+      return {
+        ...state,
+        isLogin: true,
+        user: action.payload,
         errorMessage: null
       };
     }
@@ -71,5 +79,6 @@ export function reducer(state: State = initialState, action: AuthorizationAction
     }
   }
 }
-export const selectIsLoggedIn = (state: State) => state.isAuthenticated;
+export const selectIsLoggedIn = (state: State) => state.isLogin;
 export const selectUser = (state: State) => state.user;
+export const selectError = (state: State) => state.errorMessage;

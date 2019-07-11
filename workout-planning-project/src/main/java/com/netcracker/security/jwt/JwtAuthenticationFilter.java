@@ -36,29 +36,19 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         super.setAuthenticationManager(authenticationManager);
     }
 
-    /* Trigger when we issue POST request to /login
-        We also need to pass in {"username":"", "password":""} in the request body
-     */
-
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        logger.info("Triggered attemptAuthentication");
-
-        // Grab credentials and map them to login viewmodel
         User credentials = null;
         try {
             credentials = new ObjectMapper().readValue(request.getInputStream(), User.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        // Create login token
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 credentials.getLogin(),
                 credentials.getPassword(),
                 new ArrayList<>());
 
-        // Authenticate user
         Authentication auth = authenticationManager.authenticate(authenticationToken);
 
         return auth;
@@ -66,13 +56,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        // Grab principal
-        logger.info("Triggered successfulAuthentication");
-
-        // Create JWT Token
         String token = jwtTokenProvider.generateToken(authResult);
 
-        // Add token in response
         response.addHeader(JwtTokenProvider.JwtProperties.HEADER_STRING, JwtTokenProvider.JwtProperties.TOKEN_PREFIX +  token);
     }
 }

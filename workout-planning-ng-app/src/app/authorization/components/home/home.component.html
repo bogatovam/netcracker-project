@@ -1,1 +1,9 @@
-<p>home works!</p>
+<div *ngIf="user!==null" class="user-container">
+  <div class="user-panel">
+    <p class="user-title">Привет, {{user.fullName}}</p>
+    <div class="user-buttons">
+      <button class="light-button" mat-button (click)="redirect()">Перейти к тренировкам</button>
+      <button class="dark-button"  mat-button (click)="deleteUser()"><i class="fa fa-trash"></i>Удалить учетную запись</button>
+    </div>
+  </div>
+</div>

@@ -91,3 +91,13 @@
   font-weight: 400;
   font-family: Roboto,"Helvetica Neue",sans-serif;
 }
+.error {
+  width: 250px;
+  padding: 10px;
+  word-wrap: break-word;
+  margin-top: 15px;
+  border-radius: 15px;
+  border: 15px white;
+  background-color: #ff8f85;
+  color: #c5303a;
+}

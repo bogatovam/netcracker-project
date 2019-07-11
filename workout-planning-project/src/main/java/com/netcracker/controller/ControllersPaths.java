@@ -7,6 +7,8 @@ public class ControllersPaths {
     public static class usersController {
         public static final String USER_SIGN_IN = "/authentication/signin";
         public static final String USER_SIGN_UP = "/authentication/signup";
+        public static final String GET_USER_BY_ID = "/user/{id}";
+        public static final String DELETE_USER_BY_ID = "/user/{id}";
     }
     /*   Paths to Exercise Controller   */
     public static class ExerciseController {

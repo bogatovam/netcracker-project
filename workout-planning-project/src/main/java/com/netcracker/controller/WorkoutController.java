@@ -45,14 +45,6 @@ public class WorkoutController {
             Authentication authentication) {
         return planningService.updateWorkout(workout, authentication.getName());
     }
-    @PostMapping(CREATE_WORKOUT)
-    @ApiOperation(value = "Create workout")
-    public Workout createWorkout(
-            @ApiParam(value = "Body of created workout")
-            @RequestBody Workout workout,
-             Authentication authentication) {
-        return planningService.createWorkout(workout, authentication.getName());
-    }
 
     @GetMapping(GET_WORKOUT_BY_ID)
     @ApiOperation(value = "Get workout by id")

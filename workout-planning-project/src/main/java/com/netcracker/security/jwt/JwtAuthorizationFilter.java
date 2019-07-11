@@ -39,51 +39,34 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         try {
-            // Read the Authorization header, where the JWT token should be
-            logger.info("Read the Authorization header, where the JWT token should be");
-
             String header = request.getHeader(JwtTokenProvider.JwtProperties.HEADER_STRING);
 
-            // If header does not contain BEARER or is null delegate to Spring impl and exit
-           // logger.info(request.getHeader("Access-Control-Request-Headers"));
-            logger.info("Header is " + header);
             if (header == null || !header.startsWith(JwtTokenProvider.JwtProperties.TOKEN_PREFIX)) {
                 logger.info("Header doesnt starts with " + JwtTokenProvider.JwtProperties.TOKEN_PREFIX
                         + " or contain " + JwtTokenProvider.JwtProperties.HEADER_STRING);
                 chain.doFilter(request, response);
                 return;
             }
+            logger.info("Header is " + header);
 
-            // If header is present, try grab user principal from database and perform authorization
             Authentication authentication = getUsernamePasswordAuthentication(request);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (RuntimeException e) {
             logger.error("Can not set user authentication ", e);
         }
-        // Continue filter execution
         chain.doFilter(request, response);
     }
 
     private Authentication getUsernamePasswordAuthentication(HttpServletRequest request) {
 
         String authHeader = request.getHeader(JwtTokenProvider.JwtProperties.HEADER_STRING);
-        logger.info("Authentication header: " + authHeader);
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.replaceAll(JwtTokenProvider.JwtProperties.TOKEN_PREFIX, "");
-
-            // this is  marker for dubug
-            logger.info("Token: " + token);
-
-            // parse the token and validate it
             String userName = tokenProvider.getUserNameFromJwtToken(token);
-            logger.info("User name: " +userName);
 
-            // Search in the DB if we find the user by token subject (username)
-            // If so, then grab user details and create spring auth token using username, pass, authorities/roles
             if (userName != null) {
                 UserPrincipal principal = (UserPrincipal) userPrincipalDetailsService.loadUserByUsername(userName);
-                logger.info("User principal: " + principal.toString());
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(principal.getUser().getId(), null, principal.getAuthorities());
                 return auth;
             }

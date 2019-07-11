@@ -87,6 +87,9 @@
         </mat-form-field>
       </div>
     </div>
+    <div *ngIf="errorMessage!==null" class="error">
+      <p>Oшибка! {{errorMessage}}</p>
+    </div>
     <div class="login-buttons">
       <button type="submit" mat-button class="button-submit">Зарегистрироваться</button>
     </div>

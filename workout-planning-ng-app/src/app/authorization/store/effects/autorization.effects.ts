@@ -28,7 +28,6 @@ export class AuthorizationEffects {
     switchMap(payload => {
       return this.authService.logIn(payload).pipe(
         map((user) => {
-          console.log(user.workoutsComplexes);
           return new fromAuth.LogInSuccess(user);
         }),
         catchError((error) => {
@@ -44,9 +43,10 @@ export class AuthorizationEffects {
   @Effect({dispatch: false})
   LogInSuccess: Observable<any> = this.actions.pipe(
     ofType(fromAuth.AuthorizationActionTypes.LOGIN_SUCCESS),
+    map((action: fromAuth.LogInSuccess) => action.payload),
     tap((user) => {
       TokenStorageService.saveToken(user.token);
-      TokenStorageService.saveLogin(user.login);
+      TokenStorageService.saveUserId(user.id);
       this.router.navigate([this.authService.authorizationSuccessUrl]);
     })
   );
@@ -100,7 +100,6 @@ export class AuthorizationEffects {
       }
     )
   );
-
   @Effect()
   public LogOut: Observable<any> = this.actions.pipe(
     ofType(fromAuth.AuthorizationActionTypes.LOGOUT),
@@ -125,7 +124,31 @@ export class AuthorizationEffects {
     ofType(fromAuth.AuthorizationActionTypes.LOGOUT_CONFIRMED),
     tap(() => {
       TokenStorageService.logOut();
-       this.router.navigate([this.authService.authorizationFailureUrl]);
+      this.router.navigate([this.authService.authorizationFailureUrl]);
+    })
+  );
+
+  @Effect()
+  public GetUser: Observable<any> = this.actions.pipe(
+    ofType(fromAuth.AuthorizationActionTypes.GET_USER),
+    switchMap((el) => {
+      return this.authService.getUser(TokenStorageService.getUserId()).pipe(
+        map((user) => {
+          return new fromAuth.SetUser(user);
+        })
+      );
+    })
+);
+  @Effect({dispatch: false})
+  public DeleteUser: Observable<any> = this.actions.pipe(
+    ofType(fromAuth.AuthorizationActionTypes.DELETE_USER),
+    switchMap(() => {
+      return this.authService.deleteUser(TokenStorageService.getUserId()).pipe(
+        tap((message) => {
+          TokenStorageService.logOut();
+          this.router.navigate([this.authService.authorizationFailureUrl]);
+        })
+      );
     })
   );
 }

@@ -2,6 +2,7 @@ package com.netcracker.services.impl;
 
 import com.netcracker.model.edges.*;
 import com.netcracker.model.documents.*;
+import com.netcracker.model.view.response.ResponseMessage;
 import com.netcracker.repository.edges.*;
 import com.netcracker.repository.documents.*;
 import com.netcracker.services.api.AuthenticationService;
@@ -12,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -40,30 +43,27 @@ public class PlanningServiceImpl implements PlanningService {
     private static final Logger logger = LoggerFactory.getLogger(PlanningServiceImpl.class);
 
     @Override
+    public ResponseEntity<?> deleteUserById(String userId, String authUserId) {
+        User sourceUser = userRepository.findById(authUserId)
+                .orElseThrow(() -> new NoSuchElementException("User has bad value"));
+        if (sourceUser.getId().equals(userId)) {
+            sourceUser.getWorkoutsComplexes().forEach((workoutComplex) -> {
+                deleteWorkoutComplex(workoutComplex.getId(), userId);
+            });
+            userRepository.removeById(userId);
+            return ResponseEntity.ok(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new ResponseMessage("User is not authorized to take action"),
+                    HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @Override
     public Exercise createExercise(Exercise exercise, String userId) {
         Exercise newExercise = exerciseRepository.save(exercise);
         // #TODO validation by name exercise is probably necessary
         logger.info("User " + userId + " create exercise  " + exercise);
         return newExercise;
-    }
-
-    @Override
-    public Workout createWorkout(Workout workout, String userId) {
-        Workout newWorkout;
-        WorkoutComplex sourceWorkoutComplex;
-        WComplexToWorkout wComplexToWorkout;
-
-        // #TODO need to add own exceptions
-        sourceWorkoutComplex = workoutComplexRepository.findById(WorkoutComplex.DEFAULT_WORKOUT_COMPLEX_ID)
-                .orElseThrow(() -> new NoSuchElementException("DEFAULT_WORKOUT_COMPLEX_ID has bad value"));
-
-        newWorkout = workoutRepository.save(workout);
-        wComplexToWorkout = WComplexToWorkout.builder()
-                .workoutComplex(sourceWorkoutComplex)
-                .workout(newWorkout).build();
-        wComplexToWorkoutRepository.save(wComplexToWorkout);
-        logger.info("User " + userId + " create workout  " + workout);
-        return newWorkout;
     }
 
     @Override
@@ -126,7 +126,7 @@ public class PlanningServiceImpl implements PlanningService {
         WorkoutComplex newWorkoutComplex;
 
         sourceUser = userRepository.findById(userId)
-                .orElseThrow(() -> new NoSuchElementException("DEFAULT_USER_ID has bad value"));
+                .orElseThrow(() -> new NoSuchElementException("USER_ID has bad value"));
 
         newWorkoutComplex = workoutComplexRepository.save(workoutComplex);
 

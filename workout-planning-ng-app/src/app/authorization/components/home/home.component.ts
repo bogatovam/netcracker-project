@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from "@angular/router";
+import { Store } from "@ngrx/store";
+import { Observable } from "rxjs";
+import { User } from "src/app/authorization/models/user";
+import { AppState, selectIsLoggedIn, selectUser } from "src/app/authorization/store";
+import { DeleteUser, GetUser } from "src/app/authorization/store/actions/authorization.actions";
 
 @Component({
   selector: 'app-home',
@@ -6,10 +12,38 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  user: User;
+  isLogin: boolean = false;
 
-  constructor() { }
+  getUser: Observable<User>;
+  getIsLogin: Observable<boolean>;
 
-  ngOnInit(): void {
+  constructor(private router: Router, private store: Store<AppState>) {
+    this.getUser = this.store.select(selectUser);
+    this.getIsLogin = this.store.select(selectIsLoggedIn);
   }
 
+  ngOnInit(): void {
+    this.getIsLogin.subscribe(flag => {
+      this.getUser.subscribe(user => {
+        console.log(this.user);
+        this.user = user;
+      });
+      this.isLogin = flag;
+      console.log(this.isLogin + ' ' + this.user);
+      if (this.isLogin && this.user === null) {
+        this.store.dispatch<GetUser>(new GetUser());
+      }
+    });
+
+  }
+
+  redirect(): void {
+    this.router.navigateByUrl('workout-complex');
+  }
+
+  deleteUser(): void {
+    console.log("Hello");
+    this.store.dispatch<DeleteUser>(new DeleteUser());
+  }
 }

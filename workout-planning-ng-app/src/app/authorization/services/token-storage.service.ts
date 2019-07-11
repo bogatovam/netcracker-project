@@ -22,12 +22,12 @@ export class TokenStorageService {
     return localStorage.getItem(TOKEN_KEY);
   }
 
-  public static saveLogin(login: string): void {
+  public static saveUserId(userId: string): void {
     window.localStorage.removeItem(USERNAME_KEY);
-    window.localStorage.setItem(USERNAME_KEY, login);
+    window.localStorage.setItem(USERNAME_KEY, userId);
   }
 
-  public static getLogin(): string {
+  public static getUserId(): string {
     return localStorage.getItem(USERNAME_KEY);
   }
 }

@@ -14,6 +14,8 @@ public interface UserRepository extends ArangoRepository<User, String> {
     Boolean existsByLogin(String username);
     Boolean existsByEmail(String email);
 
+    User removeById(String id);
+
     @Query("FOR u IN 1..1 INBOUND @workoutComplexId `" + USER_TO_WORKOUT_COMPLEX + "` RETURN u")
     ArangoCursor<User> findUserByWorkoutComplexId(@Param("workoutComplexId") String workoutComplexId);
 

@@ -1,0 +1,57 @@
+.user-container {
+  margin-top: 10vh;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  min-height: 60vh;
+  color: white;
+}
+
+.user-panel {
+  min-width: 185px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 3% 5% 3%;
+  background: #00063d;
+
+  border-radius: 15px;
+  border: 15px white;
+  box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+}
+
+.user-title {
+  font-size: 28px;
+  font-weight: 700;
+  font-family: Roboto,"Helvetica Neue",sans-serif;
+}
+.light-button{
+  height: calc(1.5em + 0.75rem + 2px);
+
+  width: 100%;
+  color: #fff;
+  background-color: #c5303a;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: Roboto,"Helvetica Neue",sans-serif;
+}
+
+.dark-button{
+  height: calc(1.5em + 0.75rem + 2px);
+  margin-top: 35px;
+  width: 100%;
+  color: #00063d;
+  background-color: white;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: Roboto,"Helvetica Neue",sans-serif;
+}
+.user-buttons {
+  width: 25vw;
+  min-width: 185px;
+  margin-top: 30px;
+}

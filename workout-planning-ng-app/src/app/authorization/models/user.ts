@@ -13,8 +13,7 @@ export class User {
               public dateOfBirth?: Date,
               public weight?: number,
               public growth?: number,
-              public workoutsGoal?: Goals,
-              public workoutsComplexes?: WorkoutComplex[]
+              public workoutsGoal?: Goals
   ) {
   }
 }

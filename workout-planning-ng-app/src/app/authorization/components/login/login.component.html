@@ -6,7 +6,7 @@
         <input matInput type="text" class="form-control"
                placeholder="Логин" formControlName="login" [errorStateMatcher]="matcher" required/>
         <mat-error *ngIf="loginFormControl.hasError('required')">
-         Введите <strong>логин</strong>
+          Введите <strong>логин</strong>
         </mat-error>
       </mat-form-field>
 
@@ -18,12 +18,15 @@
         </mat-error>
       </mat-form-field>
     </div>
+    <div *ngIf="errorMessage!==null" class="error">
+      <p>Oшибка! {{errorMessage}}</p>
+    </div>
     <div class="login-buttons">
       <button type="submit" class="button-submit" mat-button>Войти</button>
       <div class="horizontal-separator">
         <p>или</p>
       </div>
-      <button type="button" (click)="redirect()"  mat-button class="button-signup">Зарегистрироваться</button>
+      <button type="button" (click)="redirect()" mat-button class="button-signup">Зарегистрироваться</button>
     </div>
   </form>
 </div>
