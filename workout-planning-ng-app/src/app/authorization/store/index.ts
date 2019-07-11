@@ -1,11 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import * as fromAuth from './reducers/authorization.reducers';
 
-export const reducers = {
-  auth: fromAuth.reducer
-};
-
-export const selectAuthState = createFeatureSelector<fromAuth.State>('auth');
+export const selectAuthState = createFeatureSelector<fromAuth.State>('authState');
 
 export const selectIsLoggedIn = createSelector(
   selectAuthState,

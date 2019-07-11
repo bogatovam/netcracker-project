@@ -4,7 +4,7 @@ import { DirectoryComponent } from "src/app/components/directory/directory.compo
 
 const APP_ROUTES = [
   {path: '', pathMatch: 'full', redirectTo: '/home'},
-  {path: 'directory', DirectoryComponent}
+  {path: 'directory', component: DirectoryComponent}
 ];
 
 @NgModule({

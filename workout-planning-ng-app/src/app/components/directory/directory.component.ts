@@ -1,7 +1,16 @@
 import { SelectionModel } from "@angular/cdk/collections";
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTable, MatTableDataSource } from "@angular/material";
+import { Store } from "@ngrx/store";
 import { Exercise } from "src/app/models/exercise";
+import * as fromDirectory from "src/app/store/actions/directory.actions";
+import {
+  selectDisplayedStyle,
+  selectExercises, selectGroupedBy,
+  selectIsEditable,
+  selectIsEmbeddable, selectMuscleLoad, selectSelectedExercises
+} from "src/app/store/selectors/directory.selector";
+import { AppState } from "src/app/store/state/app.state";
 
 @Component({
   selector: 'app-directory',
@@ -9,46 +18,65 @@ import { Exercise } from "src/app/models/exercise";
   styleUrls: ['./directory.component.css']
 })
 export class DirectoryComponent implements OnInit {
-  @Input() exercises: Exercise[];
-  @Input() isEditable: boolean;
-  @Input() isEmbeddable: boolean;
-  @Input() displayedStyle: string;
-
-  @Input() initialSelection = [];
-
-  @Output() unselectedExercise: EventEmitter<Exercise> = new EventEmitter<Exercise>();
-  @Output() selectedExercise: EventEmitter<Exercise> = new EventEmitter<Exercise>();
+  isEditable: boolean = false;
+  isEmbeddable: boolean = true;
+  displayedStyle: string = 'table';
+  muscleLoad: string[] = [];
+  groupedBy: string = null;
 
   @ViewChild(MatTable) table: MatTable<Exercise>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   displayedColumns: string[] = ['name', 'complexity'];
-  dataSource = new MatTableDataSource<Exercise>();
+  dataSource:  MatTableDataSource<Exercise> = new MatTableDataSource<Exercise>();
+  selection:  SelectionModel<Exercise> = new SelectionModel(true, []);
 
-  allowMultiSelect = true;
-  selection = new SelectionModel<Exercise>(this.allowMultiSelect, this.initialSelection);
-
-  muscleLoad: string[] = null; // = ['hips', 'biceps', 'abs', 'chest', 'shoulders', 'back'];
-  groupedBy: string = null;
-
-  constructor() { }
+  constructor(private store: Store<AppState>) { }
 
   isExpansionDetailRow = (index, row) => row.hasOwnProperty('detailRow');
 
   ngOnInit(): void {
+    this.store.dispatch(new fromDirectory.GetAllExercises());
+    this.store.dispatch<fromDirectory.GetMuscleLoad>(new fromDirectory.GetMuscleLoad());
+
+    this.store.select(selectMuscleLoad).subscribe(load => {
+      console.log(load);
+      this.muscleLoad = load;
+    });
+
+    this.store.select(selectExercises).subscribe(exercises => {
+
+      this.dataSource = exercises;
+      console.log(this.dataSource);
+
+     // this.selected.forEach(s => {
+     //   this.selection.select(this.dataSource.data.find((v, i, n) => {
+     //     return v.id === s.id;
+     //   }));
+     // });
+    });
+
+    //this.store.select(selectIsEditable).subscribe(flag => {
+    //  if (flag && !this.isEditable) {
+    //    this.displayedColumns.unshift('select');
+    //  } else if (!flag && this.isEditable) {
+    //    this.displayedColumns.splice(0, 1);
+    //  }
+    //  this.isEditable = flag;
+    //  this.table.renderRows();
+    //});
+//
+    //this.store.select(selectIsEmbeddable).subscribe(flag => this.isEmbeddable = flag);
+//
+    //this.store.select(selectDisplayedStyle).subscribe(style => this.displayedStyle = style);
+//
+    //this.store.select(selectGroupedBy).subscribe(style => this.groupedBy = style);
+//
+    //this.store.select(selectSelectedExercises).subscribe(selectedExercise => this.selection = selectedExercise);
+
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-
-    this.loadExercises();
-    // console.log(this.initialSelection);
-
-    if (this.isEditable) {
-      this.displayedColumns.unshift('select');
-    }
-  }
-
-  loadExercises(): void {
   }
 
   applyFilter(filterValue: string): void {
@@ -107,18 +135,18 @@ export class DirectoryComponent implements OnInit {
   selectExercise(e: Exercise): void {
     this.selection.toggle(e);
     if (this.selection.isSelected(e)) {
-      this.selectedExercise.emit(e);
+      // this.selectedExercise.emit(e);
     } else {
-      this.unselectedExercise.emit(e);
+     // this.unselectedExercise.emit(e);
     }
   }
 
   selectALlExercise(): void {
     this.masterToggle();
 
-    this.isAllSelected() ?
-      this.dataSource.data.forEach(row => this.selectedExercise.emit(row)) :
-      this.dataSource.data.forEach(row => this.unselectedExercise.emit(row));
+   // this.isAllSelected() ?
+    //  this.dataSource.data.forEach(row => this.selectedExercise.emit(row)) :
+    //  this.dataSource.data.forEach(row => this.unselectedExercise.emit(row));
   }
 
 }

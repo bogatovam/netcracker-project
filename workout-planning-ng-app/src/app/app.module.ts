@@ -10,7 +10,7 @@ import {
   MatInputModule,
   MatListModule,
   MatMenuModule,
-  MatPaginatorModule,
+  MatPaginatorModule, MatRippleModule,
   MatSelectModule,
   MatSortModule,
   MatTableModule,
@@ -25,8 +25,10 @@ import { StoreModule } from "@ngrx/store";
 import { AppRoutingModule } from "src/app/app-routing.module";
 import { AuthorizationModule } from "src/app/authorization/authorization.module";
 import { LogoutComponent } from "src/app/authorization/components/logout/logout.component";
-import { reducers } from "src/app/authorization/store";
 import { ApiService } from "src/app/services/api.service";
+import { CdkDetailRowDirective } from "src/app/shared/directives/cdk-detail-row.directive";
+import {reducers} from "src/app/store";
+import {DirectoryEffects} from "src/app/store/effects/directory.effects";
 
 import { AppComponent } from './app.component';
 import { DirectoryComponent } from './components/directory/directory.component';
@@ -34,7 +36,6 @@ import { ExerciseComponent } from './components/exercise/exercise.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { WorkoutComplexComponent } from './components/workout-complex/workout-complex.component';
 import { WorkoutComponent } from './components/workout/workout.component';
-import { CdkDetailRowDirective } from './shared/directives/cdk-detail-row.directive';
 import { WorkoutFilterPipe } from './shared/pipes/workout-filter.pipe';
 
 const MAT_MODULES = [
@@ -45,7 +46,8 @@ const MAT_MODULES = [
   MatTableModule,
   MatTabsModule,
   MatInputModule,
-  MatCheckboxModule
+  MatCheckboxModule,
+  MatRippleModule
 ];
 
 @NgModule({
@@ -54,7 +56,7 @@ const MAT_MODULES = [
     BrowserAnimationsModule,
     HttpClientModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([DirectoryEffects]),
     MatMenuModule,
     MatToolbarModule,
     MatButtonModule,

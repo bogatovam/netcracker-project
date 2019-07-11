@@ -5,7 +5,3 @@ export interface AppState {
   authState: fromAuth.State;
   exercisesDirectory: DirectoryState;
 }
-
-export interface AppState {
-  authState: fromAuth.State;
-}

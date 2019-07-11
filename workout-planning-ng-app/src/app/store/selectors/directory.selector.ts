@@ -1,8 +1,8 @@
-import { createSelector } from "@ngrx/store";
-import { AppState } from "src/app/store/state/app.state";
+import { createFeatureSelector, createSelector } from "@ngrx/store";
 import { DirectoryState } from "src/app/store/state/directory.state";
 
-export const selectDirectoryState = (state: AppState) => state.exercisesDirectory;
+export const selectDirectoryState =
+  createFeatureSelector<DirectoryState>('exercisesDirectory');
 
 export const selectExercises = createSelector(
   selectDirectoryState,
@@ -22,4 +22,19 @@ export const selectIsEmbeddable = createSelector(
 export const selectDisplayedStyle = createSelector(
   selectDirectoryState,
   (state: DirectoryState) => state.displayedStyle
+);
+
+export const selectSelectedExercises = createSelector(
+  selectDirectoryState,
+  (state: DirectoryState) => state.selected
+);
+
+export const selectMuscleLoad = createSelector(
+  selectDirectoryState,
+  (state: DirectoryState) => state.muscleLoad
+);
+
+export const selectGroupedBy = createSelector(
+  selectDirectoryState,
+  (state: DirectoryState) => state.groupedBy
 );
