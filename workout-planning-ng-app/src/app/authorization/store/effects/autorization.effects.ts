@@ -5,6 +5,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Observable, of } from 'rxjs';
 import { catchError, exhaustMap, map, switchMap, tap } from 'rxjs/operators';
 import { LogoutComponent } from "src/app/authorization/components/logout/logout.component";
+import { User } from "src/app/authorization/models/user";
 import { AuthorizationService } from "src/app/authorization/services/authorization.service";
 import { TokenStorageService } from "src/app/authorization/services/token-storage.service";
 import * as fromAuth from '../actions/authorization.actions';
@@ -22,7 +23,7 @@ export class AuthorizationEffects {
   }
 
   @Effect()
-  LogIn: Observable<any> = this.actions.pipe(
+  LogIn: Observable<fromAuth.LogInSuccess | fromAuth.LogInFailure> = this.actions.pipe(
     ofType(fromAuth.AuthorizationActionTypes.LOGIN),
     map((action: fromAuth.LogIn) => action.payload),
     switchMap(payload => {
@@ -41,7 +42,7 @@ export class AuthorizationEffects {
 
 
   @Effect({dispatch: false})
-  LogInSuccess: Observable<any> = this.actions.pipe(
+  LogInSuccess: Observable<User> = this.actions.pipe(
     ofType(fromAuth.AuthorizationActionTypes.LOGIN_SUCCESS),
     map((action: fromAuth.LogInSuccess) => action.payload),
     tap((user) => {
@@ -52,7 +53,7 @@ export class AuthorizationEffects {
   );
 
   @Effect({dispatch: false})
-  LogInFailure: Observable<any> = this.actions.pipe(
+  LogInFailure: Observable<string> = this.actions.pipe(
     ofType(fromAuth.AuthorizationActionTypes.LOGIN_FAILURE),
     map((action: fromAuth.LogInFailure) => action.payload),
     tap((error) => {
@@ -62,7 +63,7 @@ export class AuthorizationEffects {
   );
 
   @Effect()
-  SignUp: Observable<any> = this.actions.pipe(
+  SignUp: Observable<fromAuth.SignUpSuccess | fromAuth.SignUpFailure> = this.actions.pipe(
     ofType(fromAuth.AuthorizationActionTypes.SIGNUP),
     map((action: fromAuth.SignUp) => action.payload),
     switchMap(payload => {
@@ -82,7 +83,7 @@ export class AuthorizationEffects {
   );
 
   @Effect({dispatch: false})
-  SignUpSuccess: Observable<any> = this.actions.pipe(
+  SignUpSuccess: Observable<string> = this.actions.pipe(
     ofType(fromAuth.AuthorizationActionTypes.SIGNUP_SUCCESS),
     tap((message) => {
       console.log(message);
@@ -91,7 +92,7 @@ export class AuthorizationEffects {
   );
 
   @Effect({dispatch: false})
-  SignUpFailure: Observable<any> = this.actions.pipe(
+  SignUpFailure: Observable<string> = this.actions.pipe(
     ofType(fromAuth.AuthorizationActionTypes.SIGNUP_FAILURE),
     map((action: fromAuth.LogInFailure) => action.payload),
     tap((error) => {
@@ -101,7 +102,7 @@ export class AuthorizationEffects {
     )
   );
   @Effect()
-  public LogOut: Observable<any> = this.actions.pipe(
+  public LogOut: Observable<fromAuth.LogOutConfirmed | fromAuth.LogOutCancelled> = this.actions.pipe(
     ofType(fromAuth.AuthorizationActionTypes.LOGOUT),
     exhaustMap(() =>
       this.dialogService
@@ -120,7 +121,7 @@ export class AuthorizationEffects {
   );
 
   @Effect({dispatch: false})
-  public LogOutConfirmed: Observable<any> = this.actions.pipe(
+  public LogOutConfirmed: Observable<void> = this.actions.pipe(
     ofType(fromAuth.AuthorizationActionTypes.LOGOUT_CONFIRMED),
     tap(() => {
       TokenStorageService.logOut();
@@ -129,18 +130,19 @@ export class AuthorizationEffects {
   );
 
   @Effect()
-  public GetUser: Observable<any> = this.actions.pipe(
+  public GetUser: Observable<fromAuth.SetUser> = this.actions.pipe(
     ofType(fromAuth.AuthorizationActionTypes.GET_USER),
-    switchMap((el) => {
+    switchMap(() => {
       return this.authService.getUser(TokenStorageService.getUserId()).pipe(
         map((user) => {
           return new fromAuth.SetUser(user);
         })
       );
     })
-);
+  );
+
   @Effect({dispatch: false})
-  public DeleteUser: Observable<any> = this.actions.pipe(
+  public DeleteUser: Observable<void> = this.actions.pipe(
     ofType(fromAuth.AuthorizationActionTypes.DELETE_USER),
     switchMap(() => {
       return this.authService.deleteUser(TokenStorageService.getUserId()).pipe(

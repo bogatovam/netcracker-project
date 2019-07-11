@@ -4,7 +4,7 @@ import { ErrorStateMatcher } from "@angular/material";
 import { Router } from '@angular/router';
 import { Store } from "@ngrx/store";
 import { Gender, Goal, Goals, State, User } from "src/app/authorization/models/user";
-import {AppState, selectError} from "src/app/authorization/store";
+import { AppState, selectError } from "src/app/authorization/store";
 import { SignUp } from "src/app/authorization/store/actions/authorization.actions";
 
 /** Error when invalid control is dirty, touched, or submitted. */

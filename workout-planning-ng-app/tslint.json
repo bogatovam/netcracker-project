@@ -47,7 +47,7 @@
       }
     ],
     "no-arg": true,
-   // "no-any": true,
+    "no-any": true,
     "no-bitwise": true,
     "no-construct": true,
     "no-console": [

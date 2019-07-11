@@ -11,11 +11,11 @@ import { LogoutComponent } from "src/app/authorization/components/logout/logout.
 import { reducers } from "src/app/authorization/store";
 
 import { AppComponent } from './app.component';
-import { NavigationComponent } from './components/navigation/navigation.component';
 import { DirectoryComponent } from './components/directory/directory.component';
-import { WorkoutComponent } from './components/workout/workout.component';
-import { WorkoutComplexComponent } from './components/workout-complex/workout-complex.component';
 import { ExerciseComponent } from './components/exercise/exercise.component';
+import { NavigationComponent } from './components/navigation/navigation.component';
+import { WorkoutComplexComponent } from './components/workout-complex/workout-complex.component';
+import { WorkoutComponent } from './components/workout/workout.component';
 
 @NgModule({
   imports: [

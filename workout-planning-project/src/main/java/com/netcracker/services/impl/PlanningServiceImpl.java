@@ -2,7 +2,6 @@ package com.netcracker.services.impl;
 
 import com.netcracker.model.edges.*;
 import com.netcracker.model.documents.*;
-import com.netcracker.model.view.response.ResponseMessage;
 import com.netcracker.repository.edges.*;
 import com.netcracker.repository.documents.*;
 import com.netcracker.services.api.AuthenticationService;
@@ -53,7 +52,7 @@ public class PlanningServiceImpl implements PlanningService {
             userRepository.removeById(userId);
             return ResponseEntity.ok(HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(new ResponseMessage("User is not authorized to take action"),
+            return new ResponseEntity<>("User is not authorized to take action",
                     HttpStatus.FORBIDDEN);
         }
     }

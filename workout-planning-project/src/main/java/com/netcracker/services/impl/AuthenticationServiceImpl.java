@@ -3,14 +3,12 @@ package com.netcracker.services.impl;
 import com.netcracker.model.documents.User;
 import com.netcracker.model.documents.Workout;
 import com.netcracker.model.documents.WorkoutComplex;
-import com.netcracker.model.view.response.ResponseMessage;
 import com.netcracker.repository.documents.UserRepository;
 import com.netcracker.repository.edges.WComplexToWorkoutRepository;
 import com.netcracker.repository.edges.WorkoutToDateRepository;
 import com.netcracker.security.details.UserPrincipal;
 import com.netcracker.security.jwt.JwtTokenProvider;
 import com.netcracker.services.api.AuthenticationService;
-import com.netcracker.services.api.PlanningService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,7 +77,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return ResponseEntity.ok(authUser);
         } catch (RuntimeException e) {
             logger.error("Can not set user authentication: " + e.getMessage());
-            return new ResponseEntity<>(new ResponseMessage("Fail -> User is not found!"),
+            return new ResponseEntity<>("Fail -> User is not found!",
                     HttpStatus.BAD_REQUEST);
         }
     }
@@ -89,12 +87,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (user.isValid()) {
 
             if (userRepository.existsByLogin(user.getLogin())) {
-                return new ResponseEntity<>(new ResponseMessage("Username is already taken!"),
+                return new ResponseEntity<>("Username is already taken!",
                         HttpStatus.BAD_REQUEST);
             }
 
             if (userRepository.existsByEmail(user.getEmail())) {
-                return new ResponseEntity<>(new ResponseMessage("Email is already in use!"),
+                return new ResponseEntity<>("Email is already in use!",
                         HttpStatus.BAD_REQUEST);
             }
 
@@ -102,10 +100,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
             user.setRoles(user.getRoles());
 
-            User result = userRepository.save(user);
+            userRepository.save(user);
 
-            return new ResponseEntity<>(new ResponseMessage("User registered successfully!"), HttpStatus.OK);
-        } else return new ResponseEntity<>(new ResponseMessage("User fields have bad value"),
+            return new ResponseEntity<>("User registered successfully!", HttpStatus.OK);
+        } else return new ResponseEntity<>("User fields have bad value",
                 HttpStatus.BAD_REQUEST);
     }
 
@@ -116,7 +114,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (sourceUser.getId().equals(userId)) {
             return ResponseEntity.ok(sourceUser);
         } else {
-            return new ResponseEntity<>(new ResponseMessage("User is not authorized to take action"),
+            return new ResponseEntity<>("User is not authorized to take action",
                     HttpStatus.FORBIDDEN);
         }
     }

@@ -25,12 +25,8 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.getIsLogin.subscribe(flag => {
-      this.getUser.subscribe(user => {
-        console.log(this.user);
-        this.user = user;
-      });
+      this.getUser.subscribe(user => this.user = user);
       this.isLogin = flag;
-      console.log(this.isLogin + ' ' + this.user);
       if (this.isLogin && this.user === null) {
         this.store.dispatch<GetUser>(new GetUser());
       }
@@ -43,7 +39,6 @@ export class HomeComponent implements OnInit {
   }
 
   deleteUser(): void {
-    console.log("Hello");
     this.store.dispatch<DeleteUser>(new DeleteUser());
   }
 }
