@@ -1,3 +1,4 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { SelectionModel } from "@angular/cdk/collections";
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTable, MatTableDataSource } from "@angular/material";
@@ -15,68 +16,81 @@ import { AppState } from "src/app/store/state/app.state";
 @Component({
   selector: 'app-directory',
   templateUrl: './directory.component.html',
-  styleUrls: ['./directory.component.css']
+  styleUrls: ['./directory.component.css'],
+  animations: [
+    trigger('detailExpand', [
+      state('void', style({height: '0px', minHeight: '0', visibility: 'hidden'})),
+      state('*', style({height: '*', visibility: 'visible'})),
+      transition('void <=> *', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class DirectoryComponent implements OnInit {
-  isEditable: boolean = false;
-  isEmbeddable: boolean = true;
-  displayedStyle: string = 'table';
-  muscleLoad: string[] = [];
-  groupedBy: string = null;
+  isEditable: boolean;
+  isEmbeddable: boolean;
+  displayedStyle: string;
+  muscleLoad: string[];
+  groupedBy: string;
+  selected: Exercise[] = [];
 
   @ViewChild(MatTable) table: MatTable<Exercise>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   displayedColumns: string[] = ['name', 'complexity'];
-  dataSource:  MatTableDataSource<Exercise> = new MatTableDataSource<Exercise>();
-  selection:  SelectionModel<Exercise> = new SelectionModel(true, []);
 
-  constructor(private store: Store<AppState>) { }
+  dataSource: MatTableDataSource<Exercise> = new MatTableDataSource<Exercise>([]);
+  selection: SelectionModel<Exercise> = new SelectionModel(true, []);
+
+  constructor(private store: Store<AppState>) {
+  }
 
   isExpansionDetailRow = (index, row) => row.hasOwnProperty('detailRow');
 
   ngOnInit(): void {
-    this.store.dispatch(new fromDirectory.GetAllExercises());
-    this.store.dispatch<fromDirectory.GetMuscleLoad>(new fromDirectory.GetMuscleLoad());
-
-    this.store.select(selectMuscleLoad).subscribe(load => {
-      console.log(load);
-      this.muscleLoad = load;
-    });
-
-    this.store.select(selectExercises).subscribe(exercises => {
-
-      this.dataSource = exercises;
-      console.log(this.dataSource);
-
-     // this.selected.forEach(s => {
-     //   this.selection.select(this.dataSource.data.find((v, i, n) => {
-     //     return v.id === s.id;
-     //   }));
-     // });
-    });
-
-    //this.store.select(selectIsEditable).subscribe(flag => {
-    //  if (flag && !this.isEditable) {
-    //    this.displayedColumns.unshift('select');
-    //  } else if (!flag && this.isEditable) {
-    //    this.displayedColumns.splice(0, 1);
-    //  }
-    //  this.isEditable = flag;
-    //  this.table.renderRows();
-    //});
-//
-    //this.store.select(selectIsEmbeddable).subscribe(flag => this.isEmbeddable = flag);
-//
-    //this.store.select(selectDisplayedStyle).subscribe(style => this.displayedStyle = style);
-//
-    //this.store.select(selectGroupedBy).subscribe(style => this.groupedBy = style);
-//
-    //this.store.select(selectSelectedExercises).subscribe(selectedExercise => this.selection = selectedExercise);
-
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+
+    this.store.dispatch<fromDirectory.GetAllExercises>(new fromDirectory.GetAllExercises());
+    this.store.dispatch<fromDirectory.GetMuscleLoad>(new fromDirectory.GetMuscleLoad());
+
+    this.store.select(selectMuscleLoad).subscribe(load => this.muscleLoad = load);
+
+    this.store.select(selectExercises).subscribe(exercises => {
+      this.dataSource = new MatTableDataSource<Exercise>(exercises);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+
+      this.selected.forEach(s => {
+        this.selection.select(this.dataSource.data.find((v, i, n) => {
+          return v.id === s.id;
+        }));
+      });
+    });
+
+    this.store.select(selectIsEditable).subscribe(flag => {
+      if (flag && !this.isEditable) {
+        this.displayedColumns.unshift('select');
+      } else if (!flag && this.isEditable) {
+        this.displayedColumns.splice(0, 1);
+      }
+      this.isEditable = flag;
+    });
+
+    this.store.select(selectIsEmbeddable).subscribe(flag => this.isEmbeddable = flag);
+
+    this.store.select(selectDisplayedStyle).subscribe(_style => this.displayedStyle = _style);
+
+    this.store.select(selectGroupedBy).subscribe(_style => this.groupedBy = _style);
+
+    this.store.select(selectSelectedExercises).subscribe(selectedExercises => {
+      this.selected = selectedExercises;
+      selectedExercises.forEach(s => {
+        this.selection.select(this.dataSource.data.find((v, i, n) => {
+          return v.id === s.id;
+        }));
+      });
+    });
   }
 
   applyFilter(filterValue: string): void {
@@ -98,7 +112,7 @@ export class DirectoryComponent implements OnInit {
   }
 
   applyGroupFilter(filterValue: string): void {
-    this.groupedBy = filterValue;
+    this.store.dispatch<fromDirectory.SetGroupedBy>(new fromDirectory.SetGroupedBy(filterValue));
 
     this.dataSource.filterPredicate =
       (data: Exercise, filter: string) => {
@@ -106,7 +120,7 @@ export class DirectoryComponent implements OnInit {
       };
 
     this.dataSource.filter = filterValue;
-    this.displayedStyle = 'table';
+    this.store.dispatch<fromDirectory.SetDisplayedStyle>(new fromDirectory.SetDisplayedStyle('table'));
   }
 
   isAllSelected(): boolean {
@@ -116,19 +130,21 @@ export class DirectoryComponent implements OnInit {
   }
 
   masterToggle(): void {
-    this.isAllSelected() ?
-      this.selection.clear() :
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      this.store.dispatch<fromDirectory.SetSelectedExercises>(new fromDirectory.SetSelectedExercises([]));
+    } else {
       this.dataSource.data.forEach(row => this.selection.select(row));
+      this.store.dispatch<fromDirectory.SetSelectedExercises>(new fromDirectory.SetSelectedExercises(this.dataSource.data));
+    }
   }
 
   switchToCard(): void {
-    this.displayedStyle = 'card';
-    this.groupedBy = null;
+    this.store.dispatch<fromDirectory.SwitchToCard>(new fromDirectory.SwitchToCard());
   }
 
   switchToTable(): void {
-    this.displayedStyle = 'table';
-    this.groupedBy = null;
+    this.store.dispatch<fromDirectory.SwitchToCard>(new fromDirectory.SwitchToCard());
     this.dataSource.filter = '';
   }
 
@@ -137,14 +153,14 @@ export class DirectoryComponent implements OnInit {
     if (this.selection.isSelected(e)) {
       // this.selectedExercise.emit(e);
     } else {
-     // this.unselectedExercise.emit(e);
+      // this.unselectedExercise.emit(e);
     }
   }
 
   selectALlExercise(): void {
     this.masterToggle();
 
-   // this.isAllSelected() ?
+    // this.isAllSelected() ?
     //  this.dataSource.data.forEach(row => this.selectedExercise.emit(row)) :
     //  this.dataSource.data.forEach(row => this.unselectedExercise.emit(row));
   }

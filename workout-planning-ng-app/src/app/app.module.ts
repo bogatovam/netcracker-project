@@ -53,7 +53,6 @@ const MAT_MODULES = [
 @NgModule({
   imports: [
     BrowserModule,
-    BrowserAnimationsModule,
     HttpClientModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([DirectoryEffects]),
@@ -62,6 +61,7 @@ const MAT_MODULES = [
     MatButtonModule,
     AuthorizationModule,
     AppRoutingModule,
+    BrowserAnimationsModule,
     MAT_MODULES
   ],
   declarations: [

@@ -1,11 +1,12 @@
 import { Directive, HostBinding, HostListener, Input, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Exercise } from "src/app/models/exercise";
 
 @Directive({
   selector: '[appCdkDetailRow]'
 })
 export class CdkDetailRowDirective {
-  private row: any;
-  private tRef: TemplateRef<any>;
+  private row: Exercise;
+  private tRef: TemplateRef<{ $implicit: Exercise }>;
   private opened: boolean;
 
   @HostBinding('class.expanded')
@@ -14,14 +15,14 @@ export class CdkDetailRowDirective {
   }
 
   @Input()
-  set appCdkDetailRow(value: any) {
+  set appCdkDetailRow(value: Exercise) {
     if (value !== this.row) {
       this.row = value;
     }
   }
 
   @Input('appCdkDetailRowTpl')
-  set template(value: TemplateRef<any>) {
+  set template(value: TemplateRef<{ $implicit: Exercise }>) {
     if (value !== this.tRef) {
       this.tRef = value;
     }
@@ -45,6 +46,7 @@ export class CdkDetailRowDirective {
 
   private render(): void {
     this.vcRef.clear();
+    console.log(this.tRef);
     if (this.tRef && this.row) {
       this.vcRef.createEmbeddedView(this.tRef, { $implicit: this.row });
     }

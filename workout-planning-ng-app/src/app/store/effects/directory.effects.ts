@@ -20,11 +20,9 @@ export class DirectoryEffects {
   GetAllExercise: Observable<fromDirectory.GetAllExercisesSuccess | fromDirectory.GetAllExercisesFailure> = this.actions.pipe(
     ofType(fromDirectory.DirectoryActionsTypes.GET_ALL_EXERCISES),
     switchMap((n) => {
-      console.log("Hello");
       return this.apiService.getAllExercises().pipe(
         map((exercises) => {
-          console.log(exercises);
-          return new fromDirectory.GetAllExercisesSuccess(new MatTableDataSource<Exercise>(exercises));
+          return new fromDirectory.GetAllExercisesSuccess(exercises);
         }),
         catchError((error) => {
           if (error.error_description) {

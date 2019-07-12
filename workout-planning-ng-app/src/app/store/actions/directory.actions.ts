@@ -12,7 +12,11 @@ export enum DirectoryActionsTypes {
   GET_MUSCLE_LOAD_FAILURE = '[Directory] Get muscle load failure',
   SET_SELECTED_EXERCISES = '[Directory] Set selected exercises',
   SELECT_EXERCISE = '[Directory] Select exercise',
-  UNSELECT_EXERCISE = '[Directory] Unselect exercise'
+  UNSELECT_EXERCISE = '[Directory] Unselect exercise',
+  SWITCH_TO_CARD = '[Directory] Switch to card',
+  SWITCH_TO_TABLE = '[Directory] Switch to table',
+  SET_GROUPED_BY = '[Directory] Set grouped by',
+  SET_DISPLAYED_STYLE = '[Directory] Set displayed style',
 }
 
 export class GetAllExercises implements Action {
@@ -22,7 +26,7 @@ export class GetAllExercises implements Action {
 export class GetAllExercisesSuccess implements Action {
   readonly type = DirectoryActionsTypes.GET_ALL_EXERCISES_SUCCESS;
 
-  constructor(public payload: MatTableDataSource<Exercise>) { }
+  constructor(public payload: Exercise[]) { }
 }
 
 export class GetAllExercisesFailure implements Action {
@@ -49,7 +53,7 @@ export class GetMuscleLoadFailure implements Action {
 export class SetSelectedExercises implements Action {
   readonly type = DirectoryActionsTypes.SET_SELECTED_EXERCISES;
 
-  constructor(public payload: SelectionModel<Exercise>) { }
+  constructor(public payload: Exercise[]) { }
 }
 
 export class SelectExercise implements Action {
@@ -64,6 +68,24 @@ export class UnselectExercise implements Action {
   constructor(public payload: Exercise) { }
 }
 
+export class SwitchToCard implements Action {
+  readonly type = DirectoryActionsTypes.SWITCH_TO_CARD;
+}
+
+export class SwitchToTable implements Action {
+  readonly type = DirectoryActionsTypes.SWITCH_TO_TABLE;
+}
+
+export class SetGroupedBy implements Action {
+  readonly type = DirectoryActionsTypes.SET_GROUPED_BY;
+  constructor(public  payload: string) {}
+}
+
+export class SetDisplayedStyle implements Action {
+  readonly type = DirectoryActionsTypes.SET_DISPLAYED_STYLE;
+  constructor(public  payload: string) {}
+}
+
 export type DirectoryActions =
   GetAllExercisesSuccess
   | GetAllExercises
@@ -73,4 +95,8 @@ export type DirectoryActions =
   | GetMuscleLoadFailure
   | SetSelectedExercises
   | SelectExercise
-  | UnselectExercise;
+  | UnselectExercise
+  | SwitchToCard
+  | SwitchToTable
+  | SetDisplayedStyle
+  | SetGroupedBy;
