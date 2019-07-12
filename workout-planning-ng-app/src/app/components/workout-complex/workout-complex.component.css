@@ -1,0 +1,94 @@
+.info-tab {
+  box-shadow: 0 0 5px #00063d;
+  width: inherit;
+  height: content-box;
+  background-color: #c5303a;
+  color: white;
+  border-radius: 0 0 20px 20px;
+}
+
+.workout-menu {
+  padding: 10px;
+}
+
+.light-button {
+  margin: 3px;
+  font-weight: 600;
+  width: 100%;
+  color: #fff;
+  background-color: #c5303a;
+  border-radius: 5px;
+  border: none;
+  padding: 2%;
+}
+
+.dark-button {
+  margin: 3px;
+  font-weight: 600;
+  width: 100%;
+  color: #fff;
+  background-color: #00063d;
+  border-radius: 5px;
+  border: none;
+  padding: 2%;
+}
+
+.workout-panel {
+  margin-top: 20px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.workout-complex-list {
+  margin-top: 2vh;
+}
+
+.workout-complex-list-element {
+  flex-wrap: nowrap;
+  min-width: 150px;
+}
+
+.workout-content-header {
+  align-self: center;
+}
+
+.workout-content-menu {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+}
+
+.workout-content {
+  margin-left: 10px;
+}
+
+.workout-card {
+  background-color: white;
+  color: #00063d;
+  border-radius: 20px;
+  border-color: #00063d;
+  border-width: 3px;
+  width: 200px;
+  height: 150px;
+  overflow: hidden;
+  margin: 5px;
+}
+
+.workout-card-tab {
+  margin-left: -2px;
+  padding: 4px;
+  width: 200px;
+  border-radius: 20px;
+  border-color: #00063d;
+  border-width: 3px;
+
+  color: white;
+  background-color: #00063d;
+}
+
+.workout-card-title {
+  width: 80%;
+  margin-left: 2px;
+}
+
+

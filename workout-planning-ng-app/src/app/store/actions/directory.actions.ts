@@ -1,5 +1,3 @@
-import { SelectionModel } from "@angular/cdk/collections";
-import { MatTableDataSource } from "@angular/material";
 import { Action } from "@ngrx/store";
 import { Exercise } from "src/app/models/exercise";
 
@@ -19,6 +17,8 @@ export enum DirectoryActionsTypes {
   SET_TABLE_DISPLAYED_STYLE = '[Directory] Set table displayed style',
   SET_CARD_DISPLAYED_STYLE = '[Directory] Set card displayed style',
   APPLY_GROUP_FILTER = '[Directory] Apply group filter',
+  SET_IS_EDITABLE = '[Directory] Set is Editable',
+  SET_IS_EMBEDDABLE = '[Directory] Set is embeddable'
 }
 
 export class GetAllExercises implements Action {
@@ -96,6 +96,16 @@ export class ApplyGroupFilter implements Action {
   constructor(public  payload: string) {}
 }
 
+export class SetIsEditable implements Action {
+  readonly type = DirectoryActionsTypes.SET_IS_EDITABLE;
+  constructor(public  payload: boolean) {}
+}
+
+export class SetIsEmbeddable implements Action {
+  readonly type = DirectoryActionsTypes.SET_IS_EMBEDDABLE;
+  constructor(public  payload: boolean) {}
+}
+
 export type DirectoryActions =
   GetAllExercisesSuccess
   | GetAllExercises
@@ -111,4 +121,7 @@ export type DirectoryActions =
   | SetTableDisplayedStyle
   | SetCardDisplayedStyle
   | ApplyGroupFilter
-  | SetGroupedBy;
+  | SetGroupedBy
+  | SetIsEditable
+  | SetIsEmbeddable
+  ;

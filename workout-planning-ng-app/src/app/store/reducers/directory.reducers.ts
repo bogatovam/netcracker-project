@@ -6,13 +6,27 @@ export function reducer(state: DirectoryState = initialDirectoryState, action: D
     case DirectoryActionsTypes.GET_ALL_EXERCISES_SUCCESS: {
       return {
         ...state,
-        exercises: action.payload
+        exercises: action.payload,
+        errorMessage: null
       };
     }
     case DirectoryActionsTypes.GET_MUSCLE_LOAD_SUCCESS: {
       return {
         ...state,
-        muscleLoad: action.payload
+        muscleLoad: action.payload,
+        errorMessage: null
+      };
+    }
+    case DirectoryActionsTypes.GET_ALL_EXERCISES_FAILURE: {
+      return {
+        ...state,
+        errorMessage: action.payload
+      };
+    }
+    case DirectoryActionsTypes.GET_MUSCLE_LOAD_FAILURE: {
+      return {
+        ...state,
+        errorMessage: action.payload
       };
     }
     case DirectoryActionsTypes.SWITCH_TO_CARD: {
@@ -58,6 +72,18 @@ export function reducer(state: DirectoryState = initialDirectoryState, action: D
       return {
         ...state,
         selected: action.payload
+      };
+    }
+    case DirectoryActionsTypes.SET_IS_EDITABLE: {
+      return {
+        ...state,
+        isEditable: action.payload
+      };
+    }
+    case DirectoryActionsTypes.SET_IS_EMBEDDABLE: {
+      return {
+        ...state,
+        isEmbeddable: action.payload
       };
     }
     default: {

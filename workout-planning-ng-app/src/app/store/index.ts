@@ -1,9 +1,9 @@
-import { ActionReducerMap } from "@ngrx/store";
 import * as fromAuth from "src/app/authorization/store/reducers/authorization.reducers";
 import * as fromDictionary from "src/app/store/reducers/directory.reducers";
-import { AppState } from "src/app/store/state/app.state";
+import * as fromWorkoutComplex from "src/app/store/reducers/workout-complex.reducers";
 
 export const reducers = {
   authState: fromAuth.reducer,
-  exercisesDirectory: fromDictionary.reducer
+  exercisesDirectory: fromDictionary.reducer,
+  workoutComplexPanel: fromWorkoutComplex.reducer
 };

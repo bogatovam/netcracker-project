@@ -1,5 +1,3 @@
-import { SelectionModel } from "@angular/cdk/collections";
-import { MatTableDataSource } from "@angular/material";
 import { Exercise } from "src/app/models/exercise";
 
 export interface DirectoryState {
@@ -10,6 +8,7 @@ export interface DirectoryState {
   selected: Exercise[];
   groupedBy: string;
   muscleLoad: string[];
+  errorMessage: string;
 }
 
 export const initialDirectoryState = {
@@ -19,5 +18,6 @@ export const initialDirectoryState = {
   displayedStyle: 'table',
   selected: [],
   groupedBy: null,
-  muscleLoad: []
+  muscleLoad: [],
+  errorMessage: null
 };

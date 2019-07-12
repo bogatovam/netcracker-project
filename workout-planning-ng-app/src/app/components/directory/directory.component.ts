@@ -42,8 +42,7 @@ export class DirectoryComponent implements OnInit {
   dataSource: MatTableDataSource<Exercise> = new MatTableDataSource<Exercise>([]);
   selection: SelectionModel<Exercise> = new SelectionModel(true, []);
 
-  constructor(private store: Store<AppState>) {
-  }
+  constructor(private store: Store<AppState>) { }
 
   isExpansionDetailRow = (index, row) => row.hasOwnProperty('detailRow');
 
@@ -112,8 +111,6 @@ export class DirectoryComponent implements OnInit {
   }
 
   applyGroupFilter(filterValue: string): void {
-   // this.store.dispatch<fromDirectory.SetGroupedBy>(new fromDirectory.SetGroupedBy(filterValue));
-
     this.dataSource.filterPredicate =
       (data: Exercise, filter: string) => {
         return data.infForRecommendation.muscleLoad[filter] > 0.4;
@@ -123,6 +120,7 @@ export class DirectoryComponent implements OnInit {
     this.store.dispatch<fromDirectory.ApplyGroupFilter>(new fromDirectory.ApplyGroupFilter(filterValue));
   }
 
+  // ------- //
   isAllSelected(): boolean {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
