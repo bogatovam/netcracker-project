@@ -26,7 +26,7 @@ export class Paths {
   public static CREATE_WORKOUT_COMPLEX = Paths.BASE_URL + "/workout-complex/create";
   public static GET_ALL_WORKOUT_COMPLEXES = Paths.BASE_URL + '/workout-complex/all';
   public static UPDATE_WORKOUT_COMPLEX = Paths.BASE_URL + "/workout-complex/update";
-  public static DELETE_WORKOUT_COMPLEX_BY_ID = Paths.BASE_URL +"/workout-complex/delete/";
+  public static DELETE_WORKOUT_COMPLEX_BY_ID = Paths.BASE_URL + "/workout-complex/delete/";
 }
 
 @Injectable({
@@ -89,5 +89,9 @@ export class ApiService {
 
   getSourceWorkoutComplex(workout: Workout): Observable<WorkoutComplex> {
     return this.http.get<WorkoutComplex>(Paths.GET_SOURCE_WORKOUT_COMPLEX_BY_ID + workout.id);
+  }
+
+  getWorkout(workoutId: string): Observable<Workout> {
+    return this.http.get<Workout>(Paths.WORKOUT_BY_ID + workoutId);
   }
 }
