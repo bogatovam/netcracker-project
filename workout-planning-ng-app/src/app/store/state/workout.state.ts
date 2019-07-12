@@ -8,7 +8,7 @@ export interface WorkoutState {
   isLoaded: boolean;
   errorMessage: string;
 }
-export const initialWorkoutState = {
+export const initialWorkoutState: WorkoutState = {
   workout: null,
   sourceWorkoutComplex: null,
   isEditable: false,

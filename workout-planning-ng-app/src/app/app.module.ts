@@ -31,6 +31,7 @@ import { CdkDetailRowDirective } from "src/app/shared/directives/cdk-detail-row.
 import { reducers } from "src/app/store";
 import { DirectoryEffects } from "src/app/store/effects/directory.effects";
 import {WorkoutComplexEffects} from "src/app/store/effects/workout-complex.effects";
+import {WorkoutEffects} from "src/app/store/effects/workout.effects";
 
 import { AppComponent } from './app.component';
 import { DirectoryComponent } from './components/directory/directory.component';
@@ -57,7 +58,7 @@ const MAT_MODULES = [
     BrowserModule,
     HttpClientModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([DirectoryEffects, WorkoutComplexEffects]),
+    EffectsModule.forRoot([DirectoryEffects, WorkoutComplexEffects, WorkoutEffects]),
     MatMenuModule,
     MatToolbarModule,
     MatButtonModule,

@@ -77,10 +77,10 @@ export class ApiService {
     return this.http.delete<Workout>(Paths.DELETE_WORKOUT_BY_ID + workout.id);
   }
 
-  changeWorkoutComplex(workout: Workout, oldWorkoutComplex: WorkoutComplex, newWorkoutComplex: WorkoutComplex)
-    : Observable<Workout> {
-    return this.http.get<Workout>(Paths.CHANGE_SOURCE_WORKOUT_COMPLEX +
-      workout.id + '/' + oldWorkoutComplex.id + '/' + newWorkoutComplex.id);
+  changeWorkoutComplex(workout: string, oldWorkoutComplex: string, newWorkoutComplex: string)
+    : Observable<WorkoutComplex> {
+    return this.http.get<WorkoutComplex>(Paths.CHANGE_SOURCE_WORKOUT_COMPLEX +
+      workout + '/' + oldWorkoutComplex + '/' + newWorkoutComplex);
   }
 
   updateWorkout(workout: Workout): Observable<Workout> {
@@ -93,5 +93,10 @@ export class ApiService {
 
   getWorkout(workoutId: string): Observable<Workout> {
     return this.http.get<Workout>(Paths.WORKOUT_BY_ID + workoutId);
+  }
+
+  getWorkoutComplex(workoutComplexId: string): Observable<WorkoutComplex> {
+    console.log("getWorkoutComplex!!!");
+    return this.http.get<WorkoutComplex>(Paths.WORKOUT_COMPLEX_BY_ID + workoutComplexId);
   }
 }

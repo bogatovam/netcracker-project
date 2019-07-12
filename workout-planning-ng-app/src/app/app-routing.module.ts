@@ -9,7 +9,7 @@ const APP_ROUTES = [
   {path: 'directory', component: DirectoryComponent},
   {path: 'workout-complex', component: WorkoutComplexComponent,
     children: [
-      {path: 'workout/:id', component: WorkoutComponent}
+      {path: ':workoutComplexId/workout/:id', component: WorkoutComponent}
     ]
   }
 ];

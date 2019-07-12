@@ -12,7 +12,7 @@
         <button type="button" (click)="openFormToCreatingWorkout()"
                 [disabled]="selectedWorkoutComplex == null"
                 class="dark-button"
-                [routerLink]="['workout', 'create']">
+                [routerLink]="[selectedWorkoutComplex === null ? null : selectedWorkoutComplex.id, 'workout', 'create']">
           <i class="fa fa-plus"></i> Создать тренировку
         </button>
       </div>
@@ -99,7 +99,7 @@
                 <h5 class="workout-card-title">{{w.name}}</h5>
 
               </div>
-              <div class="card-body" [routerLink]="['workout', w.id]" (click)="selectWorkout(w)">
+              <div class="card-body" [routerLink]="['workout',selectedWorkoutComplex === null ? null : selectedWorkoutComplex.id, w.id]" (click)="selectWorkout(w)">
                 <div>
                   <p *ngFor="let group of getMuscleLoad(w);"> {{group}} </p>
                   <p>Сложность: {{getComplexity(w)}}</p>
