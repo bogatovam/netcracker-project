@@ -2,6 +2,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CdkTableModule } from "@angular/cdk/table";
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from "@angular/forms";
 import {
   MatButtonModule,
   MatCardModule,
@@ -27,8 +28,9 @@ import { AuthorizationModule } from "src/app/authorization/authorization.module"
 import { LogoutComponent } from "src/app/authorization/components/logout/logout.component";
 import { ApiService } from "src/app/services/api.service";
 import { CdkDetailRowDirective } from "src/app/shared/directives/cdk-detail-row.directive";
-import {reducers} from "src/app/store";
-import {DirectoryEffects} from "src/app/store/effects/directory.effects";
+import { reducers } from "src/app/store";
+import { DirectoryEffects } from "src/app/store/effects/directory.effects";
+import {WorkoutComplexEffects} from "src/app/store/effects/workout-complex.effects";
 
 import { AppComponent } from './app.component';
 import { DirectoryComponent } from './components/directory/directory.component';
@@ -55,13 +57,14 @@ const MAT_MODULES = [
     BrowserModule,
     HttpClientModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([DirectoryEffects]),
+    EffectsModule.forRoot([DirectoryEffects, WorkoutComplexEffects]),
     MatMenuModule,
     MatToolbarModule,
     MatButtonModule,
     AuthorizationModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
     MAT_MODULES
   ],
   declarations: [

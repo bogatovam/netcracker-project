@@ -26,7 +26,7 @@ export class Paths {
   public static CREATE_WORKOUT_COMPLEX = Paths.BASE_URL + "/workout-complex/create";
   public static GET_ALL_WORKOUT_COMPLEXES = Paths.BASE_URL + '/workout-complex/all';
   public static UPDATE_WORKOUT_COMPLEX = Paths.BASE_URL + "/workout-complex/update";
-  public static DELETE_WORKOUT_COMPLEX_BY_ID = "/workout-complex/delete/";
+  public static DELETE_WORKOUT_COMPLEX_BY_ID = Paths.BASE_URL +"/workout-complex/delete/";
 }
 
 @Injectable({

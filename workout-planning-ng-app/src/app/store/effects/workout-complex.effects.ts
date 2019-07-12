@@ -20,8 +20,10 @@ export class WorkoutComplexEffects {
       ofType(fromWorkoutComplex.WorkoutComplexActionsTypes.GET_ALL_WORKOUT_COMPLEX),
       switchMap((workoutComplex) => {
         return this.apiService.getAllWorkoutComplex().pipe(
-          map(list =>
-            new fromWorkoutComplex.GetAllWorkoutComplexSuccess(list)),
+          map((list) => {
+            console.log(list);
+            return new fromWorkoutComplex.GetAllWorkoutComplexSuccess(list);
+          }),
           catchError((error) => {
             if (error.error_description) {
               return of(new fromWorkoutComplex.GetAllWorkoutComplexFailure(error.error_description));
@@ -43,18 +45,20 @@ export class WorkoutComplexEffects {
   );
 
   @Effect()
-  GetAllWorkoutCs: Observable<fromWorkoutComplex.GetAllWorkoutComplexSuccess | fromWorkoutComplex.GetAllWorkoutComplexFailure> =
+  GetAllWorkouts: Observable<fromWorkoutComplex.GetAllWorkoutSuccess | fromWorkoutComplex.GetAllWorkoutFailure> =
     this.actions.pipe(
       ofType(fromWorkoutComplex.WorkoutComplexActionsTypes.GET_ALL_WORKOUT),
       switchMap((workoutComplex) => {
-        return this.apiService.getAllWorkoutComplex().pipe(
-          map(list =>
-            new fromWorkoutComplex.GetAllWorkoutComplexSuccess(list)),
+        return this.apiService.getAllWorkout().pipe(
+          map(list => {
+            console.log(list);
+            return new fromWorkoutComplex.GetAllWorkoutSuccess(list);
+          }),
           catchError((error) => {
             if (error.error_description) {
-              return of(new fromWorkoutComplex.GetAllWorkoutComplexFailure(error.error_description));
+              return of(new fromWorkoutComplex.GetAllWorkoutFailure(error.error_description));
             } else {
-              return of(new fromWorkoutComplex.GetAllWorkoutComplexFailure(JSON.stringify(error)));
+              return of(new fromWorkoutComplex.GetAllWorkoutFailure(JSON.stringify(error)));
             }
           })
         );
@@ -76,9 +80,13 @@ export class WorkoutComplexEffects {
       ofType(fromWorkoutComplex.WorkoutComplexActionsTypes.SAVE_WORKOUT_COMPLEX),
       map((action: fromWorkoutComplex.SaveWorkoutComplex) => action.payload),
       map((workoutComplex) => {
+        console.log(workoutComplex.id);
+
         if (workoutComplex.id === null) {
+          console.log('CREATE WC');
           return new fromWorkoutComplex.CreateWorkoutComplex(workoutComplex);
         } else {
+          console.log('CREATE W');
           return new fromWorkoutComplex.UpdateWorkoutComplex(workoutComplex);
         }
       })
@@ -86,12 +94,14 @@ export class WorkoutComplexEffects {
   @Effect()
   CreateWorkoutComplex: Observable<fromWorkoutComplex.CreateWorkoutComplexSuccess | fromWorkoutComplex.CreateWorkoutComplexFailure> =
     this.actions.pipe(
-      ofType(fromWorkoutComplex.WorkoutComplexActionsTypes.SAVE_WORKOUT_COMPLEX),
+      ofType(fromWorkoutComplex.WorkoutComplexActionsTypes.CREATE_WORKOUT_COMPLEX),
       map((action: fromWorkoutComplex.SaveWorkoutComplex) => action.payload),
       switchMap((workoutComplex) => {
         return this.apiService.createWorkoutComplex(workoutComplex).pipe(
-          map(newWorkoutComplex =>
-            new fromWorkoutComplex.CreateWorkoutComplexSuccess(newWorkoutComplex)),
+          map(newWorkoutComplex => {
+            console.log(newWorkoutComplex);
+            return new fromWorkoutComplex.CreateWorkoutComplexSuccess(newWorkoutComplex);
+          }),
           catchError((error) => {
             if (error.error_description) {
               return of(new fromWorkoutComplex.CreateWorkoutComplexFailure(error.error_description));
@@ -115,7 +125,7 @@ export class WorkoutComplexEffects {
   @Effect()
   UpdateWorkoutComplex: Observable<fromWorkoutComplex.UpdateWorkoutComplexSuccess | fromWorkoutComplex.UpdateWorkoutComplexFailure> =
     this.actions.pipe(
-      ofType(fromWorkoutComplex.WorkoutComplexActionsTypes.SAVE_WORKOUT_COMPLEX),
+      ofType(fromWorkoutComplex.WorkoutComplexActionsTypes.UPDATE_WORKOUT_COMPLEX),
       map((action: fromWorkoutComplex.SaveWorkoutComplex) => action.payload),
       switchMap((workoutComplex) => {
         return this.apiService.updateWorkoutComplex(workoutComplex).pipe(
@@ -174,10 +184,10 @@ export class WorkoutComplexEffects {
   @Effect()
   DeleteWorkout: Observable<fromWorkoutComplex.DeleteWorkoutSuccess | fromWorkoutComplex.DeleteWorkoutFailure> =
     this.actions.pipe(
-      ofType(fromWorkoutComplex.WorkoutComplexActionsTypes.DELETE_WORKOUT_COMPLEX),
+      ofType(fromWorkoutComplex.WorkoutComplexActionsTypes.DELETE_WORKOUT),
       map((action: fromWorkoutComplex.SaveWorkoutComplex) => action.payload),
-      switchMap((workoutComplex) => {
-        return this.apiService.deleteWorkout(workoutComplex).pipe(
+      switchMap((workout) => {
+        return this.apiService.deleteWorkout(workout).pipe(
           map(deletedWorkout =>
             new fromWorkoutComplex.DeleteWorkoutSuccess(deletedWorkout)),
           catchError((error) => {

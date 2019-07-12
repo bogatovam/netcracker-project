@@ -6,6 +6,7 @@ import { initialWorkoutComplexState, WorkoutComplexState } from "src/app/store/s
 export function reducer(state: WorkoutComplexState = initialWorkoutComplexState, action: WorkoutComplexActions): WorkoutComplexState {
   switch (action.type) {
     case WorkoutComplexActionsTypes.SELECT_WORKOUT_COMPLEX: {
+      console.log("Hello");
       return {
         ...state,
         selectedWorkoutComplex: action.payload,
@@ -66,6 +67,7 @@ export function reducer(state: WorkoutComplexState = initialWorkoutComplexState,
       };
     }
     case WorkoutComplexActionsTypes.UPDATE_WORKOUT_COMPLEX_SUCCESS: {
+      console.log(action.payload);
       const i = state.workoutComplexes.findIndex((v) => v.id === action.payload.id);
       if (i !== -1) {
         state.workoutComplexes[i] = action.payload;
@@ -115,6 +117,7 @@ export function reducer(state: WorkoutComplexState = initialWorkoutComplexState,
       return {
         ...state,
         isWorkoutComplexEditable: false,
+        selectedWorkoutComplex: state.selectedWorkoutComplex !== null && state.selectedWorkoutComplex.id === null ? null : state.selectedWorkoutComplex
       };
     }
     case WorkoutComplexActionsTypes.CREATE_WORKOUT_COMPLEX_SUCCESS: {
@@ -133,6 +136,12 @@ export function reducer(state: WorkoutComplexState = initialWorkoutComplexState,
         workouts: [],
         isWorkoutComplexEditable: true,
         selectedWorkoutComplex: template
+      };
+    }
+    case WorkoutComplexActionsTypes.ADD_TEMPLATE_TO_EDITING_WORKOUT_COMPLEX: {
+      return {
+        ...state,
+        isWorkoutComplexEditable: true,
       };
     }
     case WorkoutComplexActionsTypes.ADD_TEMPLATE_TO_CREATING_WORKOUT: {

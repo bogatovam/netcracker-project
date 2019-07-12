@@ -30,6 +30,7 @@ export enum WorkoutComplexActionsTypes {
   UNSELECT_WORKOUT = '[WorkoutComplex] Unselect workout',
   SET_IS_WORKOUT_COMPLEX_EDITABLE = '[WorkoutComplex] Set is workout Complex editable',
   ADD_TEMPLATE_TO_CREATING_WORKOUT_COMPLEX = '[WorkoutComplex] Add template to creating workout complex',
+  ADD_TEMPLATE_TO_EDITING_WORKOUT_COMPLEX = '[WorkoutComplex] Add template to editing workout complex',
   ADD_TEMPLATE_TO_CREATING_WORKOUT = '[WorkoutComplex] Add template to creating workout',
   SAVE_WORKOUT_COMPLEX = '[WorkoutComplex] Save workout complex',
   CANCEL_WORKOUT_COMPLEX_EDITABLE = '[WorkoutComplex] Set is workout Complex editable',
@@ -132,6 +133,10 @@ export class AddTemplateToCreatingWorkoutComplex implements Action {
   readonly type = WorkoutComplexActionsTypes.ADD_TEMPLATE_TO_CREATING_WORKOUT_COMPLEX;
 }
 
+export class AddTemplateToEditingWorkoutComplex implements Action {
+  readonly type = WorkoutComplexActionsTypes.ADD_TEMPLATE_TO_EDITING_WORKOUT_COMPLEX;
+}
+
 export class AddTemplateToCreatingWorkout implements Action {
   readonly type = WorkoutComplexActionsTypes.ADD_TEMPLATE_TO_CREATING_WORKOUT;
 }
@@ -174,6 +179,7 @@ export type WorkoutComplexActions =
   | DeleteWorkoutSuccess
   | DeleteWorkoutFailure
   | AddTemplateToCreatingWorkoutComplex
+  | AddTemplateToEditingWorkoutComplex
   | AddTemplateToCreatingWorkout
   | SaveWorkoutComplex
   | CancelEditOrCreateWorkoutComplex

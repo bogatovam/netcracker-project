@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from "@ngrx/store";
 import { selectIsLoggedIn } from "src/app/authorization/store";
 import { LogOut } from "src/app/authorization/store/actions/authorization.actions";
-import {AppState} from "src/app/store/state/app.state";
+import { AppState } from "src/app/store/state/app.state";
 
 @Component({
   selector: 'app-navigation',
@@ -16,7 +16,7 @@ export class NavigationComponent implements OnInit {
   signupUrl: string = 'authentication/signup';
   homeUrl: string = 'home';
   directoryUrl: string = 'directory';
-  workoutComplexUrl: string = '';
+  workoutComplexUrl: string = 'workout-complex';
 
   constructor(private store: Store<AppState>) {
   }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from "@angular/forms";
 import { Store } from "@ngrx/store";
 import { Workout } from "src/app/models/workout";
 import { WorkoutComplex } from "src/app/models/workout-complex";
@@ -29,23 +30,42 @@ export class WorkoutComplexComponent implements OnInit {
 
   errorMessage: string;
 
+  nameWorkoutComplexControl: FormControl;
+  descriptionWorkoutComplexControl: FormControl;
+  searchTextControl: FormControl = new FormControl('');
+
   constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
     this.store.dispatch<fromWorkoutComplex.GetAllWorkoutComplex>(new fromWorkoutComplex.GetAllWorkoutComplex());
+    this.selectAllWorkouts();
     this.store.select(selectWorkoutComplexes).subscribe(workoutComplexes => this.workoutComplexes = workoutComplexes);
     this.store.select(selectWorkouts).subscribe(workouts => this.workouts = workouts);
     this.store.select(selectWorkoutComplex).subscribe(workoutComplex => this.selectedWorkoutComplex = workoutComplex);
-    this.store.select(selectWorkout).subscribe(workout => this.selectedWorkout = workout);
+    this.store.select(selectWorkout).subscribe(workout => {
+      console.log(workout);
+      this.selectedWorkout = workout;
+    });
     this.store.select(selectIsWorkoutComplexEditable).subscribe(flag => this.isWorkoutComplexEditable = flag);
   }
 
   openFormToCreatingWorkoutComplex(): void {
     this.store.dispatch(new fromWorkoutComplex.AddTemplateToCreatingWorkoutComplex());
+    this.nameWorkoutComplexControl = new FormControl(this.selectedWorkoutComplex.name);
+    this.descriptionWorkoutComplexControl = new FormControl(this.selectedWorkoutComplex.description);
+  }
+
+  openFormToEditingWorkoutComplex(): void {
+    this.store.dispatch(new fromWorkoutComplex.AddTemplateToEditingWorkoutComplex());
+    this.nameWorkoutComplexControl = new FormControl(this.selectedWorkoutComplex.name);
+    this.descriptionWorkoutComplexControl = new FormControl(this.selectedWorkoutComplex.description);
   }
 
   saveEditedOrCreatedWorkoutComplex(): void {
-    this.store.dispatch(new fromWorkoutComplex.SaveWorkoutComplex(this.selectedWorkoutComplex));
+    const newWorkoutComplex = new WorkoutComplex(this.selectedWorkoutComplex.id,
+      this.nameWorkoutComplexControl.value,
+      this.descriptionWorkoutComplexControl.value, []);
+    this.store.dispatch(new fromWorkoutComplex.SaveWorkoutComplex(newWorkoutComplex));
   }
 
   deleteWorkoutComplex(workoutComplex: WorkoutComplex): void {
@@ -86,5 +106,14 @@ export class WorkoutComplexComponent implements OnInit {
 
   cancel(): void {
     this.store.dispatch(new fromWorkoutComplex.CancelEditOrCreateWorkoutComplex());
+    if (this.selectedWorkoutComplex === null) {
+      this.workouts = [];
+
+      this.workoutComplexes.forEach((v) => {
+        v.workouts.forEach((w) => {
+          this.workouts.push(w);
+        });
+      });
+    }
   }
 }

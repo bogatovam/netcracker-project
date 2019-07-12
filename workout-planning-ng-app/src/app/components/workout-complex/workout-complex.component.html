@@ -1,164 +1,119 @@
-<div *ngIf="!this.authService.isLoggedIn; else userPage">
-  {{this.router.navigateByUrl("authentication/signin")}}
-</div>
-
-<ng-template #userPage>
-  <div class="container">
-    <!-- Info Panel -->
-    <div class="info-tab">
-      <div *ngIf="selectedWorkout === null" class="row workout-menu">
+<div class="container">
+  <!-- Info Panel -->
+  <div class="info-tab">
+    <div *ngIf="selectedWorkout === null" class="row workout-menu">
         <div class="col-md-8 align-self-center">
-          <input type="text" [(ngModel)]="searchText" class="form-control" placeholder="Найти...">
+          <input type="text" [formControl]="searchTextControl" class="form-control" placeholder="Найти...">
         </div>
-        <div *ngIf="!isWorkoutComplexEditable" class="col-md-4">
-          <button type="button" (click)="createWorkoutComplex()" class="dark-button">
-            <i class="fa fa-plus"></i> Создать комплекс
-          </button>
-          <button type="button" (click)="createWorkout()"
-                  [disabled]="selectedWorkoutComplex == null"
-                  class="dark-button">
-            <i class="fa fa-plus"></i> Создать тренировку
-          </button>
-        </div>
-        <div *ngIf="isWorkoutComplexEditable" class="col-md-4">
-          <button type="button" (click)="saveWorkoutComplex()" class="dark-button">
-            <i class="fa fa-pencil"></i> Сохранить
-          </button>
-          <button type="button" (click)="cancel()" class="dark-button">
-            <i class="fa fa-trash-o"></i> Отмена
-          </button>
-        </div>
-
+      <div *ngIf="!isWorkoutComplexEditable" class="col-md-4">
+        <button type="button" (click)="openFormToCreatingWorkoutComplex()" class="dark-button">
+          <i class="fa fa-plus"></i> Создать комплекс
+        </button>
+        <button type="button" (click)="openFormToCreatingWorkout()"
+                [disabled]="selectedWorkoutComplex == null"
+                class="dark-button"
+                [routerLink]="['workout', 'create']">
+          <i class="fa fa-plus"></i> Создать тренировку
+        </button>
       </div>
-
-      <div *ngIf="selectedWorkout !== null" class="row workout-menu">
-        <div class="col-md-8">
-          <div *ngIf="!isWorkoutEditableFlag" class="row align-self-center">
-            <i class="fa fa fa-angle-left fa-2x m-4" (click)="selectWorkoutComplex(selectedWorkoutComplex)"></i>
-            <h3 class="align-self-center">{{selectedWorkout.name}}</h3>
-          </div>
-          <div *ngIf="isWorkoutEditableFlag" class="row align-self-center">
-            <div class="col-7 align-self-center m-3">
-              <label for="name">Название</label>
-              <input id="name" type="text" [(ngModel)]="selectedWorkout.name" class="form-control" placeholder="{{selectedWorkout.name}}">
-            </div>
-          </div>
-        </div>
-        <div *ngIf="!isWorkoutEditableFlag" class="col-md-4">
-          <button type="button" (click)="setWorkoutEditable(true)" class="dark-button">
-            <i class="fa fa-pencil"></i> Редактировать
-          </button>
-          <button type="button" (click)="deleteWorkout(selectedWorkout)" class="dark-button">
-            <i class="fa fa-trash-o"></i> Удалить
-          </button>
-        </div>
-
-        <div *ngIf="isWorkoutEditableFlag" class="col-md-4">
-          <button type="button" (click)="saveWorkout()" class="dark-button">
-            <i class="fa fa-pencil"></i> Сохранить
-          </button>
-          <button type="button" (click)="cancel()" class="dark-button">
-            <i class="fa fa-trash-o"></i> Отмена
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div class="row workout-panel">
-      <!-- WorkoutComplex Menu -->
-      <div *ngIf="selectedWorkout === null" class="col-md-3 workout-complex-list">
-        <div class="list-group list-group-flush">
-          <a (click)="selectAllWorkouts()" class="list-group-item list-group-item-action ">
-            <div class="row workout-complex-list-element">
-              <i class="fa fa-book m-1"></i>
-              <label>Все тренировки</label>
-            </div>
-          </a>
-
-          <a *ngFor="let workoutComplex of workoutComplexes"
-             (click)="selectWorkoutComplex(workoutComplex)" class="list-group-item list-group-item-action">
-            <div class="row workout-complex-list-element">
-              <i class="fa fa-book m-1"></i>
-              <label>{{workoutComplex.name}}</label>
-              <i *ngIf="!isWorkoutComplexEditable" class="fa fa-trash-o text-danger m-1"
-                 (click)="deleteWorkoutComplex(workoutComplex)"></i>
-            </div>
-          </a>
-        </div>
-      </div>
-
-      <!-- Workouts panel -->
-      <div *ngIf="selectedWorkout === null" class="col-md-9">
-        <div class="row">
-          <!-- Workouts Complex Header -->
-          <div class="col-md-12">
-            <div *ngIf="selectedWorkoutComplex != null && isWorkoutComplexEditable" class="col-md-12">
-              <div class="row">
-                <h6>Название комплекса:</h6>
-                <input id="wcname" type="text"
-                       class="input-group m-3"
-                       [(ngModel)]="selectedWorkoutComplex.name"
-                       placeholder="{{selectedWorkoutComplex.name}}"/>
-              </div>
-              <div class="row">
-                <h6>Описание:</h6>
-                <input id="wcdescription"
-                       type="text"
-                       class="input-group m-3"
-                       [(ngModel)]="selectedWorkoutComplex.description"
-                       placeholder="{{selectedWorkoutComplex.description}}"/>
-              </div>
-            </div>
-
-            <div *ngIf="selectedWorkoutComplex != null && !isWorkoutComplexEditable" class="row">
-              <h3 class="align-self-center"> {{selectedWorkoutComplex.name}}</h3>
-              <a (click)="setWorkoutComplexEditable(true)"><i class="fa fa-pencil fa-2x m-2"></i></a>
-            </div>
-            <p *ngIf="selectedWorkoutComplex != null && !isWorkoutComplexEditable">
-              {{selectedWorkoutComplex.description}}</p>
-
-            <!-- Message if there are no workouts -->
-            <h3 *ngIf="selectedWorkoutComplex == null">Все тренировки </h3>
-            <p *ngIf="this.workouts.length === 0">В этом тренировочном комплексе нет тренировок :(</p>
-          </div>
-
-          <!-- Cards with Workouts -->
-          <div class="row workout-content">
-            <div *ngFor="let w of workouts | workoutFilter:searchText">
-              <div class="card workout-card">
-                <div class="row workout-card-tab">
-                  <a>
-                    <i class="fa fa-book m-1"></i>
-                  </a>
-
-                  <h5 class="workout-card-title">{{w.name}}</h5>
-
-                  <a (click)="deleteWorkout(w)" class="pull-right text-danger">
-                    <i class="fa fa-trash-o"></i>
-                  </a>
-                </div>
-                <div class="card-body" (click)="selectWorkout(w)">
-                  <div>
-                    <p *ngFor="let group of getMuscleLoad(w);"> {{group}} </p>
-                    <p>Сложность: {{getComplexity(w)}}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Workouts panel with detail -->
-      <div *ngIf="selectedWorkout !== null" class="col-md-12">
-        <app-workout
-          [workout]="selectedWorkout"
-          [workoutComplexes]="workoutComplexes"
-          [isEditable]="isWorkoutEditableFlag"
-          [(sourceWorkoutComplex)]="selectedWorkoutComplex"
-        >
-        </app-workout>
+      <div *ngIf="isWorkoutComplexEditable" class="col-md-4">
+        <button type="button" (click)="saveEditedOrCreatedWorkoutComplex()" class="dark-button">
+          <i class="fa fa-pencil"></i> Сохранить
+        </button>
+        <button type="button" (click)="cancel()" class="dark-button">
+          <i class="fa fa-trash-o"></i> Отмена
+        </button>
       </div>
     </div>
   </div>
-</ng-template>
+
+  <div class="row workout-panel">
+    <!-- WorkoutComplex Menu -->
+    <div *ngIf="selectedWorkout === null" class="col-md-3 workout-complex-list">
+      <div class="list-group list-group-flush">
+        <a (click)="selectAllWorkouts()" class="list-group-item list-group-item-action ">
+          <div class="row workout-complex-list-element">
+            <i class="fa fa-book m-1"></i>
+            <label>Все тренировки</label>
+          </div>
+        </a>
+
+        <a *ngFor="let workoutComplex of workoutComplexes"
+           (click)="selectWorkoutComplex(workoutComplex)" class="list-group-item list-group-item-action">
+          <div class="row workout-complex-list-element">
+            <i class="fa fa-book m-1"></i>
+            <label>{{workoutComplex.name}}</label>
+            <i *ngIf="!isWorkoutComplexEditable" class="fa fa-trash-o text-danger m-1"
+               (click)="deleteWorkoutComplex(workoutComplex)"></i>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Workouts panel -->
+    <div *ngIf="selectedWorkout === null" class="col-md-9">
+      <div class="row">
+        <!-- Workouts Complex Header -->
+        <div class="col-md-12">
+          <div *ngIf="selectedWorkoutComplex != null && isWorkoutComplexEditable" class="col-md-12">
+            <div class="row">
+              <h6>Название комплекса:</h6>
+              <input id="wcname" type="text"
+                     class="input-group m-3"
+                     [formControl]="nameWorkoutComplexControl"/>
+            </div>
+            <div class="row">
+              <h6>Описание:</h6>
+              <input id="wcdescription"
+                     type="text"
+                     class="input-group m-3"
+                     [formControl]="descriptionWorkoutComplexControl"/>
+            </div>
+          </div>
+
+          <div *ngIf="selectedWorkoutComplex != null && !isWorkoutComplexEditable" class="row">
+            <h3 class="align-self-center"> {{selectedWorkoutComplex.name}}</h3>
+            <a (click)="openFormToEditingWorkoutComplex()"><i class="fa fa-pencil fa-2x m-2"></i></a>
+          </div>
+          <p *ngIf="selectedWorkoutComplex != null && !isWorkoutComplexEditable">
+            {{selectedWorkoutComplex.description}}</p>
+
+          <!-- Message if there are no workouts -->
+          <h3 *ngIf="selectedWorkoutComplex == null">Все тренировки </h3>
+          <p *ngIf="this.workouts.length === 0">В этом тренировочном комплексе нет тренировок :(</p>
+        </div>
+
+        <!-- Cards with Workouts -->
+        <div class="row workout-content">
+          <div *ngFor="let w of workouts | workoutFilter:searchTextControl.value">
+            <div class="card workout-card">
+              <div class="row workout-card-tab">
+
+                <a (click)="deleteWorkout(w)" class="pull-right text-danger">
+                  <i class="fa fa-trash-o"></i>
+                </a>
+                <a>
+                  <i class="fa fa-book m-1"></i>
+                </a>
+
+                <h5 class="workout-card-title">{{w.name}}</h5>
+
+              </div>
+              <div class="card-body" [routerLink]="['workout', w.id]" (click)="selectWorkout(w)">
+                <div>
+                  <p *ngFor="let group of getMuscleLoad(w);"> {{group}} </p>
+                  <p>Сложность: {{getComplexity(w)}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Workouts panel with detail -->
+    <div *ngIf="selectedWorkout !== null" class="col-md-12">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
