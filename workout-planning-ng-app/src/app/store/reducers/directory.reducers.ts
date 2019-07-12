@@ -35,10 +35,23 @@ export function reducer(state: DirectoryState = initialDirectoryState, action: D
         groupedBy: action.payload
       };
     }
-    case DirectoryActionsTypes.SET_DISPLAYED_STYLE: {
+    case DirectoryActionsTypes.SET_CARD_DISPLAYED_STYLE: {
       return {
         ...state,
-        displayedStyle: action.payload
+        displayedStyle: 'card'
+      };
+    }
+    case DirectoryActionsTypes.SET_TABLE_DISPLAYED_STYLE: {
+      return {
+        ...state,
+        displayedStyle: 'table'
+      };
+    }
+    case DirectoryActionsTypes.APPLY_GROUP_FILTER: {
+      return  {
+        ...state,
+        groupedBy: action.payload,
+        displayedStyle: 'table'
       };
     }
     case DirectoryActionsTypes.SET_SELECTED_EXERCISES: {

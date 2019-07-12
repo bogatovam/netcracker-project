@@ -112,7 +112,7 @@ export class DirectoryComponent implements OnInit {
   }
 
   applyGroupFilter(filterValue: string): void {
-    this.store.dispatch<fromDirectory.SetGroupedBy>(new fromDirectory.SetGroupedBy(filterValue));
+   // this.store.dispatch<fromDirectory.SetGroupedBy>(new fromDirectory.SetGroupedBy(filterValue));
 
     this.dataSource.filterPredicate =
       (data: Exercise, filter: string) => {
@@ -120,7 +120,7 @@ export class DirectoryComponent implements OnInit {
       };
 
     this.dataSource.filter = filterValue;
-    this.store.dispatch<fromDirectory.SetDisplayedStyle>(new fromDirectory.SetDisplayedStyle('table'));
+    this.store.dispatch<fromDirectory.ApplyGroupFilter>(new fromDirectory.ApplyGroupFilter(filterValue));
   }
 
   isAllSelected(): boolean {
@@ -144,7 +144,7 @@ export class DirectoryComponent implements OnInit {
   }
 
   switchToTable(): void {
-    this.store.dispatch<fromDirectory.SwitchToCard>(new fromDirectory.SwitchToCard());
+    this.store.dispatch<fromDirectory.SwitchToTable>(new fromDirectory.SwitchToTable());
     this.dataSource.filter = '';
   }
 

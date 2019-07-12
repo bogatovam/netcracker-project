@@ -16,7 +16,9 @@ export enum DirectoryActionsTypes {
   SWITCH_TO_CARD = '[Directory] Switch to card',
   SWITCH_TO_TABLE = '[Directory] Switch to table',
   SET_GROUPED_BY = '[Directory] Set grouped by',
-  SET_DISPLAYED_STYLE = '[Directory] Set displayed style',
+  SET_TABLE_DISPLAYED_STYLE = '[Directory] Set table displayed style',
+  SET_CARD_DISPLAYED_STYLE = '[Directory] Set card displayed style',
+  APPLY_GROUP_FILTER = '[Directory] Apply group filter',
 }
 
 export class GetAllExercises implements Action {
@@ -81,8 +83,16 @@ export class SetGroupedBy implements Action {
   constructor(public  payload: string) {}
 }
 
-export class SetDisplayedStyle implements Action {
-  readonly type = DirectoryActionsTypes.SET_DISPLAYED_STYLE;
+export class SetTableDisplayedStyle implements Action {
+  readonly type = DirectoryActionsTypes.SET_TABLE_DISPLAYED_STYLE;
+}
+
+export class SetCardDisplayedStyle implements Action {
+  readonly type = DirectoryActionsTypes.SET_CARD_DISPLAYED_STYLE;
+}
+
+export class ApplyGroupFilter implements Action {
+  readonly type = DirectoryActionsTypes.APPLY_GROUP_FILTER;
   constructor(public  payload: string) {}
 }
 
@@ -98,5 +108,7 @@ export type DirectoryActions =
   | UnselectExercise
   | SwitchToCard
   | SwitchToTable
-  | SetDisplayedStyle
+  | SetTableDisplayedStyle
+  | SetCardDisplayedStyle
+  | ApplyGroupFilter
   | SetGroupedBy;
