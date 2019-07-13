@@ -1,4 +1,4 @@
-<div *ngIf="isEmbeddable" class="header-panel row justify-content-md-center">
+<div *ngIf="!isEmbeddable" class="header-panel row justify-content-md-center">
   <div class="header" (click)="switchToTable()">
     <h1>Справочник упражнений</h1>
   </div>
@@ -47,10 +47,6 @@
         <mat-table class="exercise-table" #table [dataSource]="dataSource" matSort>
           <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef>
-              <mat-checkbox (change)="$event ? selectALlExercise() : null"
-                            [checked]="selection.hasValue() && isAllSelected()"
-                            [indeterminate]="selection.hasValue() && !isAllSelected()">
-              </mat-checkbox>
             </th>
             <td mat-cell *matCellDef="let row">
               <mat-checkbox (click)="$event.stopPropagation()"

@@ -2,7 +2,7 @@ import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { Component, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from "@angular/forms";
 import { MatPaginator, MatSort, MatTable, MatTableDataSource } from "@angular/material";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, NavigationEnd, Router, RouterEvent } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { Exercise } from "src/app/models/exercise";
 import { Workout } from "src/app/models/workout";
@@ -11,7 +11,7 @@ import * as fromDirectory from "src/app/store/actions/directory.actions";
 import * as fromWorkout from "src/app/store/actions/workout.actions";
 import { selectWorkoutComplexes } from "src/app/store/selectors/workout-complex.selector";
 import {
-  selectError,
+  selectError, selectExercises,
   selectIsEditable,
   selectIsLoaded,
   selectSourceWorkoutComplex,
@@ -42,9 +42,10 @@ export class WorkoutComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatTable) table: MatTable<Exercise>;
 
-  constructor(private activateRoute: ActivatedRoute, private store: Store<AppState>) { }
+  constructor(private activateRoute: ActivatedRoute, private store: Store<AppState>, private router: Router) { }
 
   ngOnInit(): void {
+
     this.activateRoute.params.subscribe(params => {
       const workoutId = params['id'];
       const workoutComplexId = params['workoutComplexId'];
@@ -59,9 +60,10 @@ export class WorkoutComponent implements OnInit {
     this.store.select(selectWorkoutComplexes).subscribe(workoutComplexes => this.workoutComplexes = workoutComplexes);
     this.store.select(selectWorkout).subscribe(workout => {
       this.workout = workout;
-      if (this.workout !== null) {
-        this.dataSource = new MatTableDataSource<Exercise>(this.workout.exercises);
-      }
+    });
+    this.store.select(selectExercises).subscribe(exercises => {
+      console.log(exercises);
+        this.dataSource = new MatTableDataSource<Exercise>(exercises);
     });
     this.store.select(selectSourceWorkoutComplex).subscribe(source => {
       this.sourceWorkoutComplex = source;
@@ -97,7 +99,12 @@ export class WorkoutComponent implements OnInit {
         this.nameWorkoutControl.value,
         this.descriptionWorkoutControl.value,
         this.dataSource.data);
-      this.store.dispatch(new fromWorkout.CreateWorkout({workout: newWorkout, workoutComplex: this.sourceWorkoutComplexIdControl.value}));
+      const workoutComplex = this.sourceWorkoutComplex.id === this.sourceWorkoutComplexIdControl.value ?
+         this.sourceWorkoutComplex
+        : this.workoutComplexes.find((wc) => wc.id === this.sourceWorkoutComplexIdControl.value);
+      if (workoutComplex !== null) {
+        this.store.dispatch(new fromWorkout.CreateWorkout({workout: newWorkout, workoutComplex: workoutComplex}));
+      }
     } else {
       const newWorkout = new Workout(this.workout.id,
         this.nameWorkoutControl.value,
@@ -116,7 +123,16 @@ export class WorkoutComponent implements OnInit {
   }
 
   cancel(): void {
-    this.store.dispatch(new fromDirectory.SetIsEmbeddable(false));
+    this.router.navigateByUrl('workout-complex');
+    this.store.dispatch(new fromWorkout.SetEditable(false));
+  }
+
+  back(): void {
+    this.router.navigateByUrl('workout-complex');
+  }
+
+  setEditable(flag: boolean): void {
+    this.openFormToEditingWorkout();
   }
 
   deleteWorkout(): void {
@@ -135,18 +151,6 @@ export class WorkoutComponent implements OnInit {
     console.log(event);
     const prevIndex = this.dataSource.data.findIndex((d) => d === event.item.data);
     moveItemInArray(this.dataSource.data, prevIndex, event.currentIndex);
-    this.table.renderRows();
-  }
-
-  addExercise(e: Exercise): void {
-    this.dataSource.data.unshift(e);
-    this.table.renderRows();
-  }
-
-  deleteExercise(e: Exercise): void {
-    this.dataSource.data.splice(this.dataSource.data.findIndex((v, n, o) => {
-      return v.id === e.id;
-    }), 1);
     this.table.renderRows();
   }
 }

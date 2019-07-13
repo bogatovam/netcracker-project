@@ -72,7 +72,7 @@ public class WorkoutComplexController {
         return planningService.addWorkout(id, workout, authentication.getName());
     }
 
-    @PostMapping(UPDATE_WORKOUT_COMPLEX)
+    @PutMapping(UPDATE_WORKOUT_COMPLEX)
     @ApiOperation(value = "Update workout complex")
     public WorkoutComplex updateWorkout(
             @ApiParam(value = "Body of updated workout complex")

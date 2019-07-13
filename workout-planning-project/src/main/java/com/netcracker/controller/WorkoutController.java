@@ -33,6 +33,7 @@ public class WorkoutController {
             @ApiParam(value = "Body of created workout")
             @RequestBody Workout workout,
             Authentication authentication) {
+        System.out.println(workout);
         return planningService.createWorkout(wcid, workout, authentication.getName());
     }
 
@@ -74,7 +75,7 @@ public class WorkoutController {
 
     @GetMapping(CHANGE_SOURCE_WORKOUT_COMPLEX)
     @ApiOperation(value = "Change source workout complex of workout")
-    public Workout changeSourceWorkoutComplex(
+    public WorkoutComplex changeSourceWorkoutComplex(
             @ApiParam(value = "Workout complex id")
             @PathVariable String id,
             @ApiParam(value = "Workout complex id")

@@ -11,7 +11,6 @@ export function reducer(state: WorkoutComplexState = initialWorkoutComplexState,
         ...state,
         selectedWorkoutComplex: action.payload,
         workouts: action.payload.workouts,
-        selectedWorkout: null,
         isWorkoutComplexEditable: false
       };
     }
@@ -19,7 +18,6 @@ export function reducer(state: WorkoutComplexState = initialWorkoutComplexState,
       return {
         ...state,
         selectedWorkoutComplex: null,
-        selectedWorkout: null,
         isWorkoutComplexEditable: false
       };
     }
@@ -44,7 +42,6 @@ export function reducer(state: WorkoutComplexState = initialWorkoutComplexState,
       return {
         ...state,
         selectedWorkoutComplex: null,
-        selectedWorkout: null,
         workouts: []
       };
     }
@@ -106,11 +103,9 @@ export function reducer(state: WorkoutComplexState = initialWorkoutComplexState,
     }
     case WorkoutComplexActionsTypes.DELETE_WORKOUT_SUCCESS: {
       state.workouts.splice(state.workouts.findIndex((v) => v.id === action.payload.id), 1);
-      if (state.selectedWorkout !== null && state.selectedWorkout.id === action.payload.id) {
-        state.selectedWorkout = null;
-      }
       return {
         ...state,
+        workouts: [...state.workouts]
       };
     }
     case WorkoutComplexActionsTypes.CANCEL_WORKOUT_COMPLEX_EDITABLE: {
@@ -142,15 +137,6 @@ export function reducer(state: WorkoutComplexState = initialWorkoutComplexState,
       return {
         ...state,
         isWorkoutComplexEditable: true,
-      };
-    }
-    case WorkoutComplexActionsTypes.ADD_TEMPLATE_TO_CREATING_WORKOUT: {
-      const template = new Workout(null);
-      return {
-        ...state,
-        workouts: [],
-        isWorkoutComplexEditable: true,
-        selectedWorkout: template
       };
     }
     case WorkoutComplexActionsTypes.SAVE_WORKOUT_COMPLEX: {

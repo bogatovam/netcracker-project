@@ -69,7 +69,6 @@ public class PlanningServiceImpl implements PlanningService {
         if (!authenticationService.checkAccessRightsToWorkoutComplex(workoutComplexId, userId))
             return null;
 
-        // #TODO need to add own exceptions
         sourceWorkoutComplex = workoutComplexRepository.findById(workoutComplexId)
                 .orElseThrow(() -> new NoSuchElementException(
                         "Workout complex id" + workoutComplexId + " has bad value"));
@@ -122,15 +121,15 @@ public class PlanningServiceImpl implements PlanningService {
     }
 
     @Override
-    public Workout changeSourceWorkoutComplex(String workoutId, String oldWorkoutComplexId, String newWorkoutComplexId, String userId) {
+    public WorkoutComplex changeSourceWorkoutComplex(String workoutId, String oldWorkoutComplexId, String newWorkoutComplexId, String userId) {
         Workout workout = dataDisplayService.getWorkoutById(workoutId, userId);
-        WorkoutComplex workoutComplex = dataDisplayService.getWorkoutComplexById(oldWorkoutComplexId, userId);
+        WorkoutComplex workoutComplex = dataDisplayService.getWorkoutComplexById(newWorkoutComplexId, userId);
 
         wComplexToWorkoutRepository.removeAllByWorkoutId(workoutId);
         WComplexToWorkout newConnection = WComplexToWorkout.builder().workout(workout)
                 .workoutComplex(workoutComplex).build();
         wComplexToWorkoutRepository.save(newConnection);
-        return null;
+        return workoutComplex;
     }
 
     @Override

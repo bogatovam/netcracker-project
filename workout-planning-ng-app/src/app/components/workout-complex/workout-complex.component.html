@@ -1,7 +1,7 @@
 <div class="container">
   <!-- Info Panel -->
   <div class="info-tab">
-    <div *ngIf="selectedWorkout === null" class="row workout-menu">
+    <div class="row workout-menu">
         <div class="col-md-8 align-self-center">
           <input type="text" [formControl]="searchTextControl" class="form-control" placeholder="Найти...">
         </div>
@@ -9,7 +9,7 @@
         <button type="button" (click)="openFormToCreatingWorkoutComplex()" class="dark-button">
           <i class="fa fa-plus"></i> Создать комплекс
         </button>
-        <button type="button" (click)="openFormToCreatingWorkout()"
+        <button type="button"
                 [disabled]="selectedWorkoutComplex == null"
                 class="dark-button"
                 [routerLink]="[selectedWorkoutComplex === null ? null : selectedWorkoutComplex.id, 'workout', 'create']">
@@ -29,7 +29,7 @@
 
   <div class="row workout-panel">
     <!-- WorkoutComplex Menu -->
-    <div *ngIf="selectedWorkout === null" class="col-md-3 workout-complex-list">
+    <div class="col-md-3 workout-complex-list">
       <div class="list-group list-group-flush">
         <a (click)="selectAllWorkouts()" class="list-group-item list-group-item-action ">
           <div class="row workout-complex-list-element">
@@ -51,7 +51,7 @@
     </div>
 
     <!-- Workouts panel -->
-    <div *ngIf="selectedWorkout === null" class="col-md-9">
+    <div class="col-md-9">
       <div class="row">
         <!-- Workouts Complex Header -->
         <div class="col-md-12">
@@ -86,7 +86,7 @@
         <!-- Cards with Workouts -->
         <div class="row workout-content">
           <div *ngFor="let w of workouts | workoutFilter:searchTextControl.value">
-            <div class="card workout-card">
+            <div class="card workout-card" [routerLink]="[selectedWorkoutComplex === null ? 'all' : selectedWorkoutComplex.id, 'workout', w.id]">
               <div class="row workout-card-tab">
 
                 <a (click)="deleteWorkout(w)" class="pull-right text-danger">
@@ -99,7 +99,7 @@
                 <h5 class="workout-card-title">{{w.name}}</h5>
 
               </div>
-              <div class="card-body" [routerLink]="['workout',selectedWorkoutComplex === null ? null : selectedWorkoutComplex.id, w.id]" (click)="selectWorkout(w)">
+              <div class="card-body">
                 <div>
                   <p *ngFor="let group of getMuscleLoad(w);"> {{group}} </p>
                   <p>Сложность: {{getComplexity(w)}}</p>
@@ -109,11 +109,6 @@
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- Workouts panel with detail -->
-    <div *ngIf="selectedWorkout !== null" class="col-md-12">
-      <router-outlet></router-outlet>
     </div>
   </div>
 </div>

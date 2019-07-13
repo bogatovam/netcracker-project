@@ -3,8 +3,10 @@ import { SelectionModel } from "@angular/cdk/collections";
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTable, MatTableDataSource } from "@angular/material";
 import { Store } from "@ngrx/store";
+import { from } from "rxjs";
 import { Exercise } from "src/app/models/exercise";
 import * as fromDirectory from "src/app/store/actions/directory.actions";
+import * as fromWorkout from "src/app/store/actions/workout.actions";
 import {
   selectDisplayedStyle,
   selectExercises, selectGroupedBy,
@@ -127,16 +129,6 @@ export class DirectoryComponent implements OnInit {
     return numSelected === numRows;
   }
 
-  masterToggle(): void {
-    if (this.isAllSelected()) {
-      this.selection.clear();
-      this.store.dispatch<fromDirectory.SetSelectedExercises>(new fromDirectory.SetSelectedExercises([]));
-    } else {
-      this.dataSource.data.forEach(row => this.selection.select(row));
-      this.store.dispatch<fromDirectory.SetSelectedExercises>(new fromDirectory.SetSelectedExercises(this.dataSource.data));
-    }
-  }
-
   switchToCard(): void {
     this.store.dispatch<fromDirectory.SwitchToCard>(new fromDirectory.SwitchToCard());
   }
@@ -149,18 +141,10 @@ export class DirectoryComponent implements OnInit {
   selectExercise(e: Exercise): void {
     this.selection.toggle(e);
     if (this.selection.isSelected(e)) {
-      // this.selectedExercise.emit(e);
+       this.store.dispatch(new fromWorkout.SelectExercise(e));
     } else {
-      // this.unselectedExercise.emit(e);
+      this.store.dispatch(new fromWorkout.UnselectExercise(e));
     }
-  }
-
-  selectALlExercise(): void {
-    this.masterToggle();
-
-    // this.isAllSelected() ?
-    //  this.dataSource.data.forEach(row => this.selectedExercise.emit(row)) :
-    //  this.dataSource.data.forEach(row => this.unselectedExercise.emit(row));
   }
 
 }

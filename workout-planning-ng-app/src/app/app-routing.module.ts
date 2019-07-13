@@ -7,11 +7,8 @@ import { WorkoutComponent } from "src/app/components/workout/workout.component";
 const APP_ROUTES = [
   {path: '', pathMatch: 'full', redirectTo: '/home'},
   {path: 'directory', component: DirectoryComponent},
-  {path: 'workout-complex', component: WorkoutComplexComponent,
-    children: [
-      {path: ':workoutComplexId/workout/:id', component: WorkoutComponent}
-    ]
-  }
+  {path: 'workout-complex', component: WorkoutComplexComponent},
+  {path: 'workout-complex/:workoutComplexId/workout/:id', component: WorkoutComponent}
 ];
 
 @NgModule({

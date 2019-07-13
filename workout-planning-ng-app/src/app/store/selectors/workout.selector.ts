@@ -23,6 +23,12 @@ export const selectIsLoaded = createSelector(
   selectWorkoutState,
   (state: WorkoutState) => state.isLoaded
 );
+
+export const selectExercises = createSelector(
+  selectWorkoutState,
+  (state: WorkoutState) => state.exercises
+);
+
 export const selectError = createSelector(
   selectWorkoutState,
   (state: WorkoutState) => state.errorMessage

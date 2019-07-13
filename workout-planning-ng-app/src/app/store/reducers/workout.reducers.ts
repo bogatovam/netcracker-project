@@ -4,14 +4,12 @@ import { initialWorkoutState, WorkoutState } from "src/app/store/state/workout.s
 export function reducer(state: WorkoutState = initialWorkoutState, action: WorkoutActions): WorkoutState {
   switch (action.type) {
     case WorkoutActionsTypes.LOAD_SOURCE_WORKOUT_COMPLEX: {
-      console.log('false');
       return {
         ...state,
         isLoaded: false
       };
     }
     case WorkoutActionsTypes.LOAD_SOURCE_WORKOUT_COMPLEX_SUCCESS: {
-      console.log('true');
       return {
         ...state,
         isLoaded: true,
@@ -19,8 +17,6 @@ export function reducer(state: WorkoutState = initialWorkoutState, action: Worko
       };
     }
     case WorkoutActionsTypes.LOAD_SOURCE_WORKOUT_COMPLEX_FAILURE: {
-      console.log('true');
-
       return {
         ...state,
         isLoaded: true,
@@ -28,19 +24,16 @@ export function reducer(state: WorkoutState = initialWorkoutState, action: Worko
       };
     }
     case WorkoutActionsTypes.LOAD_WORKOUT: {
-      console.log('false');
-
       return {
         ...state,
         isLoaded: false
       };
     }
     case WorkoutActionsTypes.LOAD_WORKOUT_SUCCESS: {
-      console.log('true');
-
       return {
         ...state,
         workout: action.payload.workout,
+        exercises: action.payload.workout.exercises,
         sourceWorkoutComplex: action.payload.workoutComplex,
         isLoaded: true
       };
@@ -55,7 +48,7 @@ export function reducer(state: WorkoutState = initialWorkoutState, action: Worko
     case WorkoutActionsTypes.SET_EDITABLE : {
       return {
         ...state,
-        isEditable: true
+        isEditable: action.payload
       };
     }
     case WorkoutActionsTypes.DELETE_WORKOUT_SUCCESS : {
@@ -72,6 +65,7 @@ export function reducer(state: WorkoutState = initialWorkoutState, action: Worko
         ...state,
         isEditable: false,
         workout: action.payload.workout,
+        exercises: action.payload.workout.exercises,
         sourceWorkoutComplex: action.payload.workoutComplex,
         errorMessage: null
       };
@@ -89,6 +83,7 @@ export function reducer(state: WorkoutState = initialWorkoutState, action: Worko
         ...state,
         isEditable: false,
         workout: action.payload,
+        exercises: action.payload.exercises,
         errorMessage: null
       };
     }
@@ -113,6 +108,26 @@ export function reducer(state: WorkoutState = initialWorkoutState, action: Worko
         ...state,
         errorMessage: action.payload,
         isEditable: false
+      };
+    }
+    case WorkoutActionsTypes.SELECT_EXERCISE: {
+      state.exercises = [...state.exercises, action.payload];
+      return  {
+        ...state
+      };
+    }
+    case WorkoutActionsTypes.UNSELECT_EXERCISE: {
+      state.exercises.splice(state.exercises
+        .findIndex((v) => v.id === action.payload.id), 1);
+      return  {
+        ...state,
+        exercises: [...state.exercises]
+      };
+    }
+    case WorkoutActionsTypes.UNSELECT_ALL_EXERCISES: {
+      return  {
+        ...state,
+        exercises: []
       };
     }
     default:

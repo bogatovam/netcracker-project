@@ -38,8 +38,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private WorkoutComplex getSourceWorkoutComplex(String workoutId) {
         return wComplexToWorkoutRepository.findByWorkoutId(workoutId)
                 .orElseThrow(() -> {
-                    logger.error("Invalid scheduledWorkoutId:" + workoutId);
-                    return new IllegalArgumentException("Invalid scheduledWorkoutId:" + workoutId);
+                    logger.error("Invalid WorkoutId:" + workoutId);
+                    return new IllegalArgumentException("Invalid WorkoutId:" + workoutId);
                 })
                 .getWorkoutComplex();
     }
@@ -105,7 +105,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public Boolean checkAccessRightsToWorkoutComplex(String workoutComplexId, String userId) {
         List<User> owner = userRepository.findUserByWorkoutComplexId("workout-complex/" + workoutComplexId).asListRemaining();
         if (owner == null || owner.isEmpty()) {
-            logger.error("While checkAccessRights for user " + userId + " and workout " + workoutComplexId + " smth went wrong: user is bad");
+            logger.error("While checkAccessRights for user " + userId + " and workout complex " + workoutComplexId + " smth went wrong: user is bad");
             return false;
         }
         return owner.get(0).getId().equals(userId);

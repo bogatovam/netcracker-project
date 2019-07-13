@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from "@angular/forms";
+import {NavigationEnd, Router, RouterEvent} from "@angular/router";
 import { Store } from "@ngrx/store";
 import { Workout } from "src/app/models/workout";
 import { WorkoutComplex } from "src/app/models/workout-complex";
 import {
   selectIsWorkoutComplexEditable,
-  selectWorkout,
   selectWorkoutComplex,
   selectWorkoutComplexes,
   selectWorkouts
@@ -24,7 +24,6 @@ export class WorkoutComplexComponent implements OnInit {
   workouts: Workout[];
 
   selectedWorkoutComplex: WorkoutComplex;
-  selectedWorkout: Workout;
 
   isWorkoutComplexEditable = false;
 
@@ -34,18 +33,15 @@ export class WorkoutComplexComponent implements OnInit {
   descriptionWorkoutComplexControl: FormControl;
   searchTextControl: FormControl = new FormControl('');
 
-  constructor(private store: Store<AppState>) { }
+  constructor(private store: Store<AppState>, private router: Router) { }
 
   ngOnInit(): void {
+
     this.store.dispatch<fromWorkoutComplex.GetAllWorkoutComplex>(new fromWorkoutComplex.GetAllWorkoutComplex());
     this.selectAllWorkouts();
     this.store.select(selectWorkoutComplexes).subscribe(workoutComplexes => this.workoutComplexes = workoutComplexes);
     this.store.select(selectWorkouts).subscribe(workouts => this.workouts = workouts);
     this.store.select(selectWorkoutComplex).subscribe(workoutComplex => this.selectedWorkoutComplex = workoutComplex);
-    this.store.select(selectWorkout).subscribe(workout => {
-      console.log(workout);
-      this.selectedWorkout = workout;
-    });
     this.store.select(selectIsWorkoutComplexEditable).subscribe(flag => this.isWorkoutComplexEditable = flag);
   }
 
@@ -81,15 +77,6 @@ export class WorkoutComplexComponent implements OnInit {
 
   selectWorkoutComplex(workoutComplex: WorkoutComplex): void {
     this.store.dispatch<fromWorkoutComplex.SelectWorkoutComplex>(new fromWorkoutComplex.SelectWorkoutComplex(workoutComplex));
-  }
-
-  selectWorkout(workout: Workout): void {
-    this.selectedWorkout = workout;
-  }
-
-  openFormToCreatingWorkout(): void {
-    this.selectedWorkout = new Workout(null, '', '', []);
-    this.selectedWorkout.exercises = [];
   }
 
   deleteWorkout(workout: Workout): void {

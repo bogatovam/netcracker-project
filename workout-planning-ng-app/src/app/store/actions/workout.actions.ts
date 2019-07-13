@@ -24,7 +24,8 @@ export enum WorkoutActionsTypes {
   CHANGE_SOURCE_WORKOUT_COMPLEX_FAILURE = '[Workout] Change source workout complex failure',
   SET_EDITABLE = '[Workout] Set editable',
   SELECT_EXERCISE = '[Workout] Select exercise',
-  UNSELECT_EXERCISE = '[Workout] Unselect exercise'
+  UNSELECT_EXERCISE = '[Workout] Unselect exercise',
+  UNSELECT_ALL_EXERCISES = '[Workout] Unselect all exercise'
 }
 
 export class LoadWorkout implements Action {
@@ -56,6 +57,7 @@ export class LoadSourceWorkoutComplexFailure implements Action {
   readonly type = WorkoutActionsTypes.LOAD_SOURCE_WORKOUT_COMPLEX_FAILURE;
   constructor(public payload: string) { }
 }
+
 export class ChangeSourceWorkoutComplex implements Action {
   readonly type = WorkoutActionsTypes.CHANGE_SOURCE_WORKOUT_COMPLEX;
   constructor(public payload: {
@@ -83,6 +85,11 @@ export class UnselectExercise implements Action {
   readonly type = WorkoutActionsTypes.UNSELECT_EXERCISE;
   constructor(public payload: Exercise) { }
 }
+
+export class UnselectALLExercises implements Action {
+  readonly type = WorkoutActionsTypes.UNSELECT_ALL_EXERCISES;
+}
+
 export class SetEditable implements Action {
   readonly type = WorkoutActionsTypes.SET_EDITABLE;
   constructor(public payload: boolean) { }
@@ -102,6 +109,7 @@ export class DeleteWorkoutFailure implements  Action {
   public readonly type = WorkoutActionsTypes.DELETE_WORKOUT_FAILURE;
   constructor(public payload: string) {}
 }
+
 export class CreateWorkout implements  Action {
   public readonly type = WorkoutActionsTypes.CREATE_WORKOUT;
   constructor(public payload: { workout: Workout, workoutComplex: WorkoutComplex} ) {}
@@ -116,6 +124,7 @@ export class CreateWorkoutFailure implements  Action {
   public readonly type = WorkoutActionsTypes.CREATE_WORKOUT_FAILURE;
   constructor(public payload: string) {}
 }
+
 export class UpdateWorkout implements  Action {
   public readonly type = WorkoutActionsTypes.UPDATE_WORKOUT;
   constructor(public payload: Workout) {}
@@ -130,6 +139,7 @@ export class UpdateWorkoutFailure implements  Action {
   public readonly type = WorkoutActionsTypes.UPDATE_WORKOUT_FAILURE;
   constructor(public payload: string) {}
 }
+
 export type WorkoutActions =
     SelectExercise
   | UnselectExercise
@@ -152,4 +162,5 @@ export type WorkoutActions =
   | ChangeSourceWorkoutComplex
   | ChangeSourceWorkoutComplexSuccess
   | ChangeSourceWorkoutComplexFailure
+  | UnselectALLExercises
   ;

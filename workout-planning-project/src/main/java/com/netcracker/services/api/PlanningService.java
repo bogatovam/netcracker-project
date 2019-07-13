@@ -35,7 +35,7 @@ public interface PlanningService {
     // Удалить тренировку из комплекса
     Workout deleteWorkout(String workoutComplexId, String workoutId, String userId);
 
-    Workout changeSourceWorkoutComplex(String workoutId, String oldWorkoutComplexId, String newWorkoutComplexId, String userId);
+    WorkoutComplex changeSourceWorkoutComplex(String workoutId, String oldWorkoutComplexId, String newWorkoutComplexId, String userId);
 
     Workout updateWorkout(Workout workout, String userId);
 

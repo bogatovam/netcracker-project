@@ -97,7 +97,7 @@ export class WorkoutEffects {
       })
     );
 
-  @Effect()
+  @Effect({dispatch: false})
   DeleteWorkoutSuccess: Observable<void> =
     this.actions.pipe(
       ofType(fromWorkout.WorkoutActionsTypes.DELETE_WORKOUT_SUCCESS),

@@ -16,10 +16,6 @@ export const selectWorkoutComplex = createSelector(
   selectWorkoutComplexState,
   (state: WorkoutComplexState) => state.selectedWorkoutComplex
 );
-export const selectWorkout = createSelector(
-  selectWorkoutComplexState,
-  (state: WorkoutComplexState) => state.selectedWorkout
-);
 export const selectIsWorkoutComplexEditable = createSelector(
   selectWorkoutComplexState,
   (state: WorkoutComplexState) => state.isWorkoutComplexEditable
