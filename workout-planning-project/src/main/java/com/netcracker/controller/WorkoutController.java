@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static com.netcracker.controller.ControllersPaths.WorkoutController.*;
 
@@ -27,23 +28,38 @@ public class WorkoutController {
 
     @PostMapping(CREATE_WORKOUT_WITH_COMPLEX)
     @ApiOperation(value = "Create workout with complex")
-    public Workout createWorkoutWithWorkoutComplex(
+    public ResponseEntity<?> createWorkoutWithWorkoutComplex(
             @ApiParam(value = "Workout complex id")
             @PathVariable String wcid,
             @ApiParam(value = "Body of created workout")
             @RequestBody Workout workout,
             Authentication authentication) {
-        System.out.println(workout);
-        return planningService.createWorkout(wcid, workout, authentication.getName());
+        try {
+            Workout result = planningService.createWorkout(wcid, workout, authentication.getName());
+            return result!= null ?
+                    new ResponseEntity<>(result, HttpStatus.OK):
+                    new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        catch (NoSuchElementException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping(UPDATE_WORKOUT)
     @ApiOperation(value = "Update workout with complex")
-    public Workout updateWorkout(
+    public ResponseEntity<?> updateWorkout(
             @ApiParam(value = "Body of updated workout")
             @RequestBody Workout workout,
             Authentication authentication) {
-        return planningService.updateWorkout(workout, authentication.getName());
+        try {
+            Workout result = planningService.updateWorkout(workout, authentication.getName());
+            return result!= null ?
+                    new ResponseEntity<>(result, HttpStatus.OK):
+                    new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        catch (NoSuchElementException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping(GET_WORKOUT_BY_ID)
@@ -52,30 +68,51 @@ public class WorkoutController {
             @ApiParam(value = "Workout id")
             @PathVariable String id,
             Authentication authentication) {
-        Workout workoutById = dataDisplayService.getWorkoutById(id, authentication.getName());
-        if (workoutById == null)
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Workout  with id: " + id + " doesn't exist");
-        return ResponseEntity.ok(workoutById);
+        try {
+            Workout result = dataDisplayService.getWorkoutById(id, authentication.getName());
+            return result!= null ?
+                    new ResponseEntity<>(result, HttpStatus.OK):
+                    new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        catch (NoSuchElementException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping(GET_ALL_WORKOUT)
     @ApiOperation(value = "Get all workout")
     public ResponseEntity<?> getAllWorkout(Authentication authentication) {
-        return dataDisplayService.getAllWorkout(authentication.getName());
+        try {
+            List<Workout> result = dataDisplayService.getAllWorkout(authentication.getName());
+            return result!= null ?
+                    new ResponseEntity<>(result, HttpStatus.OK):
+                    new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        catch (NoSuchElementException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping(GET_SOURCE_WORKOUT_COMPLEX_BY_ID)
     @ApiOperation(value = "Get source workout complex")
-    public WorkoutComplex getSourceWorkoutComplex(
+    public ResponseEntity<?> getSourceWorkoutComplex(
             @ApiParam(value = "Workout id")
             @PathVariable String id,
             Authentication authentication) {
-        return dataDisplayService.getSourceWorkoutComplex(id, authentication.getName());
+        try {
+            WorkoutComplex result = dataDisplayService.getSourceWorkoutComplex(id, authentication.getName());
+            return result!= null ?
+                    new ResponseEntity<>(result, HttpStatus.OK):
+                    new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        catch (NoSuchElementException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping(CHANGE_SOURCE_WORKOUT_COMPLEX)
     @ApiOperation(value = "Change source workout complex of workout")
-    public WorkoutComplex changeSourceWorkoutComplex(
+    public ResponseEntity<?> changeSourceWorkoutComplex(
             @ApiParam(value = "Workout complex id")
             @PathVariable String id,
             @ApiParam(value = "Workout complex id")
@@ -83,24 +120,48 @@ public class WorkoutController {
             @ApiParam(value = "Workout complex id")
             @PathVariable String newwcid,
             Authentication authentication) {
-        return planningService.changeSourceWorkoutComplex(id, oldwcid, newwcid, authentication.getName());
+        try {
+            WorkoutComplex result = planningService.changeSourceWorkoutComplex(id, oldwcid, newwcid, authentication.getName());
+            return result!= null ?
+                    new ResponseEntity<>(result, HttpStatus.OK):
+                    new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        catch (NoSuchElementException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping(GET_EXERCISES_BY_ID)
     @ApiOperation(value = "Get all exercises")
-    public List<Exercise> getExercises(
+    public ResponseEntity<?> getExercises(
             @ApiParam(value = "Workout id")
             @PathVariable String id,
             Authentication authentication) {
-        return dataDisplayService.getExercises(id, authentication.getName());
+        try {
+            List<Exercise> result = dataDisplayService.getExercises(id, authentication.getName());
+            return result!= null ?
+                    new ResponseEntity<>(result, HttpStatus.OK):
+                    new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        catch (NoSuchElementException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping(DELETE_WORKOUT_BY_ID)
     @ApiOperation(value = "Delete workout by id")
-    public Workout deleteWorkout(
+    public ResponseEntity<?> deleteWorkout(
             @ApiParam(value = "Workout id")
             @PathVariable String id,
             Authentication authentication) {
-        return planningService.deleteWorkout(id, authentication.getName());
+        try {
+            Workout result = planningService.deleteWorkout(id, authentication.getName());
+            return result!= null ?
+                    new ResponseEntity<>(result, HttpStatus.OK):
+                    new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        catch (NoSuchElementException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 }

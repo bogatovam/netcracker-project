@@ -31,19 +31,17 @@ public class DataDisplayServiceImpl implements DataDisplayService {
     private final UserToWComplexRepository userToWComplexRepository;
 
     @Override
-    public ResponseEntity<?> getUserById(String userId, String authUserId) {
+    public User getUserById(String userId, String authUserId) throws NoSuchElementException {
         User sourceUser = getUserById(authUserId);
         if (sourceUser.getId().equals(userId)) {
-            return ResponseEntity.ok(sourceUser);
-        } else {
-            return new ResponseEntity<>("User is not authorized to take action",
-                    HttpStatus.FORBIDDEN);
+            return sourceUser;
         }
+        return null;
     }
 
     public User getUserById(String userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new NoSuchElementException("User has bad value"));
+                .orElseThrow(() -> new NoSuchElementException("User with id: " + userId + " doesn't exist"));
     }
 
     @Override
@@ -57,25 +55,24 @@ public class DataDisplayServiceImpl implements DataDisplayService {
     }
 
     @Override
-    public Exercise getExercise(String exerciseId) {
+    public Exercise getExercise(String exerciseId) throws NoSuchElementException {
         return exerciseRepository.findById(exerciseId)
-                .orElseThrow(() -> new NoSuchElementException("Exercise id " + exerciseId + " has bad value"));
+                .orElseThrow(() -> new NoSuchElementException("Exercise with id: " + exerciseId + " doesn't exist"));
     }
 
     @Override
     public Workout getWorkoutById(String workoutId, String userId) {
-        // #TODO Change when spring security is added!
         Workout workout = workoutRepository.findById(workoutId)
-                .orElseThrow(() -> new NoSuchElementException("Workout id " + workoutId + " has bad value"));
+                .orElseThrow(() -> new NoSuchElementException("Workout  with id: " + workoutId + " doesn't exist"));
         if (!authenticationService.checkAccessRightsToWorkout(workoutId, userId))
             return null;
         return workout;
     }
 
     @Override
-    public WorkoutComplex getWorkoutComplexById(String workoutComplexId, String userId) {
+    public WorkoutComplex getWorkoutComplexById(String workoutComplexId, String userId) throws NoSuchElementException {
         WorkoutComplex workoutComplex = workoutComplexRepository.findById(workoutComplexId)
-                .orElseThrow(() -> new NoSuchElementException("Workout Complex id " + workoutComplexId + " has bad value"));
+                .orElseThrow(() -> new NoSuchElementException("Workout Complex  with id: " + workoutComplexId + "doesn't exist"));
         if (!authenticationService.checkAccessRightsToWorkoutComplex(workoutComplexId, userId))
             return null;
         return workoutComplex;
@@ -88,33 +85,27 @@ public class DataDisplayServiceImpl implements DataDisplayService {
     }
 
     @Override
-    public WorkoutComplex getSourceWorkoutComplex(String workoutId, String userId) {
+    public WorkoutComplex getSourceWorkoutComplex(String workoutId, String userId) throws NoSuchElementException {
         authenticationService.checkAccessRightsToWorkout(workoutId, userId);
         return wComplexToWorkoutRepository.findByWorkoutId(workoutId)
-                .orElseThrow(() -> {
-                    return new IllegalArgumentException("Invalid scheduledWorkoutId:" + workoutId);
-                })
+                .orElseThrow(() -> new NoSuchElementException("Workout  with id: " + workoutId + " doesn't exist"))
                 .getWorkoutComplex();
     }
 
     @Override
-    public List<Workout> getWorkouts(String workoutComplexId, String userId) {
+    public List<Workout> getWorkouts(String workoutComplexId, String userId) throws NoSuchElementException {
         if (!authenticationService.checkAccessRightsToWorkoutComplex(workoutComplexId, userId))
             return null;
         return getWorkoutComplexById(workoutComplexId, userId).getWorkouts();
     }
 
     @Override
-    public ResponseEntity<?> getAllWorkout(String userId) {
+    public List<Workout> getAllWorkout(String userId) throws NoSuchElementException {
         List<Workout> result = new ArrayList<>();
-        try {
-            User user = getUserById(userId);
-            user.getWorkoutsComplexes().forEach(wc -> {
-                result.addAll(wc.getWorkouts());
-            });
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+        User user = getUserById(userId);
+        user.getWorkoutsComplexes().forEach(wc -> {
+            result.addAll(wc.getWorkouts());
+        });
+        return result;
     }
 }

@@ -45,55 +45,39 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public ResponseEntity<?> signIn(User user) {
-        try {
-            User authUser = null;
+    public User signIn(User user) throws RuntimeException {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(user.getLogin(), user.getPassword())
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(user.getLogin(), user.getPassword())
-            );
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
 
-            UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        String jwt = tokenProvider.generateToken(authentication);
+        logger.info("Authentication for " + userPrincipal.getUser() + " was successful");
 
-            String jwt = tokenProvider.generateToken(authentication);
-
-            logger.info("Authentication for " + userPrincipal.getUser() + " was successful");
-            authUser = userPrincipal.getUser();
-
-            authUser.setToken(jwt);
-            authUser.setPassword("");
-            return ResponseEntity.ok(authUser);
-        } catch (RuntimeException e) {
-            logger.error("Can not set user authentication: " + e.getMessage());
-            return new ResponseEntity<>("Fail -> User is not found!",
-                    HttpStatus.BAD_REQUEST);
-        }
+        User authUser = userPrincipal.getUser();
+        authUser.setToken(jwt);
+        authUser.setPassword("");
+        return authUser;
     }
 
     @Override
-    public ResponseEntity<?> signUp(User user) {
+    public String signUp(User user) {
+        String message = "User object has bad fields";
         if (user.isValid()) {
-
             if (userRepository.existsByLogin(user.getLogin())) {
-                return new ResponseEntity<>("Username is already taken!",
-                        HttpStatus.BAD_REQUEST);
+                message = "Username is already taken!";
+            } else if (userRepository.existsByEmail(user.getEmail())) {
+                message = "Email is already in use!";
+            } else {
+                user.setPassword(passwordEncoder.encode(user.getPassword()));
+                user.setRoles(user.getRoles());
+                userRepository.save(user);
+                message = "User registered successfully!";
             }
-
-            if (userRepository.existsByEmail(user.getEmail())) {
-                return new ResponseEntity<>("Email is already in use!",
-                        HttpStatus.BAD_REQUEST);
-            }
-
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-            user.setRoles(user.getRoles());
-
-            userRepository.save(user);
-
-            return new ResponseEntity<>("User registered successfully!", HttpStatus.OK);
-        } else return new ResponseEntity<>("User fields have bad value",
-                HttpStatus.BAD_REQUEST);
+        }
+        return message;
     }
 
     public Boolean checkAccessRightsToWorkout(String workoutId, String userId) {
@@ -105,7 +89,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public Boolean checkAccessRightsToWorkoutComplex(String workoutComplexId, String userId) {
         List<User> owner = userRepository.findUserByWorkoutComplexId("workout-complex/" + workoutComplexId).asListRemaining();
         if (owner == null || owner.isEmpty()) {
-            logger.error("While checkAccessRights for user " + userId + " and workout complex " + workoutComplexId + " smth went wrong: user is bad");
+            logger.error("While checkAccessRights for user " + userId + " and workout complex " + workoutComplexId + " smth went wrong");
             return false;
         }
         return owner.get(0).getId().equals(userId);

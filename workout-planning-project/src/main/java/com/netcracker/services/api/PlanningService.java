@@ -1,7 +1,6 @@
 package com.netcracker.services.api;
 
 import com.netcracker.model.documents.*;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -11,7 +10,7 @@ public interface PlanningService {
 
     Workout createWorkout(String workoutComplexId, Workout workout, String userId);
 
-    ResponseEntity<?> deleteUserById(String userId, String authUserId);
+    User deleteUserById(String userId, String authUserId);
 
     WorkoutComplex createWorkoutComplex(WorkoutComplex workoutComplex, String userId);
 
@@ -23,16 +22,12 @@ public interface PlanningService {
 
     String setExerciseName(String exerciseId, String name, String userId);
 
-    // Добавить упражнение в тренировку
     Workout addListExercises(String workoutId, List<Exercise> exerciseList, String userId);
 
-    // Удалить упражнение из тренировки
     Workout delListExercises(String workoutId, List<Exercise> exerciseList, String userId);
 
-    // Добавить тренировку в комплекс
     Workout addWorkout(String workoutComplexId, Workout workout, String userId);
 
-    // Удалить тренировку из комплекса
     Workout deleteWorkout(String workoutComplexId, String workoutId, String userId);
 
     WorkoutComplex changeSourceWorkoutComplex(String workoutId, String oldWorkoutComplexId, String newWorkoutComplexId, String userId);
