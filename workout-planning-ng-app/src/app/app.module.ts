@@ -30,8 +30,8 @@ import { ApiService } from "src/app/services/api.service";
 import { CdkDetailRowDirective } from "src/app/shared/directives/cdk-detail-row.directive";
 import { reducers } from "src/app/store";
 import { DirectoryEffects } from "src/app/store/effects/directory.effects";
-import {WorkoutComplexEffects} from "src/app/store/effects/workout-complex.effects";
-import {WorkoutEffects} from "src/app/store/effects/workout.effects";
+import { WorkoutComplexEffects } from "src/app/store/effects/workout-complex.effects";
+import { WorkoutEffects } from "src/app/store/effects/workout.effects";
 
 import { AppComponent } from './app.component';
 import { DirectoryComponent } from './components/directory/directory.component';

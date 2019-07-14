@@ -49,7 +49,8 @@ export function reducer(state: State = initialState, action: AuthorizationAction
     }
     case AuthorizationActionTypes.SIGNUP_SUCCESS: {
       return {
-        ...state
+        ...state,
+        errorMessage: null
       };
     }
     case AuthorizationActionTypes.SIGNUP_FAILURE: {

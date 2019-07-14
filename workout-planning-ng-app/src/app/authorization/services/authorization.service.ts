@@ -8,6 +8,7 @@ const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -30,7 +31,7 @@ export class AuthorizationService {
   }
 
   signUp(user: User): Observable<string> {
-    return this.http.post<string>(this.signupUrl, user, httpOptions);
+    return this.http.post(this.signupUrl, user, { responseType: 'text' });
   }
 
   getUser(userId: string): Observable<User> {

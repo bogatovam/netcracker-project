@@ -25,9 +25,10 @@
 .user-title {
   font-size: 28px;
   font-weight: 700;
-  font-family: Roboto,"Helvetica Neue",sans-serif;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
-.light-button{
+
+.light-button {
   height: calc(1.5em + 0.75rem + 2px);
 
   width: 100%;
@@ -36,10 +37,10 @@
   border-radius: 5px;
   font-size: 16px;
   font-weight: 600;
-  font-family: Roboto,"Helvetica Neue",sans-serif;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-.dark-button{
+.dark-button {
   height: calc(1.5em + 0.75rem + 2px);
   margin-top: 35px;
   width: 100%;
@@ -48,8 +49,9 @@
   border-radius: 5px;
   font-size: 16px;
   font-weight: 600;
-  font-family: Roboto,"Helvetica Neue",sans-serif;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
 .user-buttons {
   width: 25vw;
   min-width: 185px;

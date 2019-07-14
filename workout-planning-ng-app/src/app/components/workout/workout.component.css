@@ -1,6 +1,11 @@
 .container {
   margin-left: 20px;
   margin-right: 20px;
+
+  min-width: 380px;
+
+  font-weight: 400;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 .info-tab {
@@ -12,45 +17,8 @@
   display: flex;
   flex-wrap: wrap;
   font-weight: 400;
-  font-family: Roboto,"Helvetica Neue",sans-serif;
-  padding: 1%;
-}
-
-.row {
-  display: flex;
-  flex-flow: row;
-}
-
-.label {
-  width: 30%;
-  align-self: center;
-}
-
-.header {
-  font-size: 24px;
-}
-
-.icon {
-  margin: 2%;
-  align-self: center;
-}
-
-.workout-description {
-  background-color: white;
-  color: #00063d;
-  border-radius: 20px 20px 0 0;
-  border-color: #00063d;
-  border-width: 3px;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
   padding: 5px;
-}
-
-
-.form-control {
-  height: 30px;
-  flex: 1;
-  align-self: center;
-  font-size: 16px;
-  flex-grow: 4;
 }
 
 .button-panel {
@@ -61,9 +29,70 @@
   flex-flow: column;
 }
 
+.nav-panel {
+  flex-grow: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  font-weight: 600;
+  padding: 1%;
+}
+
+.column {
+  display: flex;
+  flex-flow: column;
+}
+
+.row {
+  display: flex;
+  flex-flow: row;
+}
+
+.label {
+  align-self: center;
+}
+
+.icon {
+  margin: 5%;
+  align-self: center;
+}
+
+.workout-description {
+  margin-top: 20px;
+  background-color: white;
+  color: #00063d;
+  border-radius: 20px 20px 0 0;
+  border: 3px solid #00063d;
+  padding: 20px;
+  display: flex;
+}
+
+.description {
+  flex: 1 1 50%;
+  display: flex;
+  padding-right: 20px;
+  flex-direction: column;
+}
+
+textarea {
+  width: 90%;
+}
+
+.parameters {
+  flex: 1 1 50%;
+}
+
+.form-control {
+  font-size: 16px;
+  flex-grow: 2;
+  padding: 1%;
+
+}
+
 .light-button {
   min-width: 220px;
-
+  align-content: center;
+  justify-content: center;
   margin: 3px;
   font-weight: 600;
   color: #fff;
@@ -83,33 +112,46 @@
   border: none;
   padding: 2%;
 }
+
 .header-tab {
   width: inherit;
-  height: content-box;
   background-color: #00063d;
   color: white;
 
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-items: center;
   font-weight: bold;
   margin-bottom: 3vh;
 }
 
-.editable-exercise-table{
-  margin-top: 12vh;
+.editable-exercise-table {
+  max-width: 47%;
+  flex: 0 0 50%;
+  margin: 2%;
 }
-.two-tables{
+
+.checked-exercise-table {
+  max-width: 47%;
+  flex: 0 0 50%;
+}
+.not-editable-exercise-table {
+  flex: 0 0 100%;
+}
+.exercise-table {
+  margin-top: -3vh;
+}
+
+.two-tables {
+  display: flex;
+  flex-flow: row;
   min-height: 350px;
 }
 
-.workout-content {
-}
-
-.mat-footer-row, mat-header-row, mat-row {
-  min-height: 6vh;
-}
-
-.exercise-table {
-  margin-top: -3vh;
-  width: inherit;
+.header {
+  flex: 1 1 50%;
+  margin: 1%;
 }
 
 .mat-column-complexity {
@@ -138,4 +180,34 @@
 
 .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.error-container {
+  margin-top: 10vh;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  min-height: 60vh;
+  color: white;
+}
+
+.error-panel {
+  min-width: 185px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 3% 5% 3%;
+  background: #00063d;
+
+  border-radius: 15px;
+  border: 15px white;
+  box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+}
+
+.error-title {
+  font-size: 28px;
+  font-weight: 700;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }

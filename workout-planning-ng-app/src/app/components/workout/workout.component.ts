@@ -1,4 +1,4 @@
-import {animate, state, style, transition, trigger} from "@angular/animations";
+import { animate, state, style, transition, trigger } from "@angular/animations";
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { Component, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from "@angular/forms";
@@ -90,6 +90,7 @@ export class WorkoutComponent implements OnInit {
     this.store.dispatch(new fromWorkout.AddTemplateToCreatingWorkout());
     this.store.dispatch(new fromDirectory.SetIsEditable(true));
     this.store.dispatch(new fromDirectory.SetIsEmbeddable(true));
+    this.store.dispatch(new fromDirectory.SetSelectedExercises([]));
     this.store.dispatch(new fromWorkout.SetEditable(true));
   }
 
@@ -99,6 +100,7 @@ export class WorkoutComponent implements OnInit {
     this.sourceWorkoutComplexIdControl = new FormControl(this.sourceWorkoutComplex.id);
     this.store.dispatch(new fromDirectory.SetIsEditable(true));
     this.store.dispatch(new fromDirectory.SetIsEmbeddable(true));
+    this.store.dispatch(new fromDirectory.SetSelectedExercises(this.workout.exercises));
     this.store.dispatch(new fromWorkout.SetEditable(true));
   }
 

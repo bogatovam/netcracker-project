@@ -94,7 +94,7 @@ export class AuthorizationEffects {
   @Effect({dispatch: false})
   SignUpFailure: Observable<string> = this.actions.pipe(
     ofType(fromAuth.AuthorizationActionTypes.SIGNUP_FAILURE),
-    map((action: fromAuth.LogInFailure) => action.payload),
+    map((action: fromAuth.SignUpFailure) => action.payload),
     tap((error) => {
         console.error(`Error: ${error}`);
         this.router.navigate([this.authService.signUpFailureUrl]);

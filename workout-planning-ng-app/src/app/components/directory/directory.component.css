@@ -1,8 +1,20 @@
+.container {
+  margin: 20px;
+  font-family: Roboto,"Helvetica Neue",sans-serif;
+}
+
 .filter-field {
   font-size: 14px;
   width: 100%;
 }
-
+.switched-icons {
+  flex: 1 1 0;
+  margin: 5px;
+}
+.switched-icons-panel {
+  display: flex;
+  justify-content: center;
+}
 .element-row {
   position: relative;
 }
@@ -25,7 +37,11 @@
 }
 
 .group-cards {
-  display: inline-block;
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  flex-wrap: wrap;
+
   min-width: 250px;
 
   width: 35vw;
@@ -60,6 +76,12 @@
 }
 
 .header-panel {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+
   margin-top: 20px;
   margin-right: auto;
   margin-left: auto;

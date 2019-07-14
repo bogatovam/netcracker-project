@@ -65,7 +65,7 @@ public class User {
     }
 
     public boolean isValid() {
-        return (login != null && login.length() > 6) &&
+        return ( login != null && login.length() > 6) &&
                 (fullName != null && fullName.length() > 0) &&
                 (email != null && email.length() > 6) &&
                 (password != null && password.length() > 6) &&

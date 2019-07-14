@@ -1,5 +1,5 @@
 .login-container {
-  margin-top: 10vh;
+  margin-top: 20px;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -13,7 +13,7 @@
   flex-direction: column;
   align-items: center;
 
-  padding: 3% 5% 3%;
+  padding: 2% 3% 2%;
   background: #00063d;
   box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
 }

@@ -5,7 +5,7 @@ import { Observable } from "rxjs";
 import { User } from "src/app/authorization/models/user";
 import { selectIsLoggedIn, selectUser } from "src/app/authorization/store";
 import { DeleteUser, GetUser } from "src/app/authorization/store/actions/authorization.actions";
-import {AppState} from "src/app/store/state/app.state";
+import { AppState } from "src/app/store/state/app.state";
 
 @Component({
   selector: 'app-home',

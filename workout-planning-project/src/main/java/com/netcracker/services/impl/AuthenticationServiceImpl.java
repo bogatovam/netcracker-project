@@ -65,6 +65,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public String signUp(User user) {
         String message = "User object has bad fields";
+        System.out.println(user);
         if (user.isValid()) {
             if (userRepository.existsByLogin(user.getLogin())) {
                 message = "Username is already taken!";
@@ -77,6 +78,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 message = "User registered successfully!";
             }
         }
+        System.out.println(message);
         return message;
     }
 

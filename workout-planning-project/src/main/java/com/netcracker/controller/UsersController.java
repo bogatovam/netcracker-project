@@ -51,7 +51,8 @@ public class UsersController {
             @RequestBody User user) {
         try {
             String result = authenticationService.signUp(user);
-            return result!= null ?
+            System.out.println(result);
+            return result != null ?
                     new ResponseEntity<>(result, HttpStatus.OK):
                     new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
