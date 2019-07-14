@@ -1,3 +1,4 @@
+import {animate, state, style, transition, trigger} from "@angular/animations";
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { Component, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from "@angular/forms";
@@ -22,7 +23,14 @@ import { AppState } from "src/app/store/state/app.state";
 @Component({
   selector: 'app-workout',
   templateUrl: './workout.component.html',
-  styleUrls: ['./workout.component.css']
+  styleUrls: ['./workout.component.css'],
+  animations: [
+    trigger('detailExpand', [
+      state('void', style({height: '0px', minHeight: '0', visibility: 'hidden'})),
+      state('*', style({height: '*', visibility: 'visible'})),
+      transition('void <=> *', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class WorkoutComponent implements OnInit {
   workout: Workout;
@@ -79,6 +87,7 @@ export class WorkoutComponent implements OnInit {
   openFormToCreatingWorkout(): void {
     this.nameWorkoutControl = new FormControl('');
     this.descriptionWorkoutControl = new FormControl('');
+    this.store.dispatch(new fromWorkout.AddTemplateToCreatingWorkout());
     this.store.dispatch(new fromDirectory.SetIsEditable(true));
     this.store.dispatch(new fromDirectory.SetIsEmbeddable(true));
     this.store.dispatch(new fromWorkout.SetEditable(true));
@@ -123,7 +132,9 @@ export class WorkoutComponent implements OnInit {
   }
 
   cancel(): void {
-    this.router.navigateByUrl('workout-complex');
+    if (this.workout === null) {
+      this.router.navigateByUrl('workout-complex');
+    }
     this.store.dispatch(new fromWorkout.SetEditable(false));
   }
 

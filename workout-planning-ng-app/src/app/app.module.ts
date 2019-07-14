@@ -50,7 +50,8 @@ const MAT_MODULES = [
   MatTabsModule,
   MatInputModule,
   MatCheckboxModule,
-  MatRippleModule
+  MatRippleModule,
+  MatListModule
 ];
 
 @NgModule({

@@ -25,7 +25,8 @@ export enum WorkoutActionsTypes {
   SET_EDITABLE = '[Workout] Set editable',
   SELECT_EXERCISE = '[Workout] Select exercise',
   UNSELECT_EXERCISE = '[Workout] Unselect exercise',
-  UNSELECT_ALL_EXERCISES = '[Workout] Unselect all exercise'
+  UNSELECT_ALL_EXERCISES = '[Workout] Unselect all exercise',
+  ADD_TEMPLATE_TO_CREATING_WORKOUT = '[Workout] Add template to creating workout'
 }
 
 export class LoadWorkout implements Action {
@@ -140,6 +141,10 @@ export class UpdateWorkoutFailure implements  Action {
   constructor(public payload: string) {}
 }
 
+export class AddTemplateToCreatingWorkout implements  Action {
+  public readonly type = WorkoutActionsTypes.ADD_TEMPLATE_TO_CREATING_WORKOUT;
+}
+
 export type WorkoutActions =
     SelectExercise
   | UnselectExercise
@@ -162,5 +167,6 @@ export type WorkoutActions =
   | ChangeSourceWorkoutComplex
   | ChangeSourceWorkoutComplexSuccess
   | ChangeSourceWorkoutComplexFailure
+  | AddTemplateToCreatingWorkout
   | UnselectALLExercises
   ;

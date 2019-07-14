@@ -3,6 +3,7 @@ import { NavigationEnd, Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { selectIsLoggedIn } from "src/app/authorization/store";
 import { LogOut } from "src/app/authorization/store/actions/authorization.actions";
+import * as fromDirectory from "src/app/store/actions/directory.actions";
 import * as fromWorkoutComplex from "src/app/store/actions/workout-complex.actions";
 import * as fromWorkout from "src/app/store/actions/workout.actions";
 import { AppState } from "src/app/store/state/app.state";
@@ -29,12 +30,14 @@ export class NavigationComponent implements OnInit {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd ) {
         if (event.url.match('workout-complex/[0-9a-z]+/workout/[0-9a-z]+') === null) {
-          console.log("w editable");
           this.store.dispatch(new fromWorkout.SetEditable(false));
         }
         if (event.url.indexOf('workout-complex') === -1) {
-          console.log("wc editable");
           this.store.dispatch(new fromWorkoutComplex.SetIsWorkoutComplexEditable(false));
+        }
+        if (event.url.indexOf('directory') !== -1) {
+          this.store.dispatch(new fromDirectory.SetIsEditable(false));
+          this.store.dispatch(new fromDirectory.SetIsEmbeddable(false));
         }
       }
     });

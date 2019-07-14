@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from "@angular/forms";
-import {NavigationEnd, Router, RouterEvent} from "@angular/router";
+import { NavigationEnd, Router, RouterEvent } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { Workout } from "src/app/models/workout";
 import { WorkoutComplex } from "src/app/models/workout-complex";
@@ -36,12 +36,13 @@ export class WorkoutComplexComponent implements OnInit {
   constructor(private store: Store<AppState>, private router: Router) { }
 
   ngOnInit(): void {
-
     this.store.dispatch<fromWorkoutComplex.GetAllWorkoutComplex>(new fromWorkoutComplex.GetAllWorkoutComplex());
-    this.selectAllWorkouts();
     this.store.select(selectWorkoutComplexes).subscribe(workoutComplexes => this.workoutComplexes = workoutComplexes);
     this.store.select(selectWorkouts).subscribe(workouts => this.workouts = workouts);
-    this.store.select(selectWorkoutComplex).subscribe(workoutComplex => this.selectedWorkoutComplex = workoutComplex);
+    this.store.select(selectWorkoutComplex).subscribe(workoutComplex => {
+      this.selectedWorkoutComplex = workoutComplex;
+      if (this.selectedWorkoutComplex === null) { this.selectAllWorkouts(); }
+    });
     this.store.select(selectIsWorkoutComplexEditable).subscribe(flag => this.isWorkoutComplexEditable = flag);
   }
 

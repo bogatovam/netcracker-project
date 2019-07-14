@@ -122,7 +122,6 @@ export class DirectoryComponent implements OnInit {
     this.store.dispatch<fromDirectory.ApplyGroupFilter>(new fromDirectory.ApplyGroupFilter(filterValue));
   }
 
-  // ------- //
   isAllSelected(): boolean {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;

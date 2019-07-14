@@ -130,6 +130,11 @@ export function reducer(state: WorkoutState = initialWorkoutState, action: Worko
         exercises: []
       };
     }
+    case WorkoutActionsTypes.ADD_TEMPLATE_TO_CREATING_WORKOUT: {
+      return  {
+        ...initialWorkoutState
+      };
+    }
     default:
       return state;
   }

@@ -1,20 +1,49 @@
+.container {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
 .info-tab {
+  min-width: 380px;
   box-shadow: 0 0 5px #00063d;
-  width: inherit;
-  height: content-box;
   background-color: #c5303a;
   color: white;
   border-radius: 0 0 20px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  font-weight: 400;
+  font-family: Roboto,"Helvetica Neue",sans-serif;
+  padding: 1%;
 }
 
-.workout-menu {
-  padding: 10px;
+.search-panel {
+  flex-grow: 4;
+  display: flex;
+  justify-content: center;
+  padding: 1%;
+}
+
+.form-control {
+  height: 30px;
+  flex: 1;
+  align-self: center;
+  font-size: 16px;
+  flex-grow: 4;
+}
+
+.button-panel {
+  flex-grow: 1;
+  padding: 1%;
+
+  display: flex;
+  flex-flow: column;
 }
 
 .light-button {
+  min-width: 220px;
+
   margin: 3px;
   font-weight: 600;
-  width: 100%;
   color: #fff;
   background-color: #c5303a;
   border-radius: 5px;
@@ -23,9 +52,9 @@
 }
 
 .dark-button {
+  min-width: 220px;
   margin: 3px;
   font-weight: 600;
-  width: 100%;
   color: #fff;
   background-color: #00063d;
   border-radius: 5px;
@@ -34,13 +63,26 @@
 }
 
 .workout-panel {
+  display: flex;
+
+  flex-flow: row;
+  flex-wrap: nowrap;
   margin-top: 20px;
   margin-right: auto;
   margin-left: auto;
 }
 
 .workout-complex-list {
+  flex-grow: 1;
   margin-top: 2vh;
+}
+
+.workout-card-panel {
+  flex-grow: 5;
+
+  margin-top: 20px;
+  font-weight: 400;
+  font-family: Roboto,"Helvetica Neue",sans-serif;
 }
 
 .workout-complex-list-element {
@@ -59,19 +101,19 @@
 }
 
 .workout-content {
-  margin-left: 10px;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .workout-card {
-  background-color: white;
-  color: #00063d;
+  background-color: #c5303a;
+  color: white;
   border-radius: 20px;
-  border-color: #00063d;
-  border-width: 3px;
   width: 200px;
   height: 150px;
   overflow: hidden;
-  margin: 5px;
+  margin: 9px;
+  font-weight: 600;
 }
 
 .workout-card-tab {
@@ -79,8 +121,6 @@
   padding: 4px;
   width: 200px;
   border-radius: 20px;
-  border-color: #00063d;
-  border-width: 3px;
 
   color: white;
   background-color: #00063d;
@@ -91,4 +131,21 @@
   margin-left: 2px;
 }
 
+.workout-card-body{
+  padding: 5%;
+}
 
+.row {
+  display: flex;
+  flex-flow: row;
+}
+
+.label {
+  width: 30%;
+  align-self: center;
+}
+
+.icon {
+  margin: 2%;
+  align-self: center;
+}

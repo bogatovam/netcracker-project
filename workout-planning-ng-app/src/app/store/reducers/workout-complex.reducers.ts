@@ -29,9 +29,10 @@ export function reducer(state: WorkoutComplexState = initialWorkoutComplexState,
       };
     }
     case WorkoutComplexActionsTypes.GET_ALL_WORKOUT_COMPLEX_SUCCESS: {
+      console.log(state);
       if (state.selectedWorkoutComplex !== null) {
-        state.selectedWorkoutComplex = action.payload.find((w) => w.id === this.selectedWorkoutComplex.id);
-        this.workouts = this.selectedWorkoutComplex.workouts;
+        state.selectedWorkoutComplex = action.payload.find((w) => w.id === state.selectedWorkoutComplex.id);
+        state.workouts = state.selectedWorkoutComplex.workouts;
       }
       return {
         ...state,
