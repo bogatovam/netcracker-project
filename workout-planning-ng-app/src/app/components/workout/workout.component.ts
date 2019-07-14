@@ -160,6 +160,7 @@ export class WorkoutComponent implements OnInit {
     return '';
   }
 
+  // tslint:disable-next-line:no-any
   drop(event: CdkDragDrop<MatTableDataSource<Exercise>, any>): void {
     console.log(event);
     const prevIndex = this.dataSource.data.findIndex((d) => d === event.item.data);

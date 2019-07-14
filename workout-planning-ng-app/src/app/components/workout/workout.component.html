@@ -1,4 +1,4 @@
-<div *ngIf="isLoaded && errorMessage===null" class="error-container">
+<div *ngIf="isLoaded && errorMessage!==null" class="error-container">
   <div class="error-panel">
     <p class="error-title">Ошибка: {{errorMessage}}</p>
   </div>

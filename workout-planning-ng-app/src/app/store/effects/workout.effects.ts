@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { Actions, Effect, ofType } from "@ngrx/effects";
 import { Observable, of } from "rxjs";
-import { catchError, map, switchMap, tap } from "rxjs/operators";
+import { catchError, exhaustMap, map, switchMap, tap } from "rxjs/operators";
 import { Workout } from "src/app/models/workout";
 import { WorkoutComplex } from "src/app/models/workout-complex";
 import { ApiService } from "src/app/services/api.service";
@@ -56,7 +56,7 @@ export class WorkoutEffects {
     this.actions.pipe(
       ofType(fromWorkout.WorkoutActionsTypes.LOAD_SOURCE_WORKOUT_COMPLEX),
       map((action: fromWorkout.LoadSourceWorkoutComplex) => action.payload),
-      switchMap((workoutComplexId) => {
+      exhaustMap((workoutComplexId) => {
         console.log('here');
         return this.apiService.getWorkoutComplex(workoutComplexId).pipe(
           map((workoutComplex) => {
@@ -80,7 +80,7 @@ export class WorkoutEffects {
     this.actions.pipe(
       ofType(fromWorkout.WorkoutActionsTypes.DELETE_WORKOUT),
       map((action: fromWorkout.DeleteWorkout) => action.payload),
-      switchMap((workout) => {
+      exhaustMap((workout) => {
         return this.apiService.deleteWorkout(workout).pipe(
           map((deleted) => {
             console.log(deleted);
@@ -109,7 +109,7 @@ export class WorkoutEffects {
     this.actions.pipe(
       ofType(fromWorkout.WorkoutActionsTypes.CREATE_WORKOUT),
       map((action: fromWorkout.CreateWorkout) => action.payload),
-      switchMap((payload) => {
+      exhaustMap((payload) => {
         return this.apiService.createWorkout(payload.workout, payload.workoutComplex).pipe(
           map((createdWorkout) => {
             console.log(createdWorkout);
@@ -131,7 +131,7 @@ export class WorkoutEffects {
     this.actions.pipe(
       ofType(fromWorkout.WorkoutActionsTypes.UPDATE_WORKOUT),
       map((action: fromWorkout.UpdateWorkout) => action.payload),
-      switchMap((workout) => {
+      exhaustMap((workout) => {
         return this.apiService.updateWorkout(workout).pipe(
           map((updatedWorkout) => {
             console.log(updatedWorkout);

@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { Actions, Effect, ofType } from "@ngrx/effects";
 import { Observable, of } from "rxjs";
-import { catchError, map, switchMap, tap } from "rxjs/operators";
+import { catchError, exhaustMap, map, switchMap, tap } from "rxjs/operators";
 import { ApiService } from "src/app/services/api.service";
 import * as fromWorkoutComplex from "src/app/store/actions/workout-complex.actions";
 
@@ -96,7 +96,7 @@ export class WorkoutComplexEffects {
     this.actions.pipe(
       ofType(fromWorkoutComplex.WorkoutComplexActionsTypes.CREATE_WORKOUT_COMPLEX),
       map((action: fromWorkoutComplex.SaveWorkoutComplex) => action.payload),
-      switchMap((workoutComplex) => {
+      exhaustMap((workoutComplex) => {
         return this.apiService.createWorkoutComplex(workoutComplex).pipe(
           map(newWorkoutComplex => {
             console.log(newWorkoutComplex);
@@ -127,7 +127,7 @@ export class WorkoutComplexEffects {
     this.actions.pipe(
       ofType(fromWorkoutComplex.WorkoutComplexActionsTypes.UPDATE_WORKOUT_COMPLEX),
       map((action: fromWorkoutComplex.SaveWorkoutComplex) => action.payload),
-      switchMap((workoutComplex) => {
+      exhaustMap((workoutComplex) => {
         return this.apiService.updateWorkoutComplex(workoutComplex).pipe(
           map(updateWorkoutComplex =>
             new fromWorkoutComplex.UpdateWorkoutComplexSuccess(updateWorkoutComplex)),
@@ -156,7 +156,7 @@ export class WorkoutComplexEffects {
     this.actions.pipe(
       ofType(fromWorkoutComplex.WorkoutComplexActionsTypes.DELETE_WORKOUT_COMPLEX),
       map((action: fromWorkoutComplex.SaveWorkoutComplex) => action.payload),
-      switchMap((workoutComplex) => {
+      exhaustMap((workoutComplex) => {
         return this.apiService.deleteWorkoutComplex(workoutComplex).pipe(
           map(deletedWorkoutComplex =>
             new fromWorkoutComplex.DeleteWorkoutComplexSuccess(deletedWorkoutComplex)),
@@ -186,7 +186,7 @@ export class WorkoutComplexEffects {
     this.actions.pipe(
       ofType(fromWorkoutComplex.WorkoutComplexActionsTypes.DELETE_WORKOUT),
       map((action: fromWorkoutComplex.SaveWorkoutComplex) => action.payload),
-      switchMap((workout) => {
+      exhaustMap((workout) => {
         return this.apiService.deleteWorkout(workout).pipe(
           map(deletedWorkout =>
             new fromWorkoutComplex.DeleteWorkoutSuccess(deletedWorkout)),

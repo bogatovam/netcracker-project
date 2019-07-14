@@ -41,7 +41,7 @@ public class WorkoutController {
                     new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         catch (NoSuchElementException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -58,7 +58,7 @@ public class WorkoutController {
                     new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         catch (NoSuchElementException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -75,7 +75,7 @@ public class WorkoutController {
                     new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         catch (NoSuchElementException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -89,7 +89,7 @@ public class WorkoutController {
                     new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         catch (NoSuchElementException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -106,7 +106,7 @@ public class WorkoutController {
                     new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         catch (NoSuchElementException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -127,7 +127,7 @@ public class WorkoutController {
                     new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         catch (NoSuchElementException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -144,7 +144,7 @@ public class WorkoutController {
                     new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         catch (NoSuchElementException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -161,7 +161,7 @@ public class WorkoutController {
                     new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         catch (NoSuchElementException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 }

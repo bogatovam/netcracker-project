@@ -186,7 +186,7 @@
         }
       ]
     },
-    "rxjs-no-unsafe-catch": "true",
+    // "rxjs-no-unsafe-catch": "true",
     "rxjs-no-unsafe-first": "true",
     "rxjs-no-subject-unsubscribe": "true"
   }

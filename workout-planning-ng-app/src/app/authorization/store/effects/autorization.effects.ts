@@ -144,7 +144,7 @@ export class AuthorizationEffects {
   @Effect({dispatch: false})
   public DeleteUser: Observable<void> = this.actions.pipe(
     ofType(fromAuth.AuthorizationActionTypes.DELETE_USER),
-    switchMap(() => {
+    exhaustMap(() => {
       return this.authService.deleteUser(TokenStorageService.getUserId()).pipe(
         tap((message) => {
           TokenStorageService.logOut();

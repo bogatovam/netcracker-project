@@ -6,7 +6,7 @@ import { Store } from "@ngrx/store";
 import { Gender, Goal, Goals, State, User } from "src/app/authorization/models/user";
 import { selectError } from "src/app/authorization/store";
 import { SignUp } from "src/app/authorization/store/actions/authorization.actions";
-import {AppState} from "src/app/store/state/app.state";
+import { AppState } from "src/app/store/state/app.state";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 export class MyErrorStateMatcher implements ErrorStateMatcher {
